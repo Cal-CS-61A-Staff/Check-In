@@ -1,6 +1,5 @@
 @include('core.header')
 
-<div class="boxLoading" style="display: none;"></div>
 <div id="step1" style="margin-top: 30px;">
     <div class="row">
         <div class="col-lg-12">
@@ -49,6 +48,7 @@
         <hr />
     </div>
 </div>
+<div class="boxLoading" style="display: none;"></div>
 @section('js')
    $("#inputLocation").typed({
        strings: ["Ex: 411 Soda Hall", "Ex: Garbarini Lounge", "Ex: HP Auditorium"],

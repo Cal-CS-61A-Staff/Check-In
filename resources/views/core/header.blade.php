@@ -34,7 +34,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if (Auth::check())
-                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">Hello {{{ Auth::user()->name }}} <span class="caret"></span></a>
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#"><i class="fa fa-user fa-fw"></i> Hello {{{ Auth::user()->name }}} <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="#"><i class="fa fa-edit fa-fw"></i> Edit Account</a></li>
                         <li class="divider"></li>
