@@ -23,6 +23,7 @@
 <div class="row">
     <div class="col-lg-12">
         <form id="loginForm" method="POST" data-toggle="validator" action="#">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             <div class="form-group">
                 <label for="inputEmail">Email: </label>
                 <input type="text" class="form-control" name="inputEmail" id="inputEmail" placeholder="Ex: cschoen@berkeley.edu" />
