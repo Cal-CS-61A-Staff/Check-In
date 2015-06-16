@@ -15,6 +15,7 @@
     //GET
     Route::get('/', ["as" => "index", "uses" => "IndexController@get_index"]);
     Route::get('login', ["as" => "login", "uses" => "IndexController@get_login", "middleware" => "guest"]);
+    Route::get('logout', ["as" => "logout", "uses" => "IndexController@get_logout", "middleware" => "auth"]);
     Route::get('registration', ["as" => "registration", "uses" => "IndexController@get_registration", "middleware" => "guest"]);
     //POST
     Route::post('registration', ["as" => "doregistration", "uses" => "IndexController@post_registration", "middleware" => "guest"]);

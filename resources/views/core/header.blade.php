@@ -26,6 +26,11 @@
                 <li><a href="#"><i class="fa fa-bookmark fa-fw"></i> TA Console</a></li>
                 <li><a href="#"><i class="fa fa-question-circle fa-fw"></i> Help</a></li>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                @if (Auth::check())
+                <li><a href="#">Hello {{{ Auth::user()->name }}} <i class="fa fa-chevron-down fa-fw"></i></a></li>
+                @endif
+            </ul>
         </nav>
     </div>
 </header>
@@ -42,3 +47,13 @@
     </div>
 </header>
 <div class="container">
+    @if (Session::has("message"))
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="alert alert-warning alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    {{{ Session::get("message") }}}
+                </div>
+            </div>
+        </div>
+    @endif

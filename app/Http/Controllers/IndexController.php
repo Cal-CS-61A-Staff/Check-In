@@ -24,6 +24,14 @@ class IndexController extends Controller {
         return view('login');
     }
 
+    public function get_logout()
+    {
+        //Log the user out
+        Auth::logout();
+        //Redirect back to the index with a message
+        return redirect()->route("login")->with("message", "You have been successfully logged out.");
+    }
+
     public function get_registration()
     {
         //Return our registration view
