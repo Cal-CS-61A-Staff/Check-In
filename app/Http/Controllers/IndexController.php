@@ -1,5 +1,8 @@
 <?php namespace App\Http\Controllers;
 
+use Auth;
+use Illuminate\Routing\Controller;
+
 class IndexController extends Controller {
 
     public function get_index()
