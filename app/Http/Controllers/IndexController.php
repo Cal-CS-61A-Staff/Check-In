@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use Auth, Request, Validator, Hash;
+use App\User;
+use App\Audit;
 use Illuminate\Routing\Controller;
 
 class IndexController extends Controller {
@@ -69,11 +71,12 @@ class IndexController extends Controller {
         //Save our model to the database
         $user->save();
 
+        //Log the user in
+
+        Auth::loginUsingId($user->id);
         //Create an audit log entry for this action
         Audit::log("Account created.");
 
-        //Log the user in
-        Auth::loginUsingId($user->id);
         //Redirect them to the checkin page with the following message
         return redirect()->route("lacheckin")->with("message", "Thanks " . $user->name . ", your account was successfully created. You can now check in to your lab sections using your credentials.");
     }
