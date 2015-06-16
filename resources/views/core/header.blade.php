@@ -12,12 +12,12 @@
     <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
-<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+<nav class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
     <div class="container">
         <div class="navbar-header">
             <a href="../" class="navbar-brand">CS61A <small>Lab Assistant Manager</small></a>
         </div>
-        <nav class="collapse navbar-collapse bs-navbar-collapse">
+        <div class="nav collapse navbar-collapse bs-navbar-collapse">
             <ul class="nav navbar-nav">
                 @if (Auth::guest())
                 <li><a href="{{ URL::route("login") }}"><i class="fa fa-sign-in fa-fw"></i> Login</a></li>
@@ -28,12 +28,18 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if (Auth::check())
-                <li><a href="#">Hello {{{ Auth::user()->name }}} <i class="fa fa-chevron-down fa-fw"></i></a></li>
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">Hello {{{ Auth::user()->name }}} <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#"><i class="fa fa-edit fa-fw"></i> Edit Account</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{{ URL::route("logout") }}"><i class="fa fa-logout fa-fw"></i> Logout</a></li>
+                    </ul>
+                </li>
                 @endif
             </ul>
-        </nav>
+        </div>
     </div>
-</header>
+</nav>
 <header class="marquee">
     <div class="row">
         <div class="col-lg-12" style="text-align: center;">
