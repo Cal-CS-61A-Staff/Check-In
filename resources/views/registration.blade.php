@@ -14,7 +14,7 @@
 @endif
 <div class="row">
     <div class="col-lg-12">
-        <form class="form" data-toggle="" id="registrationForm" method="POST" action="{{ URL::route("doregistration") }}">
+        <form class="form" data-toggle="validator" id="registrationForm" method="POST" action="{{ URL::route("doregistration") }}">
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             <div class="form-group">
                 <label for="inputName">Name: </label>

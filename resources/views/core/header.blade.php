@@ -19,8 +19,10 @@
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse">
             <ul class="nav navbar-nav">
+                @if (Auth::guest())
                 <li><a href="{{ URL::route("login") }}"><i class="fa fa-sign-in fa-fw"></i> Login</a></li>
                 <li><a href="{{ URL::route("registration") }}"><i class="fa fa-user-plus fa-fw"></i> Registration</a></li>
+                @endif
                 <li><a href="#"><i class="fa fa-bookmark fa-fw"></i> TA Console</a></li>
                 <li><a href="#"><i class="fa fa-question-circle fa-fw"></i> Help</a></li>
             </ul>

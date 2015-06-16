@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use Auth, Request, Validator;
+use Auth, Request, Validator, Hash;
 use Illuminate\Routing\Controller;
 
 class IndexController extends Controller {
@@ -41,7 +41,7 @@ class IndexController extends Controller {
         ], [
             "name" => "required",
             "sid" => "required|integer",
-            "email" => "required|email",
+            "email" => "required|email|unique:users,email",
             "password" => "required|min:8",
         ], [
             "name.required" => "Please enter your full first and last name.",
@@ -58,6 +58,24 @@ class IndexController extends Controller {
             //We have issues. Redirect back to the form with all of the input except the password and include the error messages
             return redirect()->back()->withErrors($validator->errors())->withInput(Request::except('inputPassword'));
         }
+        //Alright all of the validation is complete. Now to create our new user
+        $user = new User;
+        $user->name = $input["inputName"];
+        $user->sid = $input["inputSID"];
+        $user->email = $input["inputEmail"];
+        //Hash our password
+        $hashedpasswd = Hash::make($input["inputPassword"]);
+        $user->password = $hashedpasswd;
+        //Save our model to the database
+        $user->save();
+
+        //Create an audit log entry for this action
+        Audit::log("Account created.");
+
+        //Log the user in
+        Auth::loginUsingId($user->id);
+        //Redirect them to the checkin page with the following message
+        return redirect()->route("lacheckin")->with("message", "Thanks " . $user->name . ", your account was successfully created. You can now check in to your lab sections using your credentials.");
     }
 
 
