@@ -8,9 +8,21 @@
         </div>
     </div>
 </div>
+@if (!empty($errors))
+    <div class="row">
+        <div class="col-lg-12">
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    {{{ $error }}}
+                </div>
+            @endforeach
+        </div>
+    </div>
+@endif
 <div class="row">
     <div class="col-lg-12">
-        <form id="loginForm" method="POST" action="#">
+        <form id="loginForm" method="POST" data-toggle="validator" action="#">
             <div class="form-group">
                 <label for="inputEmail">Email: </label>
                 <input type="text" class="form-control" name="inputEmail" id="inputEmail" placeholder="Ex: cschoen@berkeley.edu" />

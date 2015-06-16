@@ -24,6 +24,45 @@ class IndexController extends Controller {
         return view('login');
     }
 
+    public function post_login()
+    {
+        $email = Request::input("inputEmail");
+        $password = Request::input("inputPassword");
+        //Start our validator
+        $validator = Validator::make([
+            "email" => $email,
+            "password" => $password,
+        ], [
+            "email" => "required|exists:users,email",
+            "password" => "required",
+        ], [
+            "email.required" => "Please enter your email address.",
+            "email.exists" => "There does not appear to be an account with that email address. Please try again or register an account.",
+            "password.required" => "Please enter your password.",
+        ]);
+        if ($validator->fails())
+        {
+            //Darn, back to the login screen it is
+            return redirect()->route("login")->withInput(Request::except("inputPassword"))->withErrors($validator);
+        }
+        //Alright all good, lets pull our user model
+        $user = User::where("email", "=", $email)->first();
+        //Let's try to log them in
+        if (Auth::attempt(['email' => $email, 'password' => $password]))
+        {
+            //Great they are logged in. Let's redirect them to the check in page
+            return redirect()->route("lacheckin")->with("message", "Hello " . $user->name . ", you have succesfully been logged in.");
+        }
+        else
+        {
+            //Add an error to the message back
+            $validator->errors()->add('password', 'Invalid password.');
+            //Yikes back to the login screen we go
+            return redirect()->route("login")->withInput(Request::except("inputPassword"))->withErrors($validator);
+        }
+
+    }
+
     public function get_logout()
     {
         //Log the user out
