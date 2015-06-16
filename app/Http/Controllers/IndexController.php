@@ -4,7 +4,13 @@ class IndexController extends Controller {
 
     public function get_index()
     {
-        return view('index');
+        //Is the member logged in?
+        if (Auth::check())
+        {
+            return redirect()->route('lacheckin');
+        }
+        //They are not, let's redirect to the login page
+        return redirect()->route('login');
     }
 
 }
