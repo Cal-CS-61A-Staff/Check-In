@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <form class="form" data-toggle="validator" id="registrationForm" method="POST" action="#">
+        <form class="form" data-toggle="validator" id="registrationForm" method="POST" action="{{ URL::route("doregistration") }}">
             <div class="form-group">
                 <label for="inputName">Name: </label>
                 <div class="help-block with-errors"></div>

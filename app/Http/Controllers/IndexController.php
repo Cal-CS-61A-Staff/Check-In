@@ -28,5 +28,15 @@ class IndexController extends Controller {
         return view('registration');
     }
 
+    public function post_registration()
+    {
+        //Get all of our form input
+        $input = Request::all();
+        die (var_dump($input));
+        //Start our validator
+        $validator = Validator::make([
+        ], [], []);
+    }
+
 
 }
