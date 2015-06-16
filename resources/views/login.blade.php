@@ -26,10 +26,12 @@
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             <div class="form-group">
                 <label for="inputEmail">Email: </label>
+                <div class="help-block with-errors"></div>
                 <input type="text" class="form-control" name="inputEmail" id="inputEmail" placeholder="Ex: cschoen@berkeley.edu" required />
             </div>
             <div class="form-group">
                 <label for="inputPassword">Password: </label>
+                <div class="help-block with-errors"></div>
                 <input type="password" class="form-control" name="inputPassword" id="inputPassword" placeholder="●●●●●●●●" required />
             </div>
             <div class="form-group">
