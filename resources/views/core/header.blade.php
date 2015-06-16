@@ -20,11 +20,17 @@
         <div class="nav collapse navbar-collapse bs-navbar-collapse">
             <ul class="nav navbar-nav">
                 @if (Auth::guest())
-                <li><a href="{{ URL::route("login") }}"><i class="fa fa-sign-in fa-fw"></i> Login</a></li>
-                <li><a href="{{ URL::route("registration") }}"><i class="fa fa-user-plus fa-fw"></i> Registration</a></li>
+                    <li><a href="{{ URL::route("login") }}"><i class="fa fa-sign-in fa-fw"></i> Login</a></li>
+                    <li><a href="{{ URL::route("registration") }}"><i class="fa fa-user-plus fa-fw"></i> Register</a></li>
                 @endif
-                <li><a href="#"><i class="fa fa-bookmark fa-fw"></i> TA Console</a></li>
-                <li><a href="#"><i class="fa fa-question-circle fa-fw"></i> Help</a></li>
+                @if (Auth::check())
+                    <li><a href="{{ URL::route("lacheckin") }}"><i class="fa fa-check-circle-o fa-fw"></i> Check In</a></li>
+                    <li><a href="#"><i class="fa fa-list-ol fa-fw"></i> Attendance</a></li>
+                    @if (Auth::user()->access > 0)
+                        <li><a href="#"><i class="fa fa-bookmark fa-fw"></i> TA Console</a></li>
+                    @endif
+                    <li><a href="#"><i class="fa fa-question-circle fa-fw"></i> Help</a></li>
+                @endif
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if (Auth::check())
@@ -32,7 +38,7 @@
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="#"><i class="fa fa-edit fa-fw"></i> Edit Account</a></li>
                         <li class="divider"></li>
-                        <li><a href="{{ URL::route("logout") }}"><i class="fa fa-logout fa-fw"></i> Logout</a></li>
+                        <li><a href="{{ URL::route("logout") }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
                     </ul>
                 </li>
                 @endif
