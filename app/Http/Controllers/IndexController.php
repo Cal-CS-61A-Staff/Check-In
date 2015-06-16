@@ -51,7 +51,7 @@ class IndexController extends Controller {
         if (Auth::attempt(['email' => $email, 'password' => $password]))
         {
             //Great they are logged in. Let's redirect them to the check in page
-            return redirect()->route("lacheckin")->with("message", "Hello " . $user->name . ", you have succesfully been logged in.");
+            return redirect()->route("lacheckin")->with("message", "Hello " . $user->name . ", you have successfully been logged in.");
         }
         else
         {
