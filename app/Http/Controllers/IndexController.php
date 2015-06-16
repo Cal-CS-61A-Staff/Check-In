@@ -22,5 +22,11 @@ class IndexController extends Controller {
         return view('login');
     }
 
+    public function get_registration()
+    {
+        //Return our registration view
+        return view('registration');
+    }
+
 
 }

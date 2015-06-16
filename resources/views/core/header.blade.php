@@ -19,8 +19,8 @@
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#"><i class="fa fa-sign-in fa-fw"></i> Login</a></li>
-                <li><a href="#"><i class="fa fa-user-plus fa-fw"></i> Registration</a></li>
+                <li><a href="{{ URL::route("login") }}"><i class="fa fa-sign-in fa-fw"></i> Login</a></li>
+                <li><a href="{{ URL::route("registration") }}"><i class="fa fa-user-plus fa-fw"></i> Registration</a></li>
                 <li><a href="#"><i class="fa fa-bookmark fa-fw"></i> TA Console</a></li>
                 <li><a href="#"><i class="fa fa-question-circle fa-fw"></i> Help</a></li>
             </ul>
@@ -30,7 +30,7 @@
 <header class="marquee">
     <div class="row">
         <div class="col-lg-12" style="text-align: center;">
-            <h1>CS61A <small>Lab Assistant Check In</small></h1>
+            <h1>CS61A <small>Lab Assistant Manager</small></h1>
         </div>
     </div>
     <div class="row">
