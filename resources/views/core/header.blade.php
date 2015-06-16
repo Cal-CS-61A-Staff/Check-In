@@ -15,10 +15,14 @@
 <header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
     <div class="container">
         <div class="navbar-header">
-            <a href="../" class="navbar-brand">CS61A</a>
+            <a href="../" class="navbar-brand">CS61A <small>Lab Assistant Manager</small></a>
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse">
             <ul class="nav navbar-nav">
+                <li><a href="#"><i class="fa fa-sign-in fa-fw"></i> Login</a></li>
+                <li><a href="#"><i class="fa fa-user-plus fa-fw"></i> Registration</a></li>
+                <li><a href="#"><i class="fa fa-bookmark fa-fw"></i> TA Console</a></li>
+                <li><a href="#"><i class="fa fa-question-circle fa-fw"></i> Help</a></li>
             </ul>
         </nav>
     </div>

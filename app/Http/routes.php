@@ -13,9 +13,6 @@
 
 Route::get('/', ["as" => "index", "uses" => "IndexController@get_index"]);
 
-Route::get('home', 'HomeController@index');
 
-Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
-]);
+//LA Routes
+Route::get('/checkin', ["as" => "lacheckin", "uses" => "LabAssistantController@get_checkin"]);
