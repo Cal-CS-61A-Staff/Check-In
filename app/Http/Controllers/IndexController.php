@@ -50,6 +50,8 @@ class IndexController extends Controller {
         //Let's try to log them in
         if (Auth::attempt(['email' => $email, 'password' => $password]))
         {
+            //Log the sign-in as an audit
+            Audit::log("Logged in");
             //Great they are logged in. Let's redirect them to the check in page
             return redirect()->route("lacheckin")->with("message", "Hello " . $user->name . ", you have successfully been logged in.");
         }
@@ -65,6 +67,7 @@ class IndexController extends Controller {
 
     public function get_logout()
     {
+        Audit::log("Logged out");
         //Log the user out
         Auth::logout();
         //Redirect back to the index with a message
@@ -122,7 +125,7 @@ class IndexController extends Controller {
 
         Auth::loginUsingId($user->id);
         //Create an audit log entry for this action
-        Audit::log("Account created.");
+        Audit::log("Account created");
 
         //Redirect them to the checkin page with the following message
         return redirect()->route("lacheckin")->with("message", "Thanks " . $user->name . ", your account was successfully created. You can now check in to your lab sections using your credentials.");
