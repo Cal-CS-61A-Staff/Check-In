@@ -13,4 +13,11 @@ class IndexController extends Controller {
         return redirect()->route('login');
     }
 
+    public function get_login()
+    {
+        //Return our login view
+        return view('login');
+    }
+
+
 }

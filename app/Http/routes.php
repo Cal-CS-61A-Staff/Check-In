@@ -12,7 +12,7 @@
 */
 
 Route::get('/', ["as" => "index", "uses" => "IndexController@get_index"]);
-
+Route::get('login', ["as" => "login", "uses" => "IndexController@get_login"]);
 
 //LA Routes
 Route::get('/checkin', ["as" => "lacheckin", "uses" => "LabAssistantController@get_checkin"]);
