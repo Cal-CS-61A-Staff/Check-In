@@ -7,10 +7,9 @@
             <h3><span class="label label-info">Step 1:</span> Where are you? <small>(Lab, Office Hours etc...)</small></h3>
             <hr />
             <select id="inputLocation" class="form-control" name="inputLocation">
-                <option value="0">Lab</option>
-                <option value="1">Office Hours</option>
-                <option value="2">Guerilla Section</option>
-                <option value="3">Homework Party</option>
+                @foreach ($types as $type)
+                <option value="{{{ $type->id }}}">{{{ $type->name }}}</option>
+                @endforeach
             </select>
         </div>
     </div>
@@ -42,7 +41,9 @@
             <h3><span class="label label-info">Step 3:</span> What GSI (TA) are you working under today?</h3>
             <hr />
             <select class="form-control" name="inputGSI" id="inputGSI">
-                <option value="4">Colin Schoen</option>
+                @foreach ($tas as $ta)
+                    <option value="{{{ $ta->id }}}">{{{ $ta->name }}}</option>
+                @endforeach
             </select>
         </div>
     </div>

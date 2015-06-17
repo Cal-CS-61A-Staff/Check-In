@@ -5,10 +5,14 @@ use App\Checkin;
 use App\Password;
 use App\Audit;
 use App\User;
+use App\Type;
 class LabAssistantController extends Controller {
 
     public function get_checkin() {
-        return view("la.checkin");
+        //Load our types
+        $types = Type::all();
+        $tas = User::where("access", ">", 0)->orderBy("name", "ASC")->get();
+        return view("la.checkin")->with(["types" => $types, "tas" => $tas]);
     }
 
     public function post_checkin() {
@@ -87,7 +91,7 @@ class LabAssistantController extends Controller {
 
     public function get_attendance() {
         $uid = Auth::user()->id;
-        $checkins = Checkin::where("uid", "=", $uid)->with("ta")->with("type")->orderBy("date", "DESC")->get();
+        $checkins = Checkin::where("uid", "=", $uid)->with("ta")->with("type")->orderBy("created_at", "DESC")->get();
         //Create our view
         return view("la.attendance")->with(array("checkins" => $checkins));
     }
