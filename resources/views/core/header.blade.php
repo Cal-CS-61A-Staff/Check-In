@@ -9,6 +9,9 @@
     <link media="all" type="text/css" rel="stylesheet" href="/css/theme.css">
     <link media="all" type="text/css" rel="stylesheet" href="/css/custom.css">
     <link media="all" type="text/css" rel="stylesheet" href="/css/animate.css">
+    <link media="all" type="text/css" rel="stylesheet" href="/packages/pickadate/themes/default.css">
+    <link media="all" type="text/css" rel="stylesheet" href="/packages/pickadate/themes/default.date.css">
+    <link media="all" type="text/css" rel="stylesheet" href="/packages/pickadate/themes/default.time.css">
     <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>

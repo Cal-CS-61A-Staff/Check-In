@@ -19,6 +19,25 @@
         </div>
     </div>
 </div>
+<div id="step2" style="margin-top: 30px;">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3><span class="label label-info">Step 2:</span> What is the date and <span style="font-style: italic">start time</span> of this <strong><span id="step2Location">Lab</span></strong> </h3>
+            <hr />
+            <select id="inputLocation" class="form-control" name="inputLocation">
+                <option value="0">Lab</option>
+                <option value="1">Office Hours</option>
+                <option value="2">Guerilla Section</option>
+                <option value="2">Homework Party</option>
+            </select>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-lg-12">
+            <button id="btnToStep2" data-nid="2" class="btn btn-primary btnNextStep">Next <i class="fa fa-arrow-right fa-fw"></i></button>
+        </div>
+    </div>
+</div>
 <div id="step2" style="display: none;">
     <div class="row" style="margin-top: 20px;">
         <div class="col-lg-12">
@@ -79,10 +98,9 @@
 </div>
 <div class="boxLoading" style="display: none;"></div>
 @section('js')
-   $("#inputLocation").typed({
-       strings: ["Ex: 411 Soda Hall", "Ex: Garbarini Lounge", "Ex: HP Auditorium"],
-       typeSpeed: 0
-   })
+   $('#inputLocation').on("change", function() {
+        $('#step2Location').html($(this).val());
+   });
    $('.btnNextStep').on('click', function() {
         $(this).prop("disabled", true);
         $(this).siblings("button").prop("disabled", true);
