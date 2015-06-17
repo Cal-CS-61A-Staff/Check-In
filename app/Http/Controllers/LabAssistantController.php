@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use Validator, Auth, Request;
+use Validator, Auth, Request, Hash;
 use App\Checkin;
 use App\Password;
 use App\Audit;
@@ -99,5 +99,76 @@ class LabAssistantController extends Controller {
     public function get_account() {
         $user = Auth::user();
         return view('la.account')->with(array("user" => $user));
+    }
+
+    public function post_account() {
+        //Get our data
+        $input = Request::all();
+        //And our user
+        $user = Auth::user();
+        //This is a bit messy, but it needs to happen. We need two different
+        // validators depending on if they are changing their email or not
+        if ($input['inputEmail'] != $user->email)
+        {
+            $validator = Validator::make([
+                "sid" => $input["inputSID"],
+                "name" => $input["inputName"],
+                "email" => $input["inputEmail"],
+                "password" => $input["inputPassword"],
+            ], [
+                "sid" => "required|integer",
+                "name" => "required",
+                "email" => "required|email|unique:users,email",
+                "password" => "min:8",
+            ], [
+                "sid.required" => "Please enter your student ID.",
+                "sid.integer" => "Your student ID should be numeric.",
+                "name.required" => "Please enter your name.",
+                "email.required" => "Please enter your email address.",
+                "email.email" => "That does not appear to be a valid email address.",
+                "email.unique" => "That email appears to be in use with another account.",
+                "password.min" => "Please ensure that your password is 8 or more characters long.",
+            ]);
+        }
+        else {
+            $validator = Validator::make([
+                "sid" => $input["inputSID"],
+                "name" => $input["inputName"],
+                "email" => $input["inputEmail"],
+                "password" => $input["inputPassword"],
+            ], [
+                "sid" => "required|integer",
+                "name" => "required",
+                "email" => "required|email",
+                "password" => "min:8",
+            ], [
+                "sid.required" => "Please enter your student ID.",
+                "sid.integer" => "Your student ID should be numeric.",
+                "name.required" => "Please enter your name.",
+                "email.required" => "Please enter your email address.",
+                "email.email" => "That does not appear to be a valid email address.",
+                "password.min" => "Please ensure that your password is 8 or more characters long.",
+            ]);
+        }
+
+        //Grr it is 4:18 AM and cold in here
+        if ($validator->fails())
+        {
+            //Back we go
+            return redirect()->route("laaccount")->withInput(Request::except("inputPassword"))->withErrors($validator->errors());
+        }
+        //Alright validation is complete let's make some changes folks
+        $user->sid = $input["inputSID"];
+        $user->name = $input["inputName"];
+        $user->email = $input["inputEmail"];
+        if ($input["inputPassword"] != "") {
+            $user->password = Hash::make($input["inputPassword"]);
+        }
+        //Save our data
+        $user->save();
+        //Make an audit log entry
+        Audit::log("Account information updated");
+        //Redirect back to the form and advise them that everything was successful.
+        return redirect()->route("laaccount")->with("message", "Your account changes were saved successfully.");
     }
 }
