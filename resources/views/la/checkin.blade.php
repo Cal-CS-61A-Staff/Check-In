@@ -42,9 +42,7 @@
             <h3><span class="label label-info">Step 3:</span> What GSI (TA) are you working under today?</h3>
             <hr />
             <select class="form-control" name="inputGSI" id="inputGSI">
-                <option value="1">Colin Schoen</option>
-                <option value="2">Albert Wu</option>
-                <option value="3">Jessica Gu</option>
+                <option value="4">Colin Schoen</option>
             </select>
         </div>
     </div>
@@ -84,7 +82,8 @@
     <div class="row" style="margin-top: 20px;">
         <div class="col-lg-12">
             <button disabled="disabled" id="btnBackToStep4" data-pid="4" class="btn btn-default btnPrevStep">Back <i class="fa fa-arrow-left fa-fw"></i></button>
-            <button disabled="disabled" id="btnToStep6" data-nid="6" class="btn btn-success btnNextStep">Complete Check In <i id="checkInLoader" class="fa fa-check-circle-o fa-fw"></i></button>
+            <button id="submitCheckInForm" disabled="disabled" data-nid="6" data-submit-form="true" class="btn btn-success">Complete Check In <i id="checkInLoader" class="fa fa-check-circle-o fa-fw"></i></button>
+            <button disabled="disabled" style="display: none;" id="btnToStep6" data-nid="6" class="btn btn-success btnNextStep">Complete Check In <i id="checkInLoader" class="fa fa-check-circle-o fa-fw"></i></button>
         </div>
     </div>
 </div>
@@ -96,35 +95,39 @@
 </div>
 <div class="boxLoading" style="display: none;"></div>
 @section('js')
-   var stopNextEventBinding = false;
-   $('#btnToStep6').on("click", function() {
+   $("#submitCheckInForm").on("click", function() {
+        $('#formErrors').hide();
         $('#checkInLoader').addClass("fa-spin");
-        var _token = "{{ csrf_token() }}"
-        var location = $('#inputLocation');
-        var date = $('#inputDate');
-        var time = $('#inputTime');
-        var gsi = $('#inputGSI');
-        var makeup = $('#inputMakeup');
-        var password = $('#inputPassword');
+        var _token = "{{ csrf_token() }}";
+        var location = $('#inputLocation').val();
+        var date = $('#inputDate').val();
+        var time = $('#inputTime').val();
+        var gsi = $('#inputGSI').val();
+        var makeup = $('#inputMakeup').val();
+        var password = $('#inputPassword').val();
         $.ajax({
-            "type": "POST",
-            "url": "{{ URL::route("dolacheckin") }}",
-            "data": {
-                "_token": _token,
-                "date": date,
-                "time": time,
-                "gsi": gsi,
-                "makeup": makeup,
-                "password": password,
+             method: "POST",
+             url: "{{ URL::route("dolacheckin") }}",
+             data: {
+                _token: _token,
+                location: location,
+                date: date,
+                time: time,
+                gsi: gsi,
+                makeup: makeup,
+                password: password,
             }
         })
-            .success(function(received) {
+            .done(function(received) {
                 $('#checkInLoader').removeClass("fa-spin");
                 if (received != 1) {
-                    $('#formErrors').html(received).fadeIn();
-                    stopNextEventBinding = true;
+                    $('#formErrors').html(received).show();
+                }
+                else {
+                    $('#btnToStep6').click();
                 }
             });
+
    });
    $('#inputLocation').on("change", function() {
         var val = $(this).val();
@@ -138,10 +141,6 @@
         "container": "#pickDateContainer",
    });
    $('.btnNextStep').on('click', function() {
-        if (stopNextEventBinding) {
-            stopNextEventBinding = false;
-            return;
-        }
         $(this).prop("disabled", true);
         $(this).siblings("button").prop("disabled", true);
         var nid = parseInt($(this).attr("data-nid"));

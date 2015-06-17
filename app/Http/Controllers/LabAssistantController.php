@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use Validator, Auth;
+use Validator, Auth, Request;
 use App\Checkin;
 use App\Password;
 use App\Audit;
@@ -24,7 +24,7 @@ class LabAssistantController extends Controller {
             "password" => $input["password"],
         ], [
             "location" => "required|in:0,1,2,3",
-            "date" => "required|date",
+            "date" => "required",
             "time" => "required",
             //Todo add requirement for GSI field to match DB gsi list
             "gsi" => "required",
@@ -34,7 +34,6 @@ class LabAssistantController extends Controller {
             "location.required" => "Please go back and choose your section type. (Lab, office hours etc...).",
             "location.in" => "That doesn't appear to be a valid event type (Lab, office hours etc...).",
             "date.required" => "Please choose a date for your check in.",
-            "date.date" => "That doesn't appear to be a valid date format",
             "time.required" => "Please go back and choose the start time.",
             "gsi.required" => "Please go back and choose the GSI that is leading your section today",
             "makeup.required" => "Please go back and choose if this is a makeup check in.",
@@ -47,15 +46,15 @@ class LabAssistantController extends Controller {
             $message = "";
             foreach($validator->errors()->all() as $error)
             {
-                $message += '<div class="alert alert-danger alert-dismissable">
+                $message .= '<div class="alert alert-danger alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert">×</button>
                     ' . $error . '</div>';
             }
             return $message;
         }
         //We now need to validate that the password entered is correct
-        $password = Password::findOrFail($input["gsi"]);
-        if ($password->password != $input["password"])
+        $password = Password::where('gsi', '=', $input["gsi"])->first();
+        if (empty($password) || $password->password != $input["password"])
         {
             //Add an audit log for this failure
             Audit::log("Failed check in attempt with bad password: " . $input["password"]);
@@ -65,7 +64,7 @@ class LabAssistantController extends Controller {
             $message = "";
             foreach($validator->errors()->all() as $error)
             {
-                $message += '<div class="alert alert-danger alert-dismissable">
+                $message .= '<div class="alert alert-danger alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert">×</button>
                     ' . $error . '</div>';
             }
