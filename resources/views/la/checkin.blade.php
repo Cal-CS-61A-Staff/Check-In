@@ -3,46 +3,75 @@
 <div id="step1" style="margin-top: 30px;">
     <div class="row">
         <div class="col-lg-12">
-            <h3><span class="label label-info">Step 1:</span> Where are you? <small>(Room #)</small></h3>
+            <h3><span class="label label-info">Step 1:</span> Where are you? <small>(Lab, Office Hours etc...)</small></h3>
             <hr />
-            <input id="inputLocation" type="text" placeholder="" class="form-control" />
+            <select id="inputLocation" class="form-control" name="inputLocation">
+                <option value="0">Lab</option>
+                <option value="1">Office Hours</option>
+                <option value="2">Guerilla Section</option>
+                <option value="2">Homework Party</option>
+            </select>
         </div>
     </div>
     <div class="row" style="margin-top: 20px;">
         <div class="col-lg-12">
-            <button id="btnToStep2" class="btn btn-primary">Next <i class="fa fa-arrow-right fa-fw"></i></button>
+            <button id="btnToStep2" data-nid="2" class="btn btn-primary btnNextStep">Next <i class="fa fa-arrow-right fa-fw"></i></button>
         </div>
     </div>
 </div>
 <div id="step2" style="display: none;">
     <div class="row" style="margin-top: 20px;">
         <div class="col-lg-12">
-            <h3><span class="label label-info">Step 2:</span> What is the unique secret word? <small>(Ask your GSI)</small></h3>
+            <h3><span class="label label-info">Step 2:</span> What GSI (TA) are you working under today?</h3>
             <hr />
-            <input id="inputPassword" class="form-control" type="password" />
+            <select class="form-control" name="inputGSI" id="inputGSI">
+                <option value="1">Colin Schoen</option>
+                <option value="2">Albert Wu</option>
+                <option value="3">Jessica Gu</option>
+            </select>
         </div>
     </div>
     <div class="row" style="margin-top: 20px;">
         <div class="col-lg-12">
-            <button id="btnToStep3" class="btn btn-primary">Next <i class="fa fa-arrow-right fa-fw"></i></button>
+            <button disabled="disabled" id="btnBackToStep1" data-pid="1" class="btn btn-default btnPrevStep">Back <i class="fa fa-arrow-left fa-fw"></i></button>
+            <button disabled="disabled" id="btnToStep3" data-nid="3" class="btn btn-primary btnNextStep">Next <i class="fa fa-arrow-right fa-fw"></i></button>
         </div>
     </div>
 </div>
 <div id="step3" style="display: none;">
     <div class="row" style="margin-top: 20px;">
         <div class="col-lg-12">
-            <h3><span class="label label-info">Step 3:</span> What is your Student ID? <small>(Check your CAL ID)</small></h3>
+            <h3><span class="label label-info">Step 3:</span> Is this a makeup check in? <small>(Is this check in to make up a skipped session?)</small></h3>
             <hr />
-            <input id="inputSID" class="form-control" type="text" />
+            <select class="form-control" name="inputMakeup" id="inputMakeup">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
         </div>
     </div>
     <div class="row" style="margin-top: 20px;">
         <div class="col-lg-12">
-            <button id="btnToStep4" class="btn btn-success">Complete Check In <i class="fa fa-check fa-fw"></i></button>
+            <button disabled="disabled" id="btnBackToStep2" data-pid="2" class="btn btn-default btnPrevStep">Back <i class="fa fa-arrow-left fa-fw"></i></button>
+            <button disabled="disabled" id="btnToStep4" data-nid="4" class="btn btn-primary btnNextStep">Next <i class="fa fa-arrow-right fa-fw"></i></button>
         </div>
     </div>
 </div>
 <div id="step4" style="display: none;">
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-lg-12">
+            <h3><span class="label label-info">Step 4:</span> What is the unique secret word? <small>(Have your GSI enter this.)</small></h3>
+            <hr />
+            <input id="inputPassword" class="form-control" type="password" />
+        </div>
+    </div>
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-lg-12">
+            <button disabled="disabled" id="btnBackToStep3" data-pid="3" class="btn btn-default btnPrevStep">Back <i class="fa fa-arrow-left fa-fw"></i></button>
+            <button disabled="disabled" id="btnToStep5" data-nid="5" class="btn btn-success btnNextStep">Complete Check In <i class="fa fa-check-circle-o fa-fw"></i></button>
+        </div>
+    </div>
+</div>
+<div id="step5" style="display: none;">
     <div class="row" style="margin-top: 20px;">
         <h3>Lab assistant check in complete.</h3>
         <hr />
@@ -54,36 +83,38 @@
        strings: ["Ex: 411 Soda Hall", "Ex: Garbarini Lounge", "Ex: HP Auditorium"],
        typeSpeed: 0
    })
-   $('#btnToStep2').on('click', function() {
-       $('.boxLoading').fadeIn();
-       $('#step1').addClass('animated fadeOutLeft').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+   $('.btnNextStep').on('click', function() {
+        $(this).prop("disabled", true);
+        $(this).siblings("button").prop("disabled", true);
+        var nid = parseInt($(this).attr("data-nid"));
+        var cid = nid - 1;
+        var currentStep = $('#step' + cid);
+        var nextStep = $('#step' + nid);
+        $('.boxLoading').fadeIn();
+        currentStep.addClass('animated fadeOutUp').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
             $('.boxLoading').fadeOut();
-            $('#step1').hide().removeClass('animated fadeOutLeft');
-            $('#step2').show().addClass('animated fadeInRight').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', $(this).removeClass('animated fadeInRight'));
-       });
+            currentStep.hide().removeClass('animated fadeOutUp');
+            nextStep.show().addClass('animated fadeInUp').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+               $(this).removeClass('animated fadeInUp');
+               $(this).find("button").prop("disabled", false);
+            });
+        });
    });
-   $('#btnToStep3').on('click', function() {
-       $('.boxLoading').fadeIn();
-       $('#step2').addClass('animated fadeOutLeft').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-           $('.boxLoading').fadeOut();
-           $('#step2').hide().removeClass('animated fadeOutLeft');
-           $('#step3').show().addClass('animated fadeInRight').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', $(this).removeClass('animated fadeInRight'));
-       });
-   });
-   $('#btnToStep4').on('click', function() {
-       $('.boxLoading').fadeIn();
-       $('#step3').addClass('animated fadeOutLeft').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-           $('.boxLoading').fadeOut();
-           $('#step3').hide().removeClass('animated fadeOutLeft');
-           $('#step4').show().addClass('animated slideInUp').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', $(this).removeClass('animated slideInUp'));
-       });
-   });
-   $('#btnToStep1').on('click', function() {
-       $('.boxLoading').fadeIn();
-       $('#step4').addClass('animated fadeOutLeft').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-           $('.boxLoading').fadeOut();
-           $('#step4').hide().removeClass('animated fadeOutLeft');
-           $('#step1').show().addClass('animated fadeInRight').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', $(this).removeClass('animated fadeInRight'));
+   $('.btnPrevStep').on('click', function() {
+        $(this).prop("disabled", true);
+        $(this).siblings("button").prop("disabled", true);
+        $('.boxLoading').fadeIn();
+        var pid = parseInt($(this).attr("data-pid"));
+        var cid = pid + 1;
+        var currentStep = $('#step' + cid);
+        var prevStep = $('#step' + pid);
+        currentStep.addClass('animated fadeOutDown').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+            $('.boxLoading').fadeOut();
+            currentStep.hide().removeClass('animated fadeOutDown');
+            prevStep.show().addClass('animated fadeInDown').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+                $(this).removeClass('animated fadeInDown');
+                $(this).find("button").prop("disabled", false);
+           });
        });
    });
 @endsection
