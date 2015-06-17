@@ -84,4 +84,16 @@ class LabAssistantController extends Controller {
         Audit::log("Check In Successful");
         return 1;
     }
+
+    public function get_attendance() {
+        $uid = Auth::user()->id;
+        $checkins = Checkin::where("uid", "=", $uid)->with("ta")->with("type")->orderBy("date", "DESC")->get();
+        //Create our view
+        return view("la.attendance")->with(array("checkins" => $checkins));
+    }
+
+    public function get_account() {
+        $user = Auth::user();
+        return view('la.account')->with(array("user" => $user));
+    }
 }

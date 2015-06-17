@@ -7,5 +7,13 @@ class Checkin extends Model {
 
     protected $table = "checkins";
 
+    public function ta() {
+        return $this->hasOne('App\User', 'id', 'gsi');
+    }
+
+    public function type() {
+        return $this->hasOne('App\Type', 'id', 'location');
+    }
+
 }
 

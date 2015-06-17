@@ -53,7 +53,7 @@ class IndexController extends Controller {
             //Log the sign-in as an audit
             Audit::log("Logged in");
             //Great they are logged in. Let's redirect them to the check in page
-            return redirect()->route("lacheckin")->with("message", "Hello " . $user->name . ", you have successfully been logged in.");
+            return redirect()->route("lacheckin");
         }
         else
         {
