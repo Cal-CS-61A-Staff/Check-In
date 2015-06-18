@@ -17,11 +17,17 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
 <nav class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
-    <div class="container">
+    <div class="container-fluid">
         <div class="navbar-header">
-            <a href="../" class="navbar-brand">CS61A <small>Lab Assistant Manager</small></a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarCollapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span style="background-color: #999999" class="icon-bar"></span>
+                <span style="background-color: #999999" class="icon-bar"></span>
+                <span style="background-color: #999999" class="icon-bar"></span>
+            </button>
+            <a href="../" class="navbar-brand">CS61A <small>LAM 1.0</small></a>
         </div>
-        <div class="nav collapse navbar-collapse bs-navbar-collapse">
+        <div id="navbarCollapse" class="nav collapse navbar-collapse bs-navbar-collapse">
             <ul class="nav navbar-nav">
                 @if (Auth::guest())
                     <li><a href="{{ URL::route("login") }}"><i class="fa fa-sign-in fa-fw"></i> Login</a></li>
@@ -33,12 +39,12 @@
                     @if (Auth::user()->access > 0)
                         <li><a href="{{ URL::route('taconsole') }}"><i class="fa fa-bookmark fa-fw"></i> TA Console</a></li>
                     @endif
-                    <li><a href="#"><i class="fa fa-question-circle fa-fw"></i> Help</a></li>
+                    <li><a href="{{ URL::route("information") }}"><i class="fa fa-info-circle fa-fw"></i> Information</a></li>
                 @endif
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if (Auth::check())
-                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#"><i class="fa fa-user fa-fw"></i> Hello {{{ Auth::user()->name }}} <span class="caret"></span></a>
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#"><i class="fa fa-user fa-fw"></i> {{{ Auth::user()->name }}} <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="{{ URL::route('laaccount') }}"><i class="fa fa-edit fa-fw"></i> Edit Account</a></li>
                         <li class="divider"></li>

@@ -17,6 +17,7 @@
     Route::get('login', ["as" => "login", "uses" => "IndexController@get_login", "middleware" => "guest"]);
     Route::get('logout', ["as" => "logout", "uses" => "IndexController@get_logout", "middleware" => "auth"]);
     Route::get('registration', ["as" => "registration", "uses" => "IndexController@get_registration", "middleware" => "guest"]);
+    Route:get('information', ["as" => "information", "uses" => "IndexController@get_information"]);
     //POST
     Route::post('login', ["as" => "dologin", "uses" => "IndexController@post_login", "middleware" => "guest"]);
     Route::post('registration', ["as" => "doregistration", "uses" => "IndexController@post_registration", "middleware" => "guest"]);

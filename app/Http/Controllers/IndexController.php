@@ -131,5 +131,8 @@ class IndexController extends Controller {
         return redirect()->route("lacheckin")->with("message", "Thanks " . $user->name . ", your account was successfully created. You can now check in to your lab sections using your credentials.");
     }
 
+    public function get_information() {
+        return view("information");
+    }
 
 }
