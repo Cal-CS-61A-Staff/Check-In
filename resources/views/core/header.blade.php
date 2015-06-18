@@ -9,28 +9,57 @@
     <link media="all" type="text/css" rel="stylesheet" href="/css/theme.css">
     <link media="all" type="text/css" rel="stylesheet" href="/css/custom.css">
     <link media="all" type="text/css" rel="stylesheet" href="/css/animate.css">
+    <link media="all" type="text/css" rel="stylesheet" href="/packages/pickadate/themes/classic.css">
+    <link media="all" type="text/css" rel="stylesheet" href="/packages/pickadate/themes/classic.date.css">
+    <link media="all" type="text/css" rel="stylesheet" href="/packages/pickadate/themes/classic.time.css">
+    <link media="all" type="text/css" rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css">
     <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
-<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
-    <div class="container">
+<nav class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+    <div style="margin-top: 5px;" class="container-fluid">
         <div class="navbar-header">
-            <a href="../" class="navbar-brand">CS61A <small>Lab Assistant Manager</small></a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarCollapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span style="background-color: #999999" class="icon-bar"></span>
+                <span style="background-color: #999999" class="icon-bar"></span>
+                <span style="background-color: #999999" class="icon-bar"></span>
+            </button>
+            <a href="../" class="navbar-brand">CS61A <small>LAM 1.0</small></a>
         </div>
-        <nav class="collapse navbar-collapse bs-navbar-collapse">
+        <div id="navbarCollapse" class="nav collapse navbar-collapse bs-navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#"><i class="fa fa-sign-in fa-fw"></i> Login</a></li>
-                <li><a href="#"><i class="fa fa-user-plus fa-fw"></i> Registration</a></li>
-                <li><a href="#"><i class="fa fa-bookmark fa-fw"></i> TA Console</a></li>
-                <li><a href="#"><i class="fa fa-question-circle fa-fw"></i> Help</a></li>
+                @if (Auth::guest())
+                    <li><a href="{{ URL::route("login") }}"><i class="fa fa-sign-in fa-fw"></i> Login</a></li>
+                    <li><a href="{{ URL::route("registration") }}"><i class="fa fa-user-plus fa-fw"></i> Register</a></li>
+                @endif
+                @if (Auth::check())
+                    <li><a href="{{ URL::route("lacheckin") }}"><i class="fa fa-check-circle-o fa-fw"></i> Check In</a></li>
+                    <li><a href="{{ URL::route('laattendance') }}"><i class="fa fa-list-ol fa-fw"></i> Attendance</a></li>
+                    @if (Auth::user()->access > 0)
+                        <li><a href="{{ URL::route('taconsole') }}"><i class="fa fa-bookmark fa-fw"></i> TA Console</a></li>
+                    @endif
+                    <li><a href="{{ URL::route("information") }}"><i class="fa fa-info-circle fa-fw"></i> Information</a></li>
+                @endif
             </ul>
-        </nav>
+            <ul class="nav navbar-nav navbar-right">
+                @if (Auth::check())
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#"><i class="fa fa-user fa-fw"></i> {{{ Auth::user()->name }}} <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{{ URL::route('laaccount') }}"><i class="fa fa-edit fa-fw"></i> Edit Account</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{{ URL::route("logout") }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+                    </ul>
+                </li>
+                @endif
+            </ul>
+        </div>
     </div>
-</header>
+</nav>
 <header class="marquee">
     <div class="row">
         <div class="col-lg-12" style="text-align: center;">
-            <h1>CS61A <small>Lab Assistant Check In</small></h1>
+            <h1>CS61A <small>Lab Assistant Manager</small></h1>
         </div>
     </div>
     <div class="row">
@@ -40,3 +69,13 @@
     </div>
 </header>
 <div class="container">
+    @if (Session::has("message"))
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="alert alert-warning alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    {{{ Session::get("message") }}}
+                </div>
+            </div>
+        </div>
+    @endif

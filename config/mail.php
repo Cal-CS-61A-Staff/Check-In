@@ -54,7 +54,7 @@ return [
 	|
 	*/
 
-	'from' => ['address' => null, 'name' => null],
+	'from' => ['address' => "cs61a@checkin.colinschoen.me", 'name' => "CS61A Lab Assistant Manager"],
 
 	/*
 	|--------------------------------------------------------------------------
