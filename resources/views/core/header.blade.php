@@ -12,6 +12,7 @@
     <link media="all" type="text/css" rel="stylesheet" href="/packages/pickadate/themes/classic.css">
     <link media="all" type="text/css" rel="stylesheet" href="/packages/pickadate/themes/classic.date.css">
     <link media="all" type="text/css" rel="stylesheet" href="/packages/pickadate/themes/classic.time.css">
+    <link media="all" type="text/css" rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css">
     <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
@@ -30,7 +31,7 @@
                     <li><a href="{{ URL::route("lacheckin") }}"><i class="fa fa-check-circle-o fa-fw"></i> Check In</a></li>
                     <li><a href="{{ URL::route('laattendance') }}"><i class="fa fa-list-ol fa-fw"></i> Attendance</a></li>
                     @if (Auth::user()->access > 0)
-                        <li><a href="#"><i class="fa fa-bookmark fa-fw"></i> TA Console</a></li>
+                        <li><a href="{{ URL::route('taconsole') }}"><i class="fa fa-bookmark fa-fw"></i> TA Console</a></li>
                     @endif
                     <li><a href="#"><i class="fa fa-question-circle fa-fw"></i> Help</a></li>
                 @endif

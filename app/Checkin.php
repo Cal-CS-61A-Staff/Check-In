@@ -15,5 +15,9 @@ class Checkin extends Model {
         return $this->hasOne('App\Type', 'id', 'location');
     }
 
+    public function user() {
+        return $this->hasOne('App\User', 'id', 'uid');
+    }
+
 }
 
