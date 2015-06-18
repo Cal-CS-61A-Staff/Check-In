@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use Validator, Auth, Request, Hash;
+use Validator, Auth, Request, Hash, Mail;
 use App\Checkin;
 use App\Password;
 use App\Audit;
@@ -86,6 +86,12 @@ class LabAssistantController extends Controller {
         $checkin->save();
         //Make an audit log entry for this checkin
         Audit::log("Check In Successful");
+        //Send an email notification
+        $data = ['name' => Auth::user()->name, 'date' => $input["date"], 'time' => $input["time"], 'email' => Auth::user()->email];
+        Mail::send('emails.checkin', $data, function($message) use ($data)
+        {
+            $message->to($data["email"], $data["name"])->subject('CS61A - Lab Assistant Check In');
+        });
         return 1;
     }
 
