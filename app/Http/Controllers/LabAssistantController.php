@@ -27,19 +27,19 @@ class LabAssistantController extends Controller {
             "makeup" => $input["makeup"],
             "password" => $input["password"],
         ], [
-            "location" => "required|in:0,1,2,3",
+            "location" => "required|exists:types,id",
             "date" => "required",
             "time" => "required",
-            //Todo add requirement for GSI field to match DB gsi list
-            "gsi" => "required",
+            "gsi" => "required|exists:passwords,gsi",
             "makeup" => "required|in:0,1",
             "password" => "required",
         ], [
             "location.required" => "Please go back and choose your section type. (Lab, office hours etc...).",
-            "location.in" => "That doesn't appear to be a valid event type (Lab, office hours etc...).",
+            "location.exists" => "That doesn't appear to be a valid event type (Lab, office hours etc...).",
             "date.required" => "Please choose a date for your check in.",
             "time.required" => "Please go back and choose the start time.",
             "gsi.required" => "Please go back and choose the GSI that is leading your section today",
+            "gsi.exists" => "That does not appear to be a valid GSI selection",
             "makeup.required" => "Please go back and choose if this is a makeup check in.",
             "makeup.in" => "That doesn't appear to be a valid choice for if this is a makeup check in.",
             "password.required" => "Please have your GSI enter the daily, unique password.",
