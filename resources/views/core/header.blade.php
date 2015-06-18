@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
 <nav class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
-    <div class="container-fluid">
+    <div style="margin-top: 5px;" class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarCollapse" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
