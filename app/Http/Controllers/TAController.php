@@ -122,13 +122,13 @@ class TAController extends Controller {
         $checkins = Checkin::with("ta")->with("type")->with("user")->orderBy("created_at", "DESC")->get();
         $file = storage_path() . "/app/checkins.csv";
         $handle = fopen($file, 'w+');
-        fputcsv($handle, array('SID', 'Name', 'Type', 'Date', 'Start Time', 'GSI', 'Makeup', 'Logged At'));
+        fputcsv($handle, array('Name', 'Type', 'Date', 'Start Time', 'GSI', 'Makeup', 'Logged At'));
         foreach($checkins as $checkin) {
             if ($checkin->makeup == 1)
                 $makeup = "Yes";
             else
                 $makeup = "No";
-            fputcsv($handle, array($checkin->user->sid, $checkin->user->name, $checkin->type->name, $checkin->date, $checkin->time, $checkin->ta->name, $makeup, $checkin->created_at));
+            fputcsv($handle, array($checkin->user->name, $checkin->type->name, $checkin->date, $checkin->time, $checkin->ta->name, $makeup, $checkin->created_at));
         }
         fclose($handle);
         $headers = array(
@@ -141,13 +141,13 @@ class TAController extends Controller {
         $users = User::with("checkins")->orderBy("name", "ASC")->get();
         $file = storage_path() . "/app/roster.csv";
         $handle = fopen($file, 'w+');
-        fputcsv($handle, array('SID', 'Name', 'Email', 'GSI', 'Total # of Check Ins', 'Created At'));
+        fputcsv($handle, array('Name', 'Email', 'GSI', 'Total # of Check Ins', 'Created At'));
         foreach($users as $user) {
             if ($user->access > 0)
                 $gsi = "YES";
             else
                 $gsi = "No";
-            fputcsv($handle, array($user->sid, $user->name, $user->email, $gsi, count($user->checkins), $user->created_at));
+            fputcsv($handle, array($user->name, $user->email, $gsi, count($user->checkins), $user->created_at));
         }
         fclose($handle);
         $headers = array(

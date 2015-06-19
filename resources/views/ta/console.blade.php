@@ -29,14 +29,13 @@
                     <div class="table-responsive">
                         <table id="userTable" class="table table-hover table-striped">
                             <thead>
-                                <tr><th>SID</th><th>Name</th><th>Email</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
+                                <tr><th>Name</th><th>Email</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
                             </thead>
                             <tfoot>
-                                <tr><th>SID</th><th>Name</th><th>Email</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
+                                <tr><th>Name</th><th>Email</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
                             </tfoot>
                             @foreach ($users as $user)
                                 <tr>
-                                    <td>{{{ $user->sid }}}</td>
                                     <td>{{{ $user->name }}}</td>
                                     <td>{{{ $user->email }}}</td>
                                     <td>{{{ count($user->checkins) }}}</td>
@@ -57,12 +56,11 @@
                 <div class="panel-body">
                     <div class="table-responsive">
                         <table id="consoleCheckInTable" class="table table-hover table-striped">
-                            <thead><tr><th>SID</th><th>Name</th><th>Type</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></thead>
-                            <tfoot><tr><th>SID</th><th>Name</th><th>Type</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></tfoot>
+                            <thead><tr><th>Name</th><th>Type</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></thead>
+                            <tfoot><tr><th>Name</th><th>Type</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></tfoot>
                             <tbody>
                                 @foreach ($checkins as $checkin)
                                     <tr>
-                                        <td>{{{ $checkin->user->sid }}}</td>
                                         <td>{{{ $checkin->user->name }}}</td>
                                         <td>{{{ $checkin->type->name }}}</td>
                                         <td>{{{ $checkin->date }}}</td>

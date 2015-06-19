@@ -22,11 +22,6 @@
                 <input class="form-control" type="text" id="inputName" name="inputName" value="{{{ Input::old('inputName') }}}" placeholder="Ex: Colin Schoen" required />
             </div>
             <div class="form-group">
-                <label for="inputSID">Student ID (SID): </label>
-                <div class="help-block with-errors"></div>
-                <input class="form-control" type="number" id="inputSID" name="inputSID" value="{{{ Input::old('inputSID') }}}" placeholder="Ex: 12345678 (Check your Cal 1 Card)" required />
-            </div>
-            <div class="form-group">
                 <label for="inputEmail">Email (@berkeley.edu): </label>
                 <div class="help-block with-errors"></div>
                 <input class="form-control" type="email" id="inputEmail" name="inputEmail" value="{{{ Input::old('inputEmail') }}}" placeholder="Ex: cschoen@berkeley.edu" required />

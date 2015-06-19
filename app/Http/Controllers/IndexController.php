@@ -87,18 +87,14 @@ class IndexController extends Controller {
         //Start our validator
         $validator = Validator::make([
             "name" => $input["inputName"],
-            "sid" => $input["inputSID"],
             "email" => $input["inputEmail"],
             "password" => $input["inputPassword"],
         ], [
             "name" => "required",
-            "sid" => "required|integer",
             "email" => "required|email|unique:users,email",
             "password" => "required|min:8",
         ], [
             "name.required" => "Please enter your full first and last name.",
-            "sid.required" => "Please enter your numeric student ID. You can find it on your Cal One Card.",
-            "sid.integer" => "Your student ID should be numeric.",
             "email.required" => "Please enter your email.",
             "email.email" => "That does not appear to be a valid email address.",
             "password.required" => "You must enter a password.",
@@ -113,7 +109,6 @@ class IndexController extends Controller {
         //Alright all of the validation is complete. Now to create our new user
         $user = new User;
         $user->name = $input["inputName"];
-        $user->sid = $input["inputSID"];
         $user->email = $input["inputEmail"];
         //Hash our password
         $hashedpasswd = Hash::make($input["inputPassword"]);
