@@ -12,6 +12,7 @@
             <li><a href="#laCheckInsPanel" data-toggle="pill"><i class="fa fa-list-ol fa-fw"></i> Check Ins</a></li>
             <li><a href="#secretWordPanel" data-toggle="pill"><i class="fa fa-key fa-fw"></i> Secret Word</a></li>
             <li><a href="#exportDataPanel" data-toggle="pill"><i class="fa fa-download fa-fw"></i> Export Data</a></li>
+            <li><a href="#eventTypesPanel" data-toggle="pill"><i class="fa fa-tags fa-fw"></i> Event Types</a></li>
         </ul>
     </div>
     <div class="tab-content">
@@ -112,6 +113,46 @@
                 </div>
             </div>
         </div>
+        <div id="eventTypesPanel" class="col-lg-10 tab-pane fade">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h5><i class="fa fa-tags fa-fw"></i> Event Types</h5>
+                </div>
+                <div class="panel-body">
+                    <button id="newEventTypeBtn" class="btn btn-info"><i class="fa fa-plus fa-fw"></i> New Event Type</button>
+                    <div id="newEventTypeDiv" style="display: none;">
+                        <form class="form" method="POST" action="#">
+                            <div class="form-group">
+                                <label for="inputEventTypeName">Type Name: </label>
+                                <input type="text" class="form-control" name="inputName" id="inputEventTypeName" placeholder="Ex: Office Hours" />
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-success" value="Create Event Type" />
+                            </div>
+                        </form>
+                    </div>
+                    <hr />
+                    <label for="existingEventTypeSelect">Modify Existing Event Types: </label>
+                    <select id="existingEventTypeSelect" class="form-control">
+                        <option value="-1">Select an Event Type</option>
+                        @foreach ($types as $type)
+                            <option value="{{{ $type->id }}}">{{{ $type->name }}}</option>
+                        @endforeach
+                    </select>
+                    <div style="display: none;" id="modifyEventTypeDiv">
+                        <form class="form" method="POST" action="#">
+                            <div class="form-group">
+                                <label for="inputExistingEventTypeName">Type Name:</label>
+                                <input type="text" class="form-control" name="inputName" id="inputExistingEventTypeName" placeholder="Ex: Office Hours" />
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-success" value="Update Event Type" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div id="checkInUserModal" class="modal fade">
@@ -166,6 +207,19 @@
 @section('js')
     $('#inputDate').pickadate();
     $('#inputTime').pickatime();
+
+    $('#newEventTypeBtn').on('click', function() {
+        $('#newEventTypeDiv').slideToggle();
+    });
+
+    $('#existingEventTypeSelect').on('change', function () {
+        if ($(this).val() == -1)
+            $('#modifyEventTypeDiv').slideUp();
+        else {
+            var name = $(this).find('option:selected').text();
+            $('#modifyEventTypeDiv')..slideDown();
+        }
+    });
     $('.checkInUserBtn').on('click', function() {
         $('#checkInUserName').html($(this).attr("data-name"));
         $('#inputUID').val($(this).attr("data-uid"));
