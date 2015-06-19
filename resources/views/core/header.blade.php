@@ -39,8 +39,8 @@
                     @if (Auth::user()->access > 0)
                         <li><a href="{{ URL::route('taconsole') }}"><i class="fa fa-bookmark fa-fw"></i> TA Console</a></li>
                     @endif
-                    <li><a href="{{ URL::route("information") }}"><i class="fa fa-info-circle fa-fw"></i> Information</a></li>
                 @endif
+                <li><a href="{{ URL::route("information") }}"><i class="fa fa-info-circle fa-fw"></i> Information</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if (Auth::check())
