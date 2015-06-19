@@ -18,10 +18,6 @@
         <form class="form" method="POST" action="{{{ route("laaccount") }}}">
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             <div class="form-group">
-                <label for="inputSID">Student ID (SID):</label>
-                <input type="number" class="form-control" id="inputSID" name="inputSID" @if (old("inputSID") != "") value="{{{ old("inputSID") }}}" @else value="{{{ $user->sid }}}" @endif"/>
-            </div>
-            <div class="form-group">
                 <label for="inputName">Name: </label>
                 <input type="text" class="form-control" id="inputName" name="inputName" @if (old("inputName") != "") value="{{{ old("inputName") }}}" @else value="{{{ $user->name }}}" @endif"/>
             </div>
