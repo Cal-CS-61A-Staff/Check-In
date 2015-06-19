@@ -213,7 +213,7 @@
     function( settings, data, dataIndex ) {
     var min = parseInt( $('#min').val(), 10 );
     var max = parseInt( $('#max').val(), 10 );
-    var checkins = parseFloat( data[2] ) || 0; // use data for the age column
+    var checkins = parseFloat( data[2] ) || 0;
 
     if ( ( isNaN( min ) && isNaN( max ) ) ||
     ( isNaN( min ) && checkins <= max ) ||
