@@ -117,18 +117,14 @@ class LabAssistantController extends Controller {
         if ($input['inputEmail'] != $user->email)
         {
             $validator = Validator::make([
-                "sid" => $input["inputSID"],
                 "name" => $input["inputName"],
                 "email" => $input["inputEmail"],
                 "password" => $input["inputPassword"],
             ], [
-                "sid" => "required|integer",
                 "name" => "required",
                 "email" => "required|email|unique:users,email",
                 "password" => "min:8",
             ], [
-                "sid.required" => "Please enter your student ID.",
-                "sid.integer" => "Your student ID should be numeric.",
                 "name.required" => "Please enter your name.",
                 "email.required" => "Please enter your email address.",
                 "email.email" => "That does not appear to be a valid email address.",
@@ -138,18 +134,14 @@ class LabAssistantController extends Controller {
         }
         else {
             $validator = Validator::make([
-                "sid" => $input["inputSID"],
                 "name" => $input["inputName"],
                 "email" => $input["inputEmail"],
                 "password" => $input["inputPassword"],
             ], [
-                "sid" => "required|integer",
                 "name" => "required",
                 "email" => "required|email",
                 "password" => "min:8",
             ], [
-                "sid.required" => "Please enter your student ID.",
-                "sid.integer" => "Your student ID should be numeric.",
                 "name.required" => "Please enter your name.",
                 "email.required" => "Please enter your email address.",
                 "email.email" => "That does not appear to be a valid email address.",
@@ -164,7 +156,6 @@ class LabAssistantController extends Controller {
             return redirect()->route("laaccount")->withInput(Request::except("inputPassword"))->withErrors($validator->errors());
         }
         //Alright validation is complete let's make some changes folks
-        $user->sid = $input["inputSID"];
         $user->name = $input["inputName"];
         $user->email = $input["inputEmail"];
         if ($input["inputPassword"] != "") {
