@@ -80,7 +80,7 @@
         <div id="secretWordPanel" class="col-lg-10 tab-pane fade">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h5><i class="fa fa-lock fa-fw"></i> Secret Word</h5>
+                    <h5><i class="fa fa-key fa-fw"></i> Secret Word</h5>
                 </div>
                 <div class="panel-body">
                     <strong>Current Secret Word: <span class="label label-warning"><strong>{{{ $password }}}</strong></span></strong>
@@ -121,7 +121,8 @@
                 <div class="panel-body">
                     <button id="newEventTypeBtn" class="btn btn-info"><i class="fa fa-plus fa-fw"></i> New Event Type</button>
                     <div id="newEventTypeDiv" style="display: none;">
-                        <form class="form" method="POST" action="#">
+                        <form class="form" method="POST" action="{{ route("tanewtype") }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                             <div class="form-group">
                                 <label for="inputEventTypeName">Type Name: </label>
                                 <input type="text" class="form-control" name="inputName" id="inputEventTypeName" placeholder="Ex: Office Hours" />
@@ -140,7 +141,9 @@
                         @endforeach
                     </select>
                     <div style="display: none;" id="modifyEventTypeDiv">
-                        <form class="form" method="POST" action="#">
+                        <form class="form" method="POST" action="{{ route("taupdatetype") }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                            <input id="modifyEventTypeTID" type="hidden" name="inputTID" value="" />
                             <div class="form-group">
                                 <label for="inputExistingEventTypeName">Type Name:</label>
                                 <input type="text" class="form-control" name="inputName" id="inputExistingEventTypeName" placeholder="Ex: Office Hours" />
@@ -217,7 +220,8 @@
             $('#modifyEventTypeDiv').slideUp();
         else {
             var name = $(this).find('option:selected').text();
-            $('#modifyEventTypeDiv')..slideDown();
+            $('#modifyEventTypeTID').val($(this).val());
+            $('#modifyEventTypeDiv').slideDown();
         }
     });
     $('.checkInUserBtn').on('click', function() {

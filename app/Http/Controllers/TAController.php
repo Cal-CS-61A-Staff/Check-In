@@ -118,6 +118,40 @@ class TAController extends Controller {
         return redirect()->route("taconsole")->with("message", $user->name . " successfully demoted from GSI to Lab Assistant.");
     }
 
+    public function post_update_type() {
+        //Get our TID
+        $tid = Request::input("inputTID");
+        //Get our Type name
+        $name = Request::input("inputName");
+        //Ensure that our TID is valid
+        $type = Type::findOrFail($tid);
+        //Ensure that the member set a name for the new event type and that it does not match another type
+        $otherType = Type::where("id", "!=", $tid)->where("name", "=", $name)->count();
+        if ($otherType > 0 || $name == "")
+            return redirect()->route("taconsole")->with("message", "Either your type was empty or you entered an existing type.");
+        //Alright all good let's update the model
+        $type->name = $name;
+        //And finally the DB
+        $type->save();
+        //Let the user know things are well :)
+        return redirect()->route("taconsole")->with("message", "The type was updated to " . $name);
+    }
+
+    public function post_new_type() {
+        //Get our name
+        $name = Request::input("inputName");
+        $otherTypes = Type::where("name", "=", $name)->count();
+        if ($otherTypes > 0 ||$name == "")
+            return redirect()->route("taconsole")->with("message", "Either your new event type is empty or an existing event type exists with the same name.");
+        //Create our model
+        $type = new Type;
+        $type->name = $name;
+        //Push the model to the DB
+        $type->save();
+        //Alert the user
+        return redirect()->route("taconsole")->with("message", "Your new event type was created successfully.");
+    }
+
     public function get_download_checkins() {
         $checkins = Checkin::with("ta")->with("type")->with("user")->orderBy("created_at", "DESC")->get();
         $file = storage_path() . "/app/checkins.csv";
