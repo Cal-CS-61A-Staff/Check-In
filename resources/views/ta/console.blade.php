@@ -137,7 +137,7 @@
                     <select id="existingEventTypeSelect" class="form-control">
                         <option value="-1">Select an Event Type</option>
                         @foreach ($types as $type)
-                            <option value="{{{ $type->id }}}">{{{ $type->name }}}</option>
+                            <option data-hidden="{{{ $type->hidden }}}" data-name="{{{ $type->name }}}" value="{{{ $type->id }}}">{{{ $type->name }}}</option>
                         @endforeach
                     </select>
                     <div style="display: none;" id="modifyEventTypeDiv">
@@ -147,6 +147,10 @@
                             <div class="form-group">
                                 <label for="inputExistingEventTypeName">Type Name:</label>
                                 <input type="text" class="form-control" name="inputName" id="inputExistingEventTypeName" placeholder="Ex: Office Hours" />
+                            </div>
+                            <div class="form-group">
+                                <label for="inputExistingEventTypeHidden">Hidden <small>(If hidden an event type is not selectable by Lab Assistants when checking in)</small>: </label>
+                                <input class="form-control" id="modifyEventTypeHidden" type="checkbox" value="1" name="inputHidden" />
                             </div>
                             <div class="form-group">
                                 <input type="submit" class="btn btn-success" value="Update Event Type" />
@@ -219,8 +223,14 @@
         if ($(this).val() == -1)
             $('#modifyEventTypeDiv').slideUp();
         else {
-            var name = $(this).find('option:selected').text();
+            var opt = $(this).find('option:selected');
+            var name = opt.text();
             $('#modifyEventTypeTID').val($(this).val());
+            if (opt.attr('data-hidden') == 1)
+                $('#modifyEventTypeHidden').prop("checked", true);
+            else
+                $('#modifyEventTypeHidden').prop("checked", false);
+            $('#inputExistingEventTypeName').val(opt.attr("data-name"));
             $('#modifyEventTypeDiv').slideDown();
         }
     });

@@ -123,14 +123,19 @@ class TAController extends Controller {
         $tid = Request::input("inputTID");
         //Get our Type name
         $name = Request::input("inputName");
+        //Hidden
+        $hidden = Request::input("inputHidden");
+        if ($hidden !=  1)
+            $hidden = 0;
         //Ensure that our TID is valid
         $type = Type::findOrFail($tid);
         //Ensure that the member set a name for the new event type and that it does not match another type
-        $otherType = Type::where("id", "!=", $tid)->where("name", "=", $name)->count();
-        if ($otherType > 0 || $name == "")
+        $otherType = Type::where("name", "=", $name)->count();
+        if ($otherType > 1 || $name == "")
             return redirect()->route("taconsole")->with("message", "Either your type was empty or you entered an existing type.");
         //Alright all good let's update the model
         $type->name = $name;
+        $type->hidden = $hidden;
         //And finally the DB
         $type->save();
         //Let the user know things are well :)
@@ -140,12 +145,16 @@ class TAController extends Controller {
     public function post_new_type() {
         //Get our name
         $name = Request::input("inputName");
+        $hidden = Request::input("inputHidden");
+        if ($hidden != 1)
+            $hidden = 0;
         $otherTypes = Type::where("name", "=", $name)->count();
         if ($otherTypes > 0 ||$name == "")
             return redirect()->route("taconsole")->with("message", "Either your new event type is empty or an existing event type exists with the same name.");
         //Create our model
         $type = new Type;
         $type->name = $name;
+        $type->hidden = $hidden;
         //Push the model to the DB
         $type->save();
         //Alert the user
