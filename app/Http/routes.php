@@ -37,6 +37,7 @@
     Route::get('ta/download/checkins', ["as" => "tadownloadcheckins", "uses" => "TAController@get_download_checkins", "middleware" => "auth.tutor"]);
     Route::get('ta/download/roster', ["as" => "tadownloadroster", "uses" => "TAController@get_download_roster", "middleware" => "auth.tutor"]);
     Route::get('ta/user/promote/{id}', ["as" => "tauserpromote", "uses" => "TAController@get_user_promote", "middleware" => "auth.ta"]);
+    Route::get('ta/user/promote/tutor/{id}', ["as" => "tauserpromotetutor", "uses" => "TAController@get_user_promote_tutor", "middleware" => "auth.ta"]);
     Route::get('ta/user/demote/{id}', ["as" => "tauserdemote", "uses" => "TAController@get_user_demote", "middleware" => "auth.ta"]);
     //POST
     Route::post("ta/update/password", ["as" => "taupdatepassword", "uses" => "TAController@post_update_password", "middleware" => "auth.tutor"]);

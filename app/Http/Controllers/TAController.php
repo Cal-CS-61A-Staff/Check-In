@@ -84,9 +84,27 @@ class TAController extends Controller {
         return redirect()->route("taconsole")->with("message", "Manual check in for " . $user->name . " was successful.");
     }
 
+    public function get_user_promote_tutor($id) {
+        $user = User::findOrFail($id);
+        if ($user->is_gsi() || $user->is_tutor())
+            return redirect()->route("taconsole")->with("message", "This user is already a TA or Tutor");
+        //Promote the user to tutor
+        $user->access = 0.5;
+        $user->save();
+        //Create an audit log for this
+        Audit::log("Promoted from Lab Assistant to Tutor by " . Auth::user()->name);
+        //Set a default secret word for them
+        $password = new Password;
+        $password->gsi = $id;
+        $password->password = "recursion";
+        $password->save();
+        //Let them know all is ok
+        return redirect()->route("taconsole")->with("message", $user->name . " successfully promoted from Lab Assistant to Tutor.");
+    }
+
     public function get_user_promote($id) {
         $user = User::findOrFail($id);
-        if ($user->access > 0)
+        if ($user->is_gsi())
             return redirect()->route("taconsole")->with("message", "This user is already a TA.");
         //Ok promote the user
         $user->access = 1;
@@ -99,23 +117,23 @@ class TAController extends Controller {
         $password->password = "recursion";
         $password->save();
         //Let them know all is ok
-        return redirect()->route("taconsole")->with("message", $user->name . " successfully promoted from Lab Assistant to GSI.");
+        return redirect()->route("taconsole")->with("message", $user->name . " successfully promoted to GSI.");
     }
 
     public function get_user_demote($id) {
         $user = User::findOrFail($id);
         if ($user->access == 0)
-            return redirect()->route("taconsole")->with("message", "This user is not currently a TA and has only lab assistant permissions.");
+            return redirect()->route("taconsole")->with("message", "This user is not currently a TA or Tutor and has only lab assistant permissions.");
         //Ok promote the user
         $user->access = 0;
         $user->save();
         //Create an audit log for this
-        Audit::log("Demoted from GSI to Lab Assistant by " . Auth::user()->name);
+        Audit::log("Demoted to Lab Assistant by " . Auth::user()->name);
         //Delete their password
         $password = Password::where("gsi", "=", $user->id)->first();
         $password->delete();
         //Let them know all is ok
-        return redirect()->route("taconsole")->with("message", $user->name . " successfully demoted from GSI to Lab Assistant.");
+        return redirect()->route("taconsole")->with("message", $user->name . " successfully demoted to Lab Assistant.");
     }
 
     public function post_update_type() {
@@ -141,6 +159,7 @@ class TAController extends Controller {
         //Let the user know things are well :)
         return redirect()->route("taconsole")->with("message", "The type was updated to " . $name);
     }
+
 
     public function post_new_type() {
         //Get our name

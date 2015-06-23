@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-bookmark fa-fw"></i> TA Console</h3>
+        <h3><i class="fa fa-bookmark fa-fw"></i> @if (Auth::user()->is_gsi()) TA @else Tutor @endif Console</h3>
     </div>
 </div>
 <div class="row" style="margin-top: 20px;">
@@ -12,7 +12,9 @@
             <li><a href="#laCheckInsPanel" data-toggle="pill"><i class="fa fa-list-ol fa-fw"></i> Check Ins</a></li>
             <li><a href="#secretWordPanel" data-toggle="pill"><i class="fa fa-key fa-fw"></i> Secret Word</a></li>
             <li><a href="#exportDataPanel" data-toggle="pill"><i class="fa fa-download fa-fw"></i> Export Data</a></li>
+            @if (Auth::user()->is_gsi())
             <li><a href="#eventTypesPanel" data-toggle="pill"><i class="fa fa-tags fa-fw"></i> Event Types</a></li>
+            @endif
         </ul>
     </div>
     <div class="tab-content">
@@ -37,11 +39,11 @@
                             </tfoot>
                             @foreach ($users as $user)
                                 <tr>
-                                    <td>{{{ $user->name }}}</td>
+                                    <td>{{{ $user->name }}} @if ($user->is_gsi()) <strong>(GSI)</strong> @elseif ($user->is_tutor()) <strong>(Tutor)</strong> @endif</td>
                                     <td>{{{ $user->email }}}</td>
                                     <td>{{{ count($user->checkins) }}}</td>
                                     <td>{{{ $user->created_at }}}</td>
-                                    <td>@if ($user->access == 0) <a href="{{ route("tauserpromote", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make TA</button></a> @else <a href="{{ route("tauserdemote", $user->id) }}"><button class="btn btn-danger"><i class="fa fa-arrow-down fa-fw"></i> Revoke TA</button></a> @endif <button data-uid="{{{ $user->id }}}" data-name="{{{ $user->name }}}" class="btn btn-info checkInUserBtn"><i class="fa fa-plus fa-fw"></i> Check In</button></td>
+                                    <td>@if (Auth::user()->is_gsi()) <span class="userActionsSpan"><a href="#">View Actions</a></span><span id="actions" style="display: none;">@if ($user->is_tutor()) <a href="{{ route("tauserpromote", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make TA</button></a>  @endif @if ($user->access == 0) <a href="{{ route("tauserpromotetutor", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make Tutor</button></a> <a href="{{ route("tauserpromote", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make TA</button></a> @else <a href="{{ route("tauserdemote", $user->id) }}"><button class="btn btn-danger"><i class="fa fa-arrow-down fa-fw"></i> Demote</button></a> @endif @endif <button data-uid="{{{ $user->id }}}" data-name="{{{ $user->name }}}" class="btn btn-info checkInUserBtn"><i class="fa fa-plus fa-fw"></i> Check In</button></span></td>
                                 </tr>
                             @endforeach
                         </table>
@@ -113,6 +115,7 @@
                 </div>
             </div>
         </div>
+        @if (Auth::user()->is_gsi())
         <div id="eventTypesPanel" class="col-lg-10 tab-pane fade">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -160,6 +163,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 </div>
 <div id="checkInUserModal" class="modal fade">
@@ -214,6 +218,12 @@
 @section('js')
     $('#inputDate').pickadate();
     $('#inputTime').pickatime();
+
+    $('.userActionsSpan').on('click', function(e) {
+        e.preventDefault();
+        $(this).hide();
+        $(this).siblings("span").fadeIn();
+    });
 
     $('#newEventTypeBtn').on('click', function() {
         $('#newEventTypeDiv').slideToggle();
