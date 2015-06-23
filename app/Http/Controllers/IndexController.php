@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use Auth, Request, Validator, Hash;
+use Auth, Request, Validator, Hash, Mail;
 use App\User;
 use App\Audit;
 use Illuminate\Routing\Controller;
@@ -22,6 +22,45 @@ class IndexController extends Controller {
     {
         //Return our login view
         return view('login');
+    }
+
+    public function get_reset()
+    {
+        return view('reset');
+    }
+
+    public function post_reset()
+    {
+        $email = Request::input("inputEmail");
+        $user = User::where("email", "=", $email)->first();
+        if (empty($user))
+            return redirect()->route("reset")->with("message", "There is no user with that email address");
+        //Alright valid user let's generate a code for them
+        $hash = md5($email . time());
+        $user->reset = $hash;
+        $user->save();
+        $url = route("tokenauth", $hash);
+        //Send the email
+        $data = ['name' => $user->name, 'email' => $user->email, 'url' => $url];
+        Mail::send('emails.reset', $data, function($message) use ($data)
+        {
+            $message->to($data["email"], $data["name"])->subject('CS61A - LAM Password Reset');
+        });
+        return redirect()->route("login")->with("message", "A one time log in link has been sent to your email. If you have any other questions please post on Piazza.");
+    }
+
+    public function get_tokenauth($token)
+    {
+        $user = User::where("reset", "=", $token)->first();
+        if (empty($user))
+            return redirect()->route("login")->with("message", "That token is either invalid or already used.");
+        //Sign the user in
+        Auth::loginUsingId($user->id);
+        Audit::log("One time token login");
+        //Delete the reset token
+        $user->reset = "";
+        $user->save();
+        return redirect()->route("laaccount")->with("message", "Logged in sucessfully! Please update your password and information here.");
     }
 
     public function post_login()

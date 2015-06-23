@@ -16,11 +16,14 @@
     Route::get('/', ["as" => "index", "uses" => "IndexController@get_index"]);
     Route::get('login', ["as" => "login", "uses" => "IndexController@get_login", "middleware" => "guest"]);
     Route::get('logout', ["as" => "logout", "uses" => "IndexController@get_logout", "middleware" => "auth"]);
+    Route::get('reset', ["as" => "reset", "uses" => "IndexController@get_reset", "middleware" => "guest"]);
     Route::get('registration', ["as" => "registration", "uses" => "IndexController@get_registration", "middleware" => "guest"]);
-    Route:get('information', ["as" => "information", "uses" => "IndexController@get_information"]);
+    Route::get('information', ["as" => "information", "uses" => "IndexController@get_information"]);
+    Route::get('tokenauth/{token}', ["as" => "tokenauth", "uses" => "IndexController@get_tokenauth", "middleware" => "guest"]);
     //POST
     Route::post('login', ["as" => "dologin", "uses" => "IndexController@post_login", "middleware" => "guest"]);
     Route::post('registration', ["as" => "doregistration", "uses" => "IndexController@post_registration", "middleware" => "guest"]);
+    Route::post('reset', ["as" => "doreset", "uses" => "IndexController@post_reset", "middleware" => "guest"]);
 
 //LA Routes
     //GET
