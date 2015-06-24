@@ -4,8 +4,14 @@
     <div class="col-lg-12">
         <div class="alert alert-info alert-dismissable">
             <button type="button" class="close" data-dismiss="alert">×</button>
-            Don't have an account? <a href="{{{ URL::route("registration") }}}">Register now</a>.
+            Don't have an account? <a href="{{ URL::route("registration") }}">Register now</a>.
         </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <a href="{{ URL::route("reset") }}"><button class="btn btn-default"><i class="fa fa-unlock-alt fa-fw"></i> Forgot Password</button></a>
+        <hr />
     </div>
 </div>
 @if (!empty($errors))

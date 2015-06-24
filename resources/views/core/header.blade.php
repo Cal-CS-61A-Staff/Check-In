@@ -36,8 +36,11 @@
                 @if (Auth::check())
                     <li><a href="{{ URL::route("lacheckin") }}"><i class="fa fa-check-circle-o fa-fw"></i> Check In</a></li>
                     <li><a href="{{ URL::route('laattendance') }}"><i class="fa fa-list-ol fa-fw"></i> Attendance</a></li>
-                    @if (Auth::user()->access > 0)
+                    @if (Auth::user()->is_gsi())
                         <li><a href="{{ URL::route('taconsole') }}"><i class="fa fa-bookmark fa-fw"></i> TA Console</a></li>
+                    @endif
+                    @if (Auth::user()->is_tutor())
+                        <li><a href="{{ URL::route('taconsole') }}"><i class="fa fa-bookmark fa-fw"></i> Tutor Console</a></li>
                     @endif
                 @endif
                 <li><a href="{{ URL::route("information") }}"><i class="fa fa-info-circle fa-fw"></i> Information</a></li>

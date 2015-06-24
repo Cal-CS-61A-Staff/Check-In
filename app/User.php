@@ -36,5 +36,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('App\Checkin', 'uid');
     }
 
+    public function is_gsi() {
+        if ($this->access == 1)
+            return true;
+        return false;
+    }
+
+    public function is_tutor() {
+        if ($this->access == 0.5)
+            return true;
+        return false;
+    }
+
 
 }

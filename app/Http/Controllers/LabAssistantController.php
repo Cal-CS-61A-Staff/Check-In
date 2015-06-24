@@ -10,7 +10,7 @@ class LabAssistantController extends Controller {
 
     public function get_checkin() {
         //Load our types
-        $types = Type::all();
+        $types = Type::where("hidden", "=", 0)->get();
         $tas = User::where("access", ">", 0)->orderBy("name", "ASC")->get();
         return view("la.checkin")->with(["types" => $types, "tas" => $tas]);
     }

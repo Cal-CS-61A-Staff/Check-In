@@ -38,7 +38,7 @@
 <div id="step3" style="display: none;">
     <div class="row" style="margin-top: 20px;">
         <div class="col-lg-12">
-            <h3><span class="label label-info">Step 3:</span> What GSI (TA) are you working under today?</h3>
+            <h3><span class="label label-info">Step 3:</span> What GSI (TA) or Tutor are you working under today?</h3>
             <hr />
             <select class="form-control" name="inputGSI" id="inputGSI">
                 @foreach ($tas as $ta)

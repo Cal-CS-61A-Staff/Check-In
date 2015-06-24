@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-bookmark fa-fw"></i> TA Console</h3>
+        <h3><i class="fa fa-bookmark fa-fw"></i> @if (Auth::user()->is_gsi()) TA @else Tutor @endif Console</h3>
     </div>
 </div>
 <div class="row" style="margin-top: 20px;">
@@ -12,6 +12,9 @@
             <li><a href="#laCheckInsPanel" data-toggle="pill"><i class="fa fa-list-ol fa-fw"></i> Check Ins</a></li>
             <li><a href="#secretWordPanel" data-toggle="pill"><i class="fa fa-key fa-fw"></i> Secret Word</a></li>
             <li><a href="#exportDataPanel" data-toggle="pill"><i class="fa fa-download fa-fw"></i> Export Data</a></li>
+            @if (Auth::user()->is_gsi())
+            <li><a href="#eventTypesPanel" data-toggle="pill"><i class="fa fa-tags fa-fw"></i> Event Types</a></li>
+            @endif
         </ul>
     </div>
     <div class="tab-content">
@@ -36,11 +39,11 @@
                             </tfoot>
                             @foreach ($users as $user)
                                 <tr>
-                                    <td>{{{ $user->name }}}</td>
+                                    <td>{{{ $user->name }}} @if ($user->is_gsi()) <strong>(GSI)</strong> @elseif ($user->is_tutor()) <strong>(Tutor)</strong> @endif</td>
                                     <td>{{{ $user->email }}}</td>
                                     <td>{{{ count($user->checkins) }}}</td>
                                     <td>{{{ $user->created_at }}}</td>
-                                    <td>@if ($user->access == 0) <a href="{{ route("tauserpromote", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make TA</button></a> @else <a href="{{ route("tauserdemote", $user->id) }}"><button class="btn btn-danger"><i class="fa fa-arrow-down fa-fw"></i> Revoke TA</button></a> @endif <button data-uid="{{{ $user->id }}}" data-name="{{{ $user->name }}}" class="btn btn-info checkInUserBtn"><i class="fa fa-plus fa-fw"></i> Check In</button></td>
+                                    <td>@if (Auth::user()->is_gsi()) <span class="userActionsSpan"><a href="#">View Actions</a></span><span id="actions" style="display: none;">@if ($user->is_tutor()) <a href="{{ route("tauserpromote", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make TA</button></a>  @endif @if ($user->access == 0) <a href="{{ route("tauserpromotetutor", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make Tutor</button></a> <a href="{{ route("tauserpromote", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make TA</button></a> @else <a href="{{ route("tauserdemote", $user->id) }}"><button class="btn btn-danger"><i class="fa fa-arrow-down fa-fw"></i> Demote</button></a> @endif @endif <button data-uid="{{{ $user->id }}}" data-name="{{{ $user->name }}}" class="btn btn-info checkInUserBtn"><i class="fa fa-plus fa-fw"></i> Check In</button></span></td>
                                 </tr>
                             @endforeach
                         </table>
@@ -79,7 +82,7 @@
         <div id="secretWordPanel" class="col-lg-10 tab-pane fade">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h5><i class="fa fa-lock fa-fw"></i> Secret Word</h5>
+                    <h5><i class="fa fa-key fa-fw"></i> Secret Word</h5>
                 </div>
                 <div class="panel-body">
                     <strong>Current Secret Word: <span class="label label-warning"><strong>{{{ $password }}}</strong></span></strong>
@@ -112,6 +115,55 @@
                 </div>
             </div>
         </div>
+        @if (Auth::user()->is_gsi())
+        <div id="eventTypesPanel" class="col-lg-10 tab-pane fade">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h5><i class="fa fa-tags fa-fw"></i> Event Types</h5>
+                </div>
+                <div class="panel-body">
+                    <button id="newEventTypeBtn" class="btn btn-info"><i class="fa fa-plus fa-fw"></i> New Event Type</button>
+                    <div id="newEventTypeDiv" style="display: none;">
+                        <form class="form" method="POST" action="{{ route("tanewtype") }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                            <div class="form-group">
+                                <label for="inputEventTypeName">Type Name: </label>
+                                <input type="text" class="form-control" name="inputName" id="inputEventTypeName" placeholder="Ex: Office Hours" />
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-success" value="Create Event Type" />
+                            </div>
+                        </form>
+                    </div>
+                    <hr />
+                    <label for="existingEventTypeSelect">Modify Existing Event Types: </label>
+                    <select id="existingEventTypeSelect" class="form-control">
+                        <option value="-1">Select an Event Type</option>
+                        @foreach ($types as $type)
+                            <option data-hidden="{{{ $type->hidden }}}" data-name="{{{ $type->name }}}" value="{{{ $type->id }}}">{{{ $type->name }}}</option>
+                        @endforeach
+                    </select>
+                    <div style="display: none;" id="modifyEventTypeDiv">
+                        <form class="form" method="POST" action="{{ route("taupdatetype") }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                            <input id="modifyEventTypeTID" type="hidden" name="inputTID" value="" />
+                            <div class="form-group">
+                                <label for="inputExistingEventTypeName">Type Name:</label>
+                                <input type="text" class="form-control" name="inputName" id="inputExistingEventTypeName" placeholder="Ex: Office Hours" />
+                            </div>
+                            <div class="form-group">
+                                <label for="inputExistingEventTypeHidden">Hidden <small>(If hidden an event type is not selectable by Lab Assistants when checking in)</small>: </label>
+                                <input class="form-control" id="modifyEventTypeHidden" type="checkbox" value="1" name="inputHidden" />
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-success" value="Update Event Type" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 <div id="checkInUserModal" class="modal fade">
@@ -166,6 +218,32 @@
 @section('js')
     $('#inputDate').pickadate();
     $('#inputTime').pickatime();
+
+    $('.userActionsSpan').on('click', function(e) {
+        e.preventDefault();
+        $(this).hide();
+        $(this).siblings("span").fadeIn();
+    });
+
+    $('#newEventTypeBtn').on('click', function() {
+        $('#newEventTypeDiv').slideToggle();
+    });
+
+    $('#existingEventTypeSelect').on('change', function () {
+        if ($(this).val() == -1)
+            $('#modifyEventTypeDiv').slideUp();
+        else {
+            var opt = $(this).find('option:selected');
+            var name = opt.text();
+            $('#modifyEventTypeTID').val($(this).val());
+            if (opt.attr('data-hidden') == 1)
+                $('#modifyEventTypeHidden').prop("checked", true);
+            else
+                $('#modifyEventTypeHidden').prop("checked", false);
+            $('#inputExistingEventTypeName').val(opt.attr("data-name"));
+            $('#modifyEventTypeDiv').slideDown();
+        }
+    });
     $('.checkInUserBtn').on('click', function() {
         $('#checkInUserName').html($(this).attr("data-name"));
         $('#inputUID').val($(this).attr("data-uid"));
