@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-use Response, Auth, Request, Validator;
+use App\Announcement;
+use Response, Auth, Request, Validator, View;
 use Illuminate\Routing\Controller;
 use App\Checkin;
 use App\User;
@@ -10,6 +11,10 @@ use App\Password;
 
 class TAController extends Controller {
 
+    public function __construct() {
+        $announcements = Announcement::where("hidden", "!=", 0)->orderBy("created_at", "DESC")->get();
+        View::share('announcements', $announcements);
+    }
     public function get_console() {
         //Get all of our checkins
         $checkins = Checkin::with("ta")->with("type")->with("user")->orderBy("created_at", "DESC")->get();
@@ -21,7 +26,9 @@ class TAController extends Controller {
         $gsis = User::where('access', '>', 0)->get();
         //Get our types
         $types = Type::all();
-        return view("ta.console")->with(["gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
+        //Get our announcements
+        $announcements = Announcement::with("user")->orderBy("hidden", "ASC")->orderBy("created_at", "DESC")->get();
+        return view("ta.console")->with(["announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
     }
 
     public function post_update_password() {
@@ -216,6 +223,43 @@ class TAController extends Controller {
             'Content-Type' => 'text/csv',
         );
         return Response::download($file, 'roster.csv', $headers);
+    }
+
+    public function post_announcement_new() {
+        //Get our input
+        $header = Request::input('inputHeader');
+        $body = Request::input('inputBody');
+        //Are these filled in?
+        if ($header == "" || $body == "")
+            return redirect()->route('taconsole')->with("message", "Please ensure that you enter both a header and body for your announcement");
+        //All clear, let's create a new announcement
+        $announcement = new Announcement;
+        $announcement->header = $header;
+        $announcement->body = $body;
+        $announcement->author = Auth::user()->id;
+        //Announcement is not hidden by default
+        $announcement->hidden = 0;
+        $announcement->save();
+        //Redirect back to the ta console
+        return redirect()->route('taconsole')->with("message", "Your announcement was created and is now public.");
+    }
+
+    public function get_announcement_visibility($id) {
+        $announcement = Announcement::findOrFail($id);
+        if ($announcement->hidden == 0)
+            $announcement->hidden = 1;
+        else
+            $announcement->hidden = 0;
+        //Save our announcement
+        $announcement->save();
+        return redirect()->route('taconsole')->with("message", "The announcement visibility was updated successfully");
+    }
+
+    public function get_announcement_delete($id) {
+        $announcement = Announcement::findOrFail($id);
+        //Delete it
+        $announcement->delete();
+        return redirect()->route('taconsole')->with("message", "The announcement was deleted successfully");
     }
 
 }
