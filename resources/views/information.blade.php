@@ -9,8 +9,8 @@
 <div class="row" style="margin-top: 20px">
     <div class="col-lg-12">
         <div class="well">
-            <p><div class="alert alert-info"><strong>Welcome to the new CS61A Lab Assistant Management Platform.</strong></div></p>
-            <p><a href="#"><strong>CS61A Lab Assistant Syllabus</strong></a></p>
+            <div class="alert alert-info">Welcome to the new CS61A Lab Assistant Management Platform.</div>
+            <p>CS61A Lab Assistant Meeting Slides: <a href="{{ url("meeting/slides") }}"><strong>{{ url("meeting/slides") }}</strong></a></p>
             <p>If you are a lab assistant please <a target="_blank" href="{{ route("registration") }}">register</a> an account prior to your first day assisting in
                 the labs. You will be required to check in <strong>(when you are physically lab assisting with a present GSI)</strong> using this system every time you assist in the labs, office hours and other course functions
                 in order to receive hours credit. Once you have registered an account you can <a target="_blank" href="{{ route("login") }}">login</a> and use the
