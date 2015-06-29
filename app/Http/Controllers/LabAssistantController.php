@@ -1,13 +1,18 @@
 <?php namespace App\Http\Controllers;
 
-use Validator, Auth, Request, Hash, Mail;
+use Validator, Auth, Request, Hash, Mail, View;
 use App\Checkin;
 use App\Password;
 use App\Audit;
 use App\User;
 use App\Type;
+use App\Announcement;
 class LabAssistantController extends Controller {
 
+    public function __construct() {
+        $announcements = Announcement::where("hidden", "!=", 0)->orderBy("created_at", "DESC")->get();
+        View::share('announcements', $announcements);
+    }
     public function get_checkin() {
         //Load our types
         $types = Type::where("hidden", "=", 0)->get();

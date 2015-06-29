@@ -34,7 +34,7 @@
     Route::post('docheckin', ["as" => "dolacheckin", "uses" => "LabAssistantController@post_checkin", "middleware" => "auth"]);
     Route::post('account', ["as" => "doaccount", "uses" => "LabAssistantController@post_account", "middleware" => "auth"]);
 
-//TA Routes
+//TA/Tutor Routes
     //GET
     Route::get('ta/console', ["as" => "taconsole", "uses" => "TAController@get_console", "middleware" => "auth.tutor"]);
     Route::get('ta/download/checkins', ["as" => "tadownloadcheckins", "uses" => "TAController@get_download_checkins", "middleware" => "auth.tutor"]);
@@ -47,4 +47,7 @@
     Route::post("ta/user/checkin", ["as" => "tacheckinuser", "uses" => "TAController@post_checkin_user", "middleware" => "auth.tutor"]);
     Route::post("ta/type", ["as" => "taupdatetype", "uses" => "TAController@post_update_type", "middleware" => "auth.ta"]);
     Route::post("ta/new", ["as" => "tanewtype", "uses" => "TAController@post_new_type", "middleware" => "auth.ta"]);
+    Route::post("ta/announcement/new", ["as" => "taannouncementnew", "uses" => "TAController@post_announcement_new", "middleware" => "auth.tutor"]);
+    Route::get("ta/announcement/delete/{id}", ["as" => "taannouncementdelete", "uses" => "TAController@get_announcement_delete", "middleware" => "auth.tutor"]);
+    Route::get("ta/announcement/visibility/{id}", ["as" => "taannouncementvisibility", "uses" => "TAController@get_announcement_visibility", "middleware" => "auth.tutor"]);
 

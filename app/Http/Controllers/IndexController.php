@@ -1,12 +1,17 @@
 <?php namespace App\Http\Controllers;
 
-use Auth, Request, Validator, Hash, Mail;
+use Auth, Request, Validator, Hash, Mail, View;
 use App\User;
 use App\Audit;
+use App\Announcement;
 use Illuminate\Routing\Controller;
 
 class IndexController extends Controller {
 
+    public function __construct() {
+        $announcements = Announcement::where("hidden", "!=", 0)->orderBy("created_at", "DESC")->get();
+        View::share('announcements', $announcements);
+    }
     public function get_index()
     {
         //Is the member logged in?
@@ -60,7 +65,7 @@ class IndexController extends Controller {
         //Delete the reset token
         $user->reset = "";
         $user->save();
-        return redirect()->route("laaccount")->with("message", "Logged in sucessfully! Please update your password and information here.");
+        return redirect()->route("laaccount")->with("message", "Logged in successfully! Please update your password and information here.");
     }
 
     public function post_login()
