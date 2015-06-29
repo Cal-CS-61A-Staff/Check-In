@@ -59,15 +59,6 @@
         </div>
     </div>
 </nav>
-@if (count($announcements) > 0)
-<div class="row">
-    <div class="col-lg-12">
-        @foreach ($announcements as $announcement)
-            <div class="alert alert-info"><i class="fa fa-bullhorn fa-fw"></i> <strong>{{{ $announcement->header }}}</strong> - {{{ $announcement->body }}}</div>
-        @endforeach
-    </div>
-</div>
-@endif
 <header class="marquee">
     <div class="row">
         <div class="col-lg-12" style="text-align: center;">
@@ -81,6 +72,15 @@
     </div>
 </header>
 <div class="container">
+    @if (count($announcements) > 0)
+        <div class="row">
+            <div class="col-lg-12">
+                @foreach ($announcements as $announcement)
+                    <div class="alert alert-warning"><i class="fa fa-bullhorn fa-fw"></i> <strong>{{{ $announcement->header }}}</strong> - {{{ $announcement->body }}}</div>
+                @endforeach
+            </div>
+        </div>
+    @endif
     @if (Session::has("message"))
         <div class="row">
             <div class="col-lg-12">
