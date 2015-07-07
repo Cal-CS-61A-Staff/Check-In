@@ -27,7 +27,7 @@ class TAController extends Controller {
         //Get our types
         $types = Type::all();
         //Get our announcements
-        $announcements = Announcement::with("user")->orderBy("hidden", "ASC")->orderBy("created_at", "DESC")->get();
+        $announcements = Announcement::with("user")->orderBy("hidden", "DESC")->orderBy("created_at", "DESC")->get();
         return view("ta.console")->with(["announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
     }
 
