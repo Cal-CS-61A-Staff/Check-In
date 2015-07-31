@@ -96,6 +96,13 @@
 </div>
 <div class="boxLoading" style="display: none;"></div>
 @section('js')
+
+   $('#inputPassword').keypress(function(event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == 13) {
+            $('#submitCheckInForm').click();
+        }
+   });
    $("#submitCheckInForm").on("click", function() {
         $('#formErrors').hide();
         $('#checkInLoader').addClass("fa-spin");
