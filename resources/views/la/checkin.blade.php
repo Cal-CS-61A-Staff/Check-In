@@ -99,11 +99,12 @@
 
    $('#inputPassword').keypress(function(event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
-        if (keycode == 13) {
+        if (keycode == 13 && !($('#submitCheckInForm').is(':disabled'))) {
             $('#submitCheckInForm').click();
         }
    });
    $("#submitCheckInForm").on("click", function() {
+        $(this).attr("disabled", true);
         $('#formErrors').hide();
         $('#checkInLoader').addClass("fa-spin");
         var _token = "{{ csrf_token() }}";
