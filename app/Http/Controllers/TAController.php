@@ -26,9 +26,11 @@ class TAController extends Controller {
         $gsis = User::where('access', '>', 0)->get();
         //Get our types
         $types = Type::all();
+        //Get our audits
+        $audits = Audit::with("user")->orderBy('created_at', 'DESC')->get();
         //Get our announcements
         $announcements = Announcement::with("user")->orderBy("hidden", "DESC")->orderBy("created_at", "DESC")->get();
-        return view("ta.console")->with(["announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
+        return view("ta.console")->with(["audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
     }
 
     public function post_update_password() {

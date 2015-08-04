@@ -18,4 +18,8 @@ class Audit extends Model {
         $audit->save();
     }
 
+    public function user() {
+        return $this->hasOne('App\User', 'id', 'uid');
+    }
+
 }
