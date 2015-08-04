@@ -15,6 +15,7 @@
             <li><a href="#exportDataPanel" data-toggle="pill"><i class="fa fa-download fa-fw"></i> Export Data</a></li>
             @if (Auth::user()->is_gsi())
             <li><a href="#eventTypesPanel" data-toggle="pill"><i class="fa fa-tags fa-fw"></i> Event Types</a></li>
+            <li><a href="#auditLogPanel" data-toggle="pill"><i class="fa fa-history fa-fw"></i> Audit Log</a></li>
             @endif
         </ul>
     </div>
@@ -220,6 +221,30 @@
                 </div>
             </div>
         </div>
+        <div id="auditLogPanel" class="col-lg-10 tab-pane fade">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h5><i class="fa fa-history fa-fw"></i> Audit Log</h5>
+                </div>
+                <div class="panel-body">
+                  <div class="table-responsive">
+                        <table id="auditLogTable" class="table table-hover table-striped">
+                            <thead><tr><th>Name</th><th>Type</th><th>IP</th><th>Logged At</th></thead>
+                            <tbody>
+                                @foreach ($audits as $audit)
+                                    <tr>
+                                        <td>{{{ $audit->user->name }}}</td>
+                                        <td>{{{ $audit->action }}}</td>
+                                        <td>{{{ $audit->ip }}}</td>
+                                        <td>{{{ $audit->created_at }}}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
         @endif
     </div>
 </div>
@@ -275,6 +300,8 @@
 @section('js')
     $('#inputDate').pickadate();
     $('#inputTime').pickatime();
+
+    $('#auditLogTable').DataTable();
 
     $('#announcementNewBtn').on('click', function() {
         $('#announcementNewForm').slideToggle();
