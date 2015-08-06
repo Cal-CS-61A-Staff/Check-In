@@ -19,5 +19,36 @@ class Checkin extends Model {
         return $this->hasOne('App\User', 'id', 'uid');
     }
 
+    public static function perWeek($checkins) {
+        $years = array();
+        foreach ($checkins as $checkin) {
+            $date = new \DateTime($checkin->created_at);
+            $year = $date->format("Y");
+            $week = $date->format("W");
+            if (!array_key_exists($year, $years)) {
+                $years[$year] = array();
+            }
+            if (!array_key_exists($week, $years[$year])) {
+                $years[$year][$week] = ["value" => date( "Y-m-d", strtotime($year."W".$week."1") ), "data" => 1];
+            }
+            else {
+                $years[$year][$week]["data"] += 1;
+            }
+        }
+        return $years;
+    }
+
+    public static function perStaff($checkins) {
+        $checkinsPerStaff = array();
+        $staff = User::where("access", ">", 0)->orderBy("name", "ASC")->get();
+        foreach ($staff as $s) {
+            $checkinsPerStaff[$s->id] = ["name" => $s->name, "data" => 0];
+        }
+        foreach ($checkins as $checkin) {
+           $checkinsPerStaff[$checkin->gsi]["data"] += 1;
+        }
+        return $checkinsPerStaff;
+    }
+
 }
 
