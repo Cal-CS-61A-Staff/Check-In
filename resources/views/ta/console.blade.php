@@ -415,7 +415,7 @@
     $('#chart-checkins-per-week').highcharts(
         {
             chart: { type: 'line' },
-            title: { text: 'Checkins Per Week' },
+            title: { text: 'Total Checkins Per Week' },
             xAxis: { categories: [
                 @foreach (array_keys($checkins_per_week) as $year)
                     @foreach(array_keys($checkins_per_week[$year]) as $week)
