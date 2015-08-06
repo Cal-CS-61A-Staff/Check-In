@@ -14,6 +14,7 @@
             <li><a href="#announcementsPanel" data-toggle="pill"><i class="fa fa-bullhorn fa-fw"></i> Announcements</a></li>
             <li><a href="#exportDataPanel" data-toggle="pill"><i class="fa fa-download fa-fw"></i> Export Data</a></li>
             @if (Auth::user()->is_gsi())
+            <li><a href="#statsPanel" data-toggle="pill"><i class="fa fa-bar-chart fa-fw"></i> Statistics</a></li>
             <li><a href="#eventTypesPanel" data-toggle="pill"><i class="fa fa-tags fa-fw"></i> Event Types</a></li>
             <li><a href="#auditLogPanel" data-toggle="pill"><i class="fa fa-history fa-fw"></i> Audit Log</a></li>
             @endif
@@ -170,6 +171,17 @@
                     <div class="form-group">
                     <a href="{{ route("tadownloadroster") }}"><button class="btn btn-info"><i class="fa fa-download fa-fw"></i> Lab-Assistant-Roster.csv</button></a> <small>(Also includes total number of checkins per lab assistant)</small>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div id="statsPanel" class="col-lg-10 tab-pane fade">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h5><i class="fa fa-bar-chart fa-fw"></i> Statistics</h5>
+                </div>
+                <div class="panel-body">
+                    <div id="chart-checkins-per-week" style="height:400px;"></div>
+                    <div id="chart-checkins-per-staff" style="height: 400px;"></div>
                 </div>
             </div>
         </div>
@@ -342,7 +354,9 @@
     $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
     } );
 
-    var table = $('#consoleCheckInTable').DataTable();
+    var table = $('#consoleCheckInTable').DataTable({
+        aaSorting: [[6, "desc"]]
+    });
     // Apply the search
     table.columns().every( function () {
     var that = this;
@@ -397,5 +411,57 @@
         typeSpeed: 0,
         loop: true,
     });
+
+    $('#chart-checkins-per-week').highcharts(
+        {
+            chart: { type: 'line' },
+            title: { text: 'Checkins Per Week' },
+            xAxis: { categories: [
+                @foreach (array_keys($checkins_per_week) as $year)
+                    @foreach(array_keys($checkins_per_week[$year]) as $week)
+                        '{{{ $checkins_per_week[$year][$week]["value"] }}}',
+                    @endforeach
+                @endforeach
+            ] },
+            yAxis: { title: "# of Checkins" },
+            series: [
+                {
+                    name: "Checkins",
+                    data: [
+                        @foreach ($checkins_per_week as $year)
+                            @foreach($year as $week)
+                            {{{ $week["data"] }}},
+                            @endforeach
+                        @endforeach
+                    ]
+                }
+            ]
+        }
+    );
+
+    $('#chart-checkins-per-staff').highcharts(
+        {
+            chart: { type: 'column' },
+            title: { text: 'Lab Assistant Checkins Per Staff' },
+            xAxis: { categories: [
+                @foreach ($checkins_per_staff as $staff)
+                    "{{{ $staff["name"] }}}",
+                @endforeach
+            ]},
+            series: [
+                {
+                    name: "Checkins",
+                    data: [
+                            @foreach ($checkins_per_staff as $staff)
+                                {{{ $staff["data"] }}},
+                            @endforeach
+                            ]
+
+                }
+            ]
+
+        }
+    )
+
 @endsection
 @include('core.footer')
