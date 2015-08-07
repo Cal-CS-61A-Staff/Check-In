@@ -104,7 +104,8 @@
         }
    });
    $("#submitCheckInForm").on("click", function() {
-        $(this).attr("disabled", true);
+        var btn = $(this);
+        btn.attr("disabled", true);
         $('#formErrors').hide();
         $('#checkInLoader').addClass("fa-spin");
         var _token = "{{ csrf_token() }}";
@@ -131,6 +132,7 @@
                 $('#checkInLoader').removeClass("fa-spin");
                 if (received != 1) {
                     $('#formErrors').html(received).show();
+                    btn.attr("disabled", false);
                 }
                 else {
                     $('#btnToStep6').click();
