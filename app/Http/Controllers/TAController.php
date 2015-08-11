@@ -19,6 +19,7 @@ class TAController extends Controller {
         //Get all of our checkins
         $checkins = Checkin::with("ta")->with("type")->with("user")->orderBy("created_at", "ASC")->get();
         $checkins_per_week = Checkin::perWeek($checkins);
+        $checkins_unique_per_week = Checkin::uniquePerWeek($checkins);
         $checkins_per_staff = Checkin::perStaff($checkins);
         //Get all of our users
         $users = User::orderBy("name", "ASC")->get();
@@ -32,7 +33,7 @@ class TAController extends Controller {
         $audits = Audit::with("user")->orderBy('created_at', 'DESC')->get();
         //Get our announcements
         $announcements = Announcement::with("user")->orderBy("hidden", "DESC")->orderBy("created_at", "DESC")->get();
-        return view("ta.console")->with(["checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
+        return view("ta.console")->with(["checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
     }
 
     public function post_update_password() {
