@@ -38,6 +38,26 @@ class Checkin extends Model {
         return $years;
     }
 
+    public static function uniquePerWeek($checkins) {
+        $years = array();
+        foreach ($checkins as $checkin) {
+            $date = new \DateTime($checkin->created_at);
+            $year = $date->format("Y");
+            $week = $date->format("W");
+            if (!array_key_exists($year, $years)) {
+                $years[$year] = array();
+            }
+            if (!array_key_exists($week, $years[$year])) {
+                $years[$year][$week] = ["value" => date( "Y-m-d", strtotime($year."W".$week."1") ), "data" => 1, "users" => [$checkin->uid]];
+            }
+            else if (!in_array($checkin->uid, $years[$year][$week]["users"])) {
+                $years[$year][$week]["users"][] = $checkin->uid;
+                $years[$year][$week]["data"] += 1;
+            }
+        }
+        return $years;
+    }
+
     public static function perStaff($checkins) {
         $checkinsPerStaff = array();
         $staff = User::where("access", ">", 0)->orderBy("name", "ASC")->get();
