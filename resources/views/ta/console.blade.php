@@ -32,7 +32,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="well">
-                            <label>Hours In Filtering: </label><br />
+                            <label>Hours Filtering: </label><br />
                             <input type="text" id="min" placeholder="Minimum total hours" />
                             <input type="text" id="max" placeholder="Maximum total hours" />
                         </div>
