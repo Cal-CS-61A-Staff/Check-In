@@ -18,6 +18,8 @@ class TAController extends Controller {
     public function get_console() {
         //Get all of our checkins
         $checkins = Checkin::with("ta")->with("type")->with("user")->orderBy("created_at", "ASC")->get();
+        //Get our hours per user
+        $user_hours = Checkin::userHours($checkins);
         $checkins_per_week = Checkin::perWeek($checkins);
         $checkins_unique_per_week = Checkin::uniquePerWeek($checkins);
         $checkins_per_staff = Checkin::perStaff($checkins);
@@ -33,7 +35,7 @@ class TAController extends Controller {
         $audits = Audit::with("user")->orderBy('created_at', 'DESC')->get();
         //Get our announcements
         $announcements = Announcement::with("user")->orderBy("hidden", "DESC")->orderBy("created_at", "DESC")->get();
-        return view("ta.console")->with(["checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
+        return view("ta.console")->with(["user_hours" => $user_hours, "checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
     }
 
     public function post_update_password() {
@@ -153,6 +155,8 @@ class TAController extends Controller {
         $tid = Request::input("inputTID");
         //Get our Type name
         $name = Request::input("inputName");
+        //Get our hours
+        $hours = Request::input("inputHours");
         //Hidden
         $hidden = Request::input("inputHidden");
         if ($hidden !=  1)
@@ -163,28 +167,37 @@ class TAController extends Controller {
         $otherType = Type::where("name", "=", $name)->count();
         if ($otherType > 1 || $name == "")
             return redirect()->route("taconsole")->with("message", "Either your type was empty or you entered an existing type.");
+        if (!is_numeric($hours)) {
+            return redirect()->route("taconsole")->with("message", "Ensure you are entering a numeric value for hours in your event type.");
+        }
         //Alright all good let's update the model
         $type->name = $name;
+        $type->hours = $hours;
         $type->hidden = $hidden;
         //And finally the DB
         $type->save();
         //Let the user know things are well :)
-        return redirect()->route("taconsole")->with("message", "The type was updated to " . $name);
+        return redirect()->route("taconsole")->with("message", "The " . $name . " type was updated successfully");
     }
 
 
     public function post_new_type() {
         //Get our name
         $name = Request::input("inputName");
+        $hours = Request::input("inputHours");
         $hidden = Request::input("inputHidden");
         if ($hidden != 1)
             $hidden = 0;
         $otherTypes = Type::where("name", "=", $name)->count();
         if ($otherTypes > 0 ||$name == "")
             return redirect()->route("taconsole")->with("message", "Either your new event type is empty or an existing event type exists with the same name.");
+        if (!is_numeric($hours)) {
+            return redirect()->route("taconsole")->with("message", "Ensure you are entering a numeric value for hours in your new event type.");
+        }
         //Create our model
         $type = new Type;
         $type->name = $name;
+        $type->hours = $hours;
         $type->hidden = $hidden;
         //Push the model to the DB
         $type->save();
@@ -196,13 +209,13 @@ class TAController extends Controller {
         $checkins = Checkin::with("ta")->with("type")->with("user")->orderBy("created_at", "DESC")->get();
         $file = storage_path() . "/app/checkins.csv";
         $handle = fopen($file, 'w+');
-        fputcsv($handle, array('Name', 'Type', 'Date', 'Start Time', 'GSI', 'Makeup', 'Logged At'));
+        fputcsv($handle, array('Name', 'Type', 'Hours', 'Date', 'Start Time', 'GSI', 'Makeup', 'Logged At'));
         foreach($checkins as $checkin) {
             if ($checkin->makeup == 1)
                 $makeup = "Yes";
             else
                 $makeup = "No";
-            fputcsv($handle, array($checkin->user->name, $checkin->type->name, $checkin->date, $checkin->time, $checkin->ta->name, $makeup, $checkin->created_at));
+            fputcsv($handle, array($checkin->user->name, $checkin->type->name, $checkin->type->hours, $checkin->date, $checkin->time, $checkin->ta->name, $makeup, $checkin->created_at));
         }
         fclose($handle);
         $headers = array(
@@ -213,15 +226,17 @@ class TAController extends Controller {
 
     public function get_download_roster() {
         $users = User::with("checkins")->orderBy("name", "ASC")->get();
+        $checkins = Checkin::all();
+        $user_hours = Checkin::userHours($checkins);
         $file = storage_path() . "/app/roster.csv";
         $handle = fopen($file, 'w+');
-        fputcsv($handle, array('Name', 'Email', 'GSI', 'Total # of Check Ins', 'Created At'));
+        fputcsv($handle, array('Name', 'Email', 'GSI', 'Total # of Hours', 'Total # of Check Ins', 'Created At'));
         foreach($users as $user) {
             if ($user->access > 0)
                 $gsi = "YES";
             else
                 $gsi = "No";
-            fputcsv($handle, array($user->name, $user->email, $gsi, count($user->checkins), $user->created_at));
+            fputcsv($handle, array($user->name, $user->email, $gsi, $user_hours[$user->id], count($user->checkins), $user->created_at));
         }
         fclose($handle);
         $headers = array(

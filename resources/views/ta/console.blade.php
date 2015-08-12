@@ -32,22 +32,23 @@
                     </div>
                     <div class="panel-body">
                         <div class="well">
-                            <label>Check In Filtering: </label><br />
-                            <input type="text" id="min" placeholder="Minimum total check ins" />
-                            <input type="text" id="max" placeholder="Maximum total check ins" />
+                            <label>Hours In Filtering: </label><br />
+                            <input type="text" id="min" placeholder="Minimum total hours" />
+                            <input type="text" id="max" placeholder="Maximum total hours" />
                         </div>
                         <div class="table-responsive">
                             <table id="userTable" class="table table-hover table-striped">
                                 <thead>
-                                    <tr><th>Name</th><th>Email</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
+                                    <tr><th>Name</th><th>Email</th><th># of Hours</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
                                 </thead>
                                 <tfoot>
-                                    <tr><th>Name</th><th>Email</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
+                                    <tr><th>Name</th><th>Email</th><th># of Hours</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
                                 </tfoot>
                                 @foreach ($users as $user)
                                     <tr>
                                         <td>{{{ $user->name }}} @if ($user->is_gsi()) <strong>(GSI)</strong> @elseif ($user->is_tutor()) <strong>(Tutor)</strong> @endif</td>
                                         <td>{{{ $user->email }}}</td>
+                                        <td><span class="badge">{{{ ($user_hours[$user->id]) }}}</span></td>
                                         <td>{{{ count($user->checkins) }}}</td>
                                         <td>{{{ $user->created_at }}}</td>
                                         <td>@if (Auth::user()->is_gsi()) <span class="userActionsSpan"><a href="#">View Actions</a></span><span id="actions" style="display: none;">@if ($user->is_tutor()) <a href="{{ route("tauserpromote", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make TA</button></a>  @endif @if ($user->access == 0) <a href="{{ route("tauserpromotetutor", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make Tutor</button></a> <a href="{{ route("tauserpromote", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make TA</button></a> @else <a href="{{ route("tauserdemote", $user->id) }}"><button class="btn btn-danger"><i class="fa fa-arrow-down fa-fw"></i> Demote</button></a> @endif @endif <button data-uid="{{{ $user->id }}}" data-name="{{{ $user->name }}}" class="btn btn-info checkInUserBtn"><i class="fa fa-plus fa-fw"></i> Check In</button></span></td>
@@ -66,13 +67,14 @@
                     <div class="panel-body">
                         <div class="table-responsive">
                             <table id="consoleCheckInTable" class="table table-hover table-striped">
-                                <thead><tr><th>Name</th><th>Type</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></thead>
-                                <tfoot><tr><th>Name</th><th>Type</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></tfoot>
+                                <thead><tr><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></thead>
+                                <tfoot><tr><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></tfoot>
                                 <tbody>
                                     @foreach ($checkins as $checkin)
                                         <tr>
                                             <td>{{{ $checkin->user->name }}}</td>
                                             <td>{{{ $checkin->type->name }}}</td>
+                                            <td><span class="badge">{{{ $checkin->type->hours }}}</span></td>
                                             <td>{{{ $checkin->date }}}</td>
                                             <td>{{{ $checkin->time }}}</td>
                                             <td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $checkin->ta->name }}}</span></td>
@@ -206,6 +208,14 @@
                                     <input type="text" class="form-control" name="inputName" id="inputEventTypeName" placeholder="Ex: Office Hours" />
                                 </div>
                                 <div class="form-group">
+                                    <label for="inputEventTypeHours">Hours <small>(Should be in the form of 1.0 or 1.5, not 1:30)</small>:</label>
+                                    <input type="text" class="form-control" name="inputHours" id="inputEventTypeHours" placeholder="1.5" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEventTypeHidden">Hidden <small>(If hidden an event type is not selectable by Lab Assistants when checking in)</small>: </label>
+                                    <input class="form-control" id="inputHidden" type="checkbox" value="1" name="inputHidden" />
+                                </div>
+                                <div class="form-group">
                                     <input type="submit" class="btn btn-success" value="Create Event Type" />
                                 </div>
                             </form>
@@ -215,7 +225,7 @@
                         <select id="existingEventTypeSelect" class="form-control">
                             <option value="-1">Select an Event Type</option>
                             @foreach ($types as $type)
-                                <option data-hidden="{{{ $type->hidden }}}" data-name="{{{ $type->name }}}" value="{{{ $type->id }}}">{{{ $type->name }}}</option>
+                                <option data-hours="{{{ $type->hours }}}" data-hidden="{{{ $type->hidden }}}" data-name="{{{ $type->name }}}" value="{{{ $type->id }}}">{{{ $type->name }}}</option>
                             @endforeach
                         </select>
                         <div style="display: none;" id="modifyEventTypeDiv">
@@ -225,6 +235,10 @@
                                 <div class="form-group">
                                     <label for="inputExistingEventTypeName">Type Name:</label>
                                     <input type="text" class="form-control" name="inputName" id="inputExistingEventTypeName" placeholder="Ex: Office Hours" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputExistingEventTypeHours">Hours <small>(Should be in the form of 1.0 or 1.5, not 1:30)</small>:</label>
+                                    <input type="text" class="form-control" name="inputHours" id="inputExistingEventTypeHours" placeholder="1.5" />
                                 </div>
                                 <div class="form-group">
                                     <label for="inputExistingEventTypeHidden">Hidden <small>(If hidden an event type is not selectable by Lab Assistants when checking in)</small>: </label>
@@ -349,6 +363,7 @@
             else
                 $('#modifyEventTypeHidden').prop("checked", false);
             $('#inputExistingEventTypeName').val(opt.attr("data-name"));
+            $('#inputExistingEventTypeHours').val(opt.attr("data-hours"));
             $('#modifyEventTypeDiv').slideDown();
         }
     });

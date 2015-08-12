@@ -70,5 +70,18 @@ class Checkin extends Model {
         return $checkinsPerStaff;
     }
 
+
+    public static function userHours($checkins) {
+        $user_hours = array();
+        $users = User::all();
+        foreach ($users as $user) {
+            $user_hours[$user->id] = 0;
+        }
+        foreach ($checkins as $c) {
+            $user_hours[$c->uid] += $c->type->hours;
+        }
+        return $user_hours;
+    }
+
 }
 
