@@ -103,8 +103,12 @@ class LabAssistantController extends Controller {
     public function get_attendance() {
         $uid = Auth::user()->id;
         $checkins = Checkin::where("uid", "=", $uid)->with("ta")->with("type")->orderBy("created_at", "DESC")->get();
+        $total = 0;
+        foreach ($checkins as $c) {
+            $total += $c->type->hours;
+        }
         //Create our view
-        return view("la.attendance")->with(array("checkins" => $checkins));
+        return view("la.attendance")->with(array("checkins" => $checkins, "total" => $total));
     }
 
     public function get_account() {
