@@ -8,6 +8,7 @@ use App\User;
 use App\Audit;
 use App\Type;
 use App\Password;
+use App\Section;
 
 class TAController extends Controller {
 
@@ -28,14 +29,16 @@ class TAController extends Controller {
         //Get our password
         $password = Password::where("gsi", "=", Auth::user()->id)->first()->password;
         //Get our gsis
-        $gsis = User::where('access', '>', 0)->get();
+        $gsis = User::where('access', '>', 0)->orderBy("name", "ASC")->get();
         //Get our types
         $types = Type::all();
         //Get our audits
         $audits = Audit::with("user")->orderBy('created_at', 'DESC')->get();
+        //Get our sections
+        $sections = Section::with("ta")->with("category")->orderBy("type", "ASC")->get();
         //Get our announcements
         $announcements = Announcement::with("user")->orderBy("hidden", "DESC")->orderBy("created_at", "DESC")->get();
-        return view("ta.console")->with(["user_hours" => $user_hours, "checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
+        return view("ta.console")->with(["sections" => $sections, "user_hours" => $user_hours, "checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
     }
 
     public function post_update_password() {
@@ -280,6 +283,109 @@ class TAController extends Controller {
         //Delete it
         $announcement->delete();
         return redirect()->route('taconsole')->with("message", "The announcement was deleted successfully");
+    }
+
+    public function post_section_new() {
+        //Get all of our data
+        $type = Request::input('inputType');
+        $location = Request::input('inputLocation');
+        $gsi = Request::input('inputGSI');
+        $maxLas = Request::input('inputMaxLas');
+        $mon = Request::input('inputMon');
+        $tue = Request::input('inputTue');
+        $wed = Request::input('inputWed');
+        $thu = Request::input('inputThu');
+        $fri = Request::input('inputFri');
+        $sat = Request::input('inputSat');
+        $sun = Request::input('inputSun');
+        $start_time = Request::input('inputStartTime');
+        $end_time = Request::input('inputEndTime');
+        $validator = Validator::make([
+            "type" => $type,
+            "location" => $location,
+            "gsi" => $gsi,
+            "maxLas" => $maxLas,
+            "mon" => $mon,
+            "tue" => $tue,
+            "wed" => $wed,
+            "thu" => $thu,
+            "fri" => $fri,
+            "sat" => $sat,
+            "sun" => $sun,
+            "start_time" => $start_time,
+            "end_time" => $end_time,
+        ], [
+            "type" => "required|exists:types,id",
+            "gsi" => "required|exists:passwords,gsi",
+            "maxLas" => "required|integer|min:-1",
+            "location" => "required",
+            "mon" => "in:,0,1",
+            "tue" => "in:,0,1",
+            "wed" => "in:,0,1",
+            "thu" => "in:,0,1",
+            "fri" => "in:,0,1",
+            "sat" => "in:,0,1",
+            "sun" => "in:,0,1",
+            "start_time" => "required",
+            "end_time" => "required",
+        ], [
+            "type.required" => "Please select a section type.",
+            "type.exists" => "That does not appear to be a valid section type.",
+            "gsi.required" => "Please select a GSI.",
+            "gsi.exists" => "That does not appear to be a valid GSI.",
+            "maxLas.required" => "Please enter the maximum amount of lab assistants for this section.",
+            "maxLas.integer" => "The max amount of lab assistants needs to be an integer value.",
+            "maxLas.min" => "Please enter a max lab assistants integer value equal to or greater than -1",
+            "location.required" => "Please enter a location for the section."
+        ]);
+        //Route our validator
+        if ($validator->fails()) {
+           return redirect()->route('taconsole')->withErrors($validator);
+        }
+        //Create a new instance of our Section model
+        $section = new Section;
+        $section->type = $type;
+        $section->location = $location;
+        $section->gsi = $gsi;
+        $section->maxLas = $maxLas;
+        //Yes someone who reads this and thinks it looks as
+        //awful as I do. Please make a PR and fix this before
+        //I get too mad looking at it and come up with a more
+        //elegant solution using a loop. :P
+        if ($mon != 1)
+            $section->mon = 0;
+        else
+            $section->mon = 1;
+        if ($tue != 1)
+            $section->tue = 0;
+        else
+            $section->tue = 1;
+        if ($wed != 1)
+            $section->wed = 0;
+        else
+            $section->wed = 1;
+        if ($thu != 1)
+            $section->thu = 0;
+        else
+            $section->thu = 1;
+        if ($fri != 1)
+            $section->fri = 0;
+        else
+            $section->fri = 1;
+        if ($sat != 1)
+            $section->sat = 0;
+        else
+            $section->sat = 1;
+        if ($sun != 1)
+            $section->sun = 0;
+        else
+            $section->sun = 1;
+        $section->start_time = $start_time;
+        $section->end_time = $end_time;
+        //Push to the DB
+        $section->save();
+        //Return a redirect Response
+        return redirect()->route("taconsole")->with("message", "The new section was successfully created.");
     }
 
 

@@ -18,6 +18,7 @@
                 <li><a href="#announcementsPanel" data-toggle="pill"><i class="fa fa-bullhorn fa-fw"></i> Announcements</a></li>
                 <li><a href="#exportDataPanel" data-toggle="pill"><i class="fa fa-download fa-fw"></i> Export Data</a></li>
                 @if (Auth::user()->is_gsi())
+                <li><a href="#sectionPanel" data-toggle="pill"><i class="fa fa-calendar fa-fw"></i> Sections</a></li>
                 <li><a href="#statsPanel" data-toggle="pill"><i class="fa fa-bar-chart fa-fw"></i> Statistics</a></li>
                 <li><a href="#eventTypesPanel" data-toggle="pill"><i class="fa fa-tags fa-fw"></i> Event Types</a></li>
                 <li><a href="#auditLogPanel" data-toggle="pill"><i class="fa fa-history fa-fw"></i> Audit Log</a></li>
@@ -180,6 +181,132 @@
                     </div>
                 </div>
             </div>
+            <div id="sectionPanel" class="col-lg-10 tab-pane fade">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h5><i class="fa fa-calendar fa-fw"></i> Sections</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <button id="createSectionBtn" class="btn btn-info">Create Section <i class="fa fa-plus fa-fw"></i></button>
+                            </div>
+                        </div>
+                        <div id="createSectionForm" style="margin-top: 5px; display: none;" class="row">
+                            <div class="col-lg-12">
+                                <div class="well">
+                                    <form method="POST" action="{{ route("tasectionnew") }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                                        <div class="form-group">
+                                            <label>Type: </label>
+                                            <select name="inputType" class="form-control">
+                                                <option value="-1">Select a type</option>
+                                                @foreach ($types as $type)
+                                                    <option value="{{{ $type->id }}}">{{{ $type->name }}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Location <small>([Room #] [Building Name])</small>: </label>
+                                            <input type="text" name="inputLocation" class="form-control" placeholder="Ex: 411 Soda" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>GSI: </label>
+                                            <select name="inputGSI" class="form-control">
+                                                <option value="-1">Select a GSI</option>
+                                                @foreach ($gsis as $gsi)
+                                                    <option value="{{{ $gsi->id }}}">{{{ $gsi->name }}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Max Lab Assistants <small>(-1 for unlimited)</small>: </label>
+                                            <input type="number" class="form-control" name="inputMaxLas" placeholder="Ex: 5" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Days: </label>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="inputMon" value="1" /> Monday
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="inputTue" value="1" /> Tuesday
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="inputWed" value="1" /> Wednesday
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="inputThu" value="1" /> Thursday
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="inputFri" value="1" /> Friday
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="inputSat" value="1" /> Saturday
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="inputSun" value="1" /> Sunday
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Start Time: </label>
+                                            <input type="text" id="newSectionFormStartTimeInput" name="inputStartTime" placeholder="Ex: 4:30PM" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>End Time: </label>
+                                            <input type="text" id="newSectionFormEndTimeInput" name="inputEndTime" placeholder="Ex: 6:00PM" class="form-control" />
+                                        </div>
+                                        <div class="form-actions">
+                                            <input type="reset" class="btn btn-default" value="Reset" />
+                                            <input type="submit" class="btn btn-success" value="Create Section" />
+                                        </div>
+                                    </form>
+                                </div>
+                                <hr />
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-lg-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped">
+                                        <tr><th>Type</th><th>Location</th><th>Days</th><th>Start Time</th><th>End Time</th><th>GSI</th><th>Max Lab Assistants</th><th>Lab Assistants</th><th>Actions</th></tr>
+                                        @foreach ($sections as $s)
+                                            <tr>
+                                                <td>{{{ $s->category->name }}}</td>
+                                                <td>{{{ $s->location }}}</td>
+                                                <td>{{{ App\Section::daysToString($s) }}}</td>
+                                                <td>{{{ $s->start_time }}}</td>
+                                                <td>{{{ $s->end_time }}}</td>
+                                            @if ($s->gsi == -1)
+                                                <td><span style="font-style: italic">Unassigned</span></td>
+                                            @else
+                                                <td><span class="label label-danger"><i class="fa fa-bookmark"></i> {{{ $s->ta->name }}}</span></td>
+                                            @endif
+                                                <td>{{{ $s->max_las }}}</td>
+                                                <td>Coming Soon</td>
+                                                <td><a class="sectionViewActionsLink" href="#">View Actions</a><p class="sectionActions" style="display: none;"><button class="btn btn-warning"><i class="fa fa-edit fa-fw"></i> Edit</button> <button class="btn btn-danger"><i class="fa fa-times fa-fw"></i> Delete</button></p></td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="statsPanel" class="col-lg-10 tab-pane fade">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -323,6 +450,101 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <input type="submit" class="btn btn-info" value="Check In" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="editSectionModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Edit Section</h4>
+                </div>
+                <form class="form" method="POST" action="{{ route("tasectionedit") }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                    <input type="hidden" id="inputSID" name="inputSID" value="" />
+                    <div class="modal-body">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                            <div class="form-group">
+                                <label>Type: </label>
+                                <select name="inputType" class="form-control">
+                                    <option value="-1">Select a type</option>
+                                    @foreach ($types as $type)
+                                        <option value="{{{ $type->id }}}">{{{ $type->name }}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Location <small>([Room #] [Building Name])</small>: </label>
+                                <input type="text" name="inputLocation" class="form-control" placeholder="Ex: 411 Soda" />
+                            </div>
+                            <div class="form-group">
+                                <label>GSI: </label>
+                                <select name="inputGSI" class="form-control">
+                                    <option value="-1">Select a GSI</option>
+                                    @foreach ($gsis as $gsi)
+                                        <option value="{{{ $gsi->id }}}">{{{ $gsi->name }}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Max Lab Assistants <small>(-1 for unlimited)</small>: </label>
+                                <input type="number" class="form-control" name="inputMaxLas" placeholder="Ex: 5" />
+                            </div>
+                            <div class="form-group">
+                                <label>Days: </label>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="inputMon" value="1" /> Monday
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="inputTue" value="1" /> Tuesday
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="inputWed" value="1" /> Wednesday
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="inputThu" value="1" /> Thursday
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="inputFri" value="1" /> Friday
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="inputSat" value="1" /> Saturday
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="inputSun" value="1" /> Sunday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Start Time: </label>
+                                <input type="text" id="newSectionFormStartTimeInput" name="inputStartTime" placeholder="Ex: 4:30PM" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label>End Time: </label>
+                                <input type="text" id="newSectionFormEndTimeInput" name="inputEndTime" placeholder="Ex: 6:00PM" class="form-control" />
+                            </div>
+                            <div class="form-actions">
+                            </div>
+                        </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-success" value="Create Section" />
                     </div>
                 </form>
             </div>
@@ -514,6 +736,21 @@
 
         }
     )
+
+    $('#createSectionBtn').on('click', function() {
+        $('#createSectionForm').slideToggle();
+    });
+    $('#newSectionFormStartTimeInput').pickatime();
+    $('#newSectionFormEndTimeInput').pickatime();
+    $('.sectionViewActionsLink').on('click', function(e) {
+        e.preventDefault();
+        $(this).hide();
+        $(this).siblings('.sectionActions').fadeIn();
+    });
+
+    $('.sectionActions').on('click', function() {
+
+    });
 
 @endsection
 @include('core.footer')
