@@ -36,4 +36,8 @@ class Section extends Model {
         return $this->hasOne('App\User', 'id', 'gsi');
     }
 
+    public function ta2() {
+        return $this->hasOne('App\User', 'id', 'second_gsi');
+    }
+
 }

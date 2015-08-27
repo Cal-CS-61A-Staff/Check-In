@@ -220,6 +220,15 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
+                                            <label>Second GSI <small>(optional)</small>: </label>
+                                            <select name="inputSecond_GSI" class="form-control">
+                                                <option value="-1">Select a GSI</option>
+                                                @foreach ($gsis as $gsi)
+                                                    <option value="{{{ $gsi->id }}}">{{{ $gsi->name }}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
                                             <label>Max Lab Assistants <small>(-1 for unlimited)</small>: </label>
                                             <input type="number" class="form-control" name="inputMaxLas" placeholder="Ex: 5" />
                                         </div>
@@ -284,7 +293,7 @@
                                     <table class="table table-bordered table-hover table-striped">
                                         <tr><th>Type</th><th>Location</th><th>Days</th><th>Start Time</th><th>End Time</th><th>GSI</th><th>Max Lab Assistants</th><th>Lab Assistants</th><th>Actions</th></tr>
                                         @foreach ($sections as $s)
-                                            <tr>
+                                            <tr data-type="{{{ $s->type }}}" data-location="{{{ $s->location }}}" data-mon="{{{ $s->mon }}}" data-tue="{{{ $s->tue }}}" data-wed="{{{ $s->wed }}}" data-thu="{{{ $s->thu }}}" data-fri="{{{ $s->fri }}}" data-sat="{{{ $s->sat }}}" data-sun="{{{ $s->sun }}}">
                                                 <td>{{{ $s->category->name }}}</td>
                                                 <td>{{{ $s->location }}}</td>
                                                 <td>{{{ App\Section::daysToString($s) }}}</td>
@@ -293,11 +302,19 @@
                                             @if ($s->gsi == -1)
                                                 <td><span style="font-style: italic">Unassigned</span></td>
                                             @else
-                                                <td><span class="label label-danger"><i class="fa fa-bookmark"></i> {{{ $s->ta->name }}}</span></td>
+                                                <td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $s->ta->name }}}</span> @if ($s->second_gsi != -1) <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $s->ta2->name }}}</span> @endif </td>
                                             @endif
                                                 <td>{{{ $s->max_las }}}</td>
                                                 <td>Coming Soon</td>
-                                                <td><a class="sectionViewActionsLink" href="#">View Actions</a><p class="sectionActions" style="display: none;"><button class="btn btn-warning"><i class="fa fa-edit fa-fw"></i> Edit</button> <button class="btn btn-danger"><i class="fa fa-times fa-fw"></i> Delete</button></p></td>
+                                                <td><a class="sectionViewActionsLink" href="#">View Actions</a>
+                                                    <p class="sectionActions" style="display: none;">
+                                                        <button class="btn btn-warning">
+                                                            <i class="fa fa-edit fa-fw"></i>
+                                                        </button> <button class="btn btn-danger">
+                                                            <i class="fa fa-times fa-fw"></i>
+                                                        </button>
+                                                    </p>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </table>
@@ -428,6 +445,8 @@
                             <div class="form-group">
                                 <label for="inputDate">Section Date</label>
                                 <input type="text" readonly name="inputDate" id="inputDate" placeholder="Date" />
+                            </div>
+                            <div class="form-group">
                                 <label for="inputTime">Section <strong>Start</strong> Time</label>
                                 <input type="text" readonly name="inputTime" id="inputTime" placeholder="Start Time" />
                             </div>
@@ -490,6 +509,14 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label>Second GSI <small>(Optional)</small>: </label>
+                                <select name="inputSecond_GSI" class="form-control">
+                                    <option value="-1">Select a GSI</option>
+                                    @foreach ($gsis as $gsi)
+                                        <option value="{{{ $gsi->id }}}">{{{ $gsi->name }}}</option>
+                                    @endforeach
+                                </select>
+                            </div>                            <div class="form-group">
                                 <label>Max Lab Assistants <small>(-1 for unlimited)</small>: </label>
                                 <input type="number" class="form-control" name="inputMaxLas" placeholder="Ex: 5" />
                             </div>

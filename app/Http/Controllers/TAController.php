@@ -35,7 +35,7 @@ class TAController extends Controller {
         //Get our audits
         $audits = Audit::with("user")->orderBy('created_at', 'DESC')->get();
         //Get our sections
-        $sections = Section::with("ta")->with("category")->orderBy("type", "ASC")->get();
+        $sections = Section::with("ta")->with("ta2")->with("category")->orderBy("type", "ASC")->get();
         //Get our announcements
         $announcements = Announcement::with("user")->orderBy("hidden", "DESC")->orderBy("created_at", "DESC")->get();
         return view("ta.console")->with(["sections" => $sections, "user_hours" => $user_hours, "checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
@@ -290,6 +290,7 @@ class TAController extends Controller {
         $type = Request::input('inputType');
         $location = Request::input('inputLocation');
         $gsi = Request::input('inputGSI');
+        $second_gsi = Request::input('inputSecond_GSI');
         $maxLas = Request::input('inputMaxLas');
         $mon = Request::input('inputMon');
         $tue = Request::input('inputTue');
@@ -300,44 +301,93 @@ class TAController extends Controller {
         $sun = Request::input('inputSun');
         $start_time = Request::input('inputStartTime');
         $end_time = Request::input('inputEndTime');
-        $validator = Validator::make([
-            "type" => $type,
-            "location" => $location,
-            "gsi" => $gsi,
-            "maxLas" => $maxLas,
-            "mon" => $mon,
-            "tue" => $tue,
-            "wed" => $wed,
-            "thu" => $thu,
-            "fri" => $fri,
-            "sat" => $sat,
-            "sun" => $sun,
-            "start_time" => $start_time,
-            "end_time" => $end_time,
-        ], [
-            "type" => "required|exists:types,id",
-            "gsi" => "required|exists:passwords,gsi",
-            "maxLas" => "required|integer|min:-1",
-            "location" => "required",
-            "mon" => "in:,0,1",
-            "tue" => "in:,0,1",
-            "wed" => "in:,0,1",
-            "thu" => "in:,0,1",
-            "fri" => "in:,0,1",
-            "sat" => "in:,0,1",
-            "sun" => "in:,0,1",
-            "start_time" => "required",
-            "end_time" => "required",
-        ], [
-            "type.required" => "Please select a section type.",
-            "type.exists" => "That does not appear to be a valid section type.",
-            "gsi.required" => "Please select a GSI.",
-            "gsi.exists" => "That does not appear to be a valid GSI.",
-            "maxLas.required" => "Please enter the maximum amount of lab assistants for this section.",
-            "maxLas.integer" => "The max amount of lab assistants needs to be an integer value.",
-            "maxLas.min" => "Please enter a max lab assistants integer value equal to or greater than -1",
-            "location.required" => "Please enter a location for the section."
-        ]);
+        if ($second_gsi != -1) {
+            $validator = Validator::make([
+                "type" => $type,
+                "location" => $location,
+                "gsi" => $gsi,
+                "second_gsi" => $second_gsi,
+                "maxLas" => $maxLas,
+                "mon" => $mon,
+                "tue" => $tue,
+                "wed" => $wed,
+                "thu" => $thu,
+                "fri" => $fri,
+                "sat" => $sat,
+                "sun" => $sun,
+                "start_time" => $start_time,
+                "end_time" => $end_time,
+            ], [
+                "type" => "required|exists:types,id",
+                "gsi" => "required|exists:passwords,gsi",
+                "second_gsi" => "required_with:gsi|different:gsi|exists:passwords,gsi",
+                "maxLas" => "required|integer|min:-1",
+                "location" => "required",
+                "mon" => "in:,0,1",
+                "tue" => "in:,0,1",
+                "wed" => "in:,0,1",
+                "thu" => "in:,0,1",
+                "fri" => "in:,0,1",
+                "sat" => "in:,0,1",
+                "sun" => "in:,0,1",
+                "start_time" => "required",
+                "end_time" => "required",
+            ], [
+                "type.required" => "Please select a section type.",
+                "type.exists" => "That does not appear to be a valid section type.",
+                "gsi.required" => "Please select a GSI.",
+                "gsi.exists" => "That does not appear to be a valid GSI.",
+                "second_gsi.exists" => "That does not appear to be a valid GSI.",
+                "second_gsi.different" => "You may not choose the same GSI as the second GSI. Simply leave the second GSI field empty.",
+                "maxLas.required" => "Please enter the maximum amount of lab assistants for this section.",
+                "maxLas.integer" => "The max amount of lab assistants needs to be an integer value.",
+                "maxLas.min" => "Please enter a max lab assistants integer value equal to or greater than -1",
+                "location.required" => "Please enter a location for the section."
+            ]);
+        }
+        else {
+            $validator = Validator::make([
+                "type" => $type,
+                "location" => $location,
+                "gsi" => $gsi,
+                "second_gsi" => $second_gsi,
+                "maxLas" => $maxLas,
+                "mon" => $mon,
+                "tue" => $tue,
+                "wed" => $wed,
+                "thu" => $thu,
+                "fri" => $fri,
+                "sat" => $sat,
+                "sun" => $sun,
+                "start_time" => $start_time,
+                "end_time" => $end_time,
+            ], [
+                "type" => "required|exists:types,id",
+                "gsi" => "required|exists:passwords,gsi",
+                "maxLas" => "required|integer|min:-1",
+                "location" => "required",
+                "mon" => "in:,0,1",
+                "tue" => "in:,0,1",
+                "wed" => "in:,0,1",
+                "thu" => "in:,0,1",
+                "fri" => "in:,0,1",
+                "sat" => "in:,0,1",
+                "sun" => "in:,0,1",
+                "start_time" => "required",
+                "end_time" => "required",
+            ], [
+                "type.required" => "Please select a section type.",
+                "type.exists" => "That does not appear to be a valid section type.",
+                "gsi.required" => "Please select a GSI.",
+                "gsi.exists" => "That does not appear to be a valid GSI.",
+                "second_gsi.exists" => "That does not appear to be a valid GSI.",
+                "second_gsi.different" => "You may not choose the same GSI as the second GSI. Simply leave the second GSI field empty.",
+                "maxLas.required" => "Please enter the maximum amount of lab assistants for this section.",
+                "maxLas.integer" => "The max amount of lab assistants needs to be an integer value.",
+                "maxLas.min" => "Please enter a max lab assistants integer value equal to or greater than -1",
+                "location.required" => "Please enter a location for the section."
+            ]);
+        }
         //Route our validator
         if ($validator->fails()) {
            return redirect()->route('taconsole')->withErrors($validator);
@@ -347,7 +397,8 @@ class TAController extends Controller {
         $section->type = $type;
         $section->location = $location;
         $section->gsi = $gsi;
-        $section->maxLas = $maxLas;
+        $section->second_gsi = $second_gsi;
+        $section->max_las = $maxLas;
         //Yes someone who reads this and thinks it looks as
         //awful as I do. Please make a PR and fix this before
         //I get too mad looking at it and come up with a more
