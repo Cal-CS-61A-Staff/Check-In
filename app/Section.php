@@ -2,10 +2,19 @@
 
 use Auth, Request;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Section extends Model {
 
     protected $table = 'sections';
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::createFromTimestamp(strtotime($value))
+            ->timezone('America/Los_Angeles')
+            ->toDateTimeString()
+            ;
+    }
 
     public static function daysToString($s) {
         $dayString = "";
