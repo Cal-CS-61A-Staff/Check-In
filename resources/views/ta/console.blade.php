@@ -570,7 +570,7 @@
                         </form>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <input type="submit" class="btn btn-success" value="Create Section" />
+                        <input type="submit" class="btn btn-success" value="Edit Section" />
                     </div>
                 </form>
             </div>
