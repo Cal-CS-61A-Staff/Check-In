@@ -14,7 +14,7 @@
     <link media="all" type="text/css" rel="stylesheet" href="/packages/pickadate/themes/classic.time.css">
     <link media="all" type="text/css" rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css">
     <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
 <nav class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
     <div style="margin-top: 5px;" class="container-fluid">
@@ -36,6 +36,7 @@
                 @if (Auth::check())
                     <li><a href="{{ URL::route("lacheckin") }}"><i class="fa fa-check-circle-o fa-fw"></i> Check In</a></li>
                     <li><a href="{{ URL::route('laattendance') }}"><i class="fa fa-list-ol fa-fw"></i> Attendance</a></li>
+                    <li><a href="{{ URL::route('laassignments') }}"><i class="fa fa-map-signs fa-fw"></i> Assignments</a></li>
                     @if (Auth::user()->is_gsi())
                         <li><a href="{{ URL::route('taconsole') }}"><i class="fa fa-bookmark fa-fw"></i> TA Console</a></li>
                     @endif
