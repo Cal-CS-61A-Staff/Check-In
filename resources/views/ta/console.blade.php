@@ -293,7 +293,7 @@
                                     <table class="table table-bordered table-hover table-striped">
                                         <tr><th>Type</th><th>Location</th><th>Days</th><th>Start Time</th><th>End Time</th><th>GSI</th><th>Max Lab Assistants</th><th>Lab Assistants</th><th>Actions</th></tr>
                                         @foreach ($sections as $s)
-                                            <tr data-type="{{{ $s->type }}}" data-location="{{{ $s->location }}}" data-mon="{{{ $s->mon }}}" data-tue="{{{ $s->tue }}}" data-wed="{{{ $s->wed }}}" data-thu="{{{ $s->thu }}}" data-fri="{{{ $s->fri }}}" data-sat="{{{ $s->sat }}}" data-sun="{{{ $s->sun }}}">
+                                            <tr data-sid="{{{ $s->id }}}" data-type="{{{ $s->type }}}" data-location="{{{ $s->location }}}" data-max_las="{{{ $s->max_las}}}" data-mon="{{{ $s->mon }}}" data-tue="{{{ $s->tue }}}" data-wed="{{{ $s->wed }}}" data-thu="{{{ $s->thu }}}" data-fri="{{{ $s->fri }}}" data-sat="{{{ $s->sat }}}" data-sun="{{{ $s->sun }}}" data-gsi="{{{ $s->gsi }}}" data-second_gsi="{{{ $s->second_gsi }}}" data-start_time="{{{ $s->start_time }}}" data-end_time="{{{ $s->end_time }}}">
                                                 <td>{{{ $s->category->name }}}</td>
                                                 <td>{{{ $s->location }}}</td>
                                                 <td>{{{ App\Section::daysToString($s) }}}</td>
@@ -482,13 +482,12 @@
                     <h4 class="modal-title">Edit Section</h4>
                 </div>
                 <form class="form" method="POST" action="{{ route("tasectionedit") }}">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                    <input type="hidden" id="inputSID" name="inputSID" value="" />
+                    <input id="editSectionInputHidden" type="hidden" name="_token" value="{{ csrf_token() }}" />
+                    <input type="hidden" id="editSectionInputSID" name="inputSID" value="" />
                     <div class="modal-body">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                             <div class="form-group">
                                 <label>Type: </label>
-                                <select name="inputType" class="form-control">
+                                <select id="editSectionInputType" name="inputType" class="form-control">
                                     <option value="-1">Select a type</option>
                                     @foreach ($types as $type)
                                         <option value="{{{ $type->id }}}">{{{ $type->name }}}</option>
@@ -497,11 +496,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Location <small>([Room #] [Building Name])</small>: </label>
-                                <input type="text" name="inputLocation" class="form-control" placeholder="Ex: 411 Soda" />
+                                <input type="text" id="editSectionInputLocation" name="inputLocation" class="form-control" placeholder="Ex: 411 Soda" />
                             </div>
                             <div class="form-group">
                                 <label>GSI: </label>
-                                <select name="inputGSI" class="form-control">
+                                <select id="editSectionInputGSI" name="inputGSI" class="form-control">
                                     <option value="-1">Select a GSI</option>
                                     @foreach ($gsis as $gsi)
                                         <option value="{{{ $gsi->id }}}">{{{ $gsi->name }}}</option>
@@ -510,7 +509,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Second GSI <small>(Optional)</small>: </label>
-                                <select name="inputSecond_GSI" class="form-control">
+                                <select id="editSectionInputSecond_GSI" name=inputSecond_GSI class="form-control">
                                     <option value="-1">Select a GSI</option>
                                     @foreach ($gsis as $gsi)
                                         <option value="{{{ $gsi->id }}}">{{{ $gsi->name }}}</option>
@@ -518,53 +517,53 @@
                                 </select>
                             </div>                            <div class="form-group">
                                 <label>Max Lab Assistants <small>(-1 for unlimited)</small>: </label>
-                                <input type="number" class="form-control" name="inputMaxLas" placeholder="Ex: 5" />
+                                <input type="number" class="form-control" name="inputMaxLas" id="editSectionInputMaxLas" placeholder="Ex: 5" />
                             </div>
                             <div class="form-group">
                                 <label>Days: </label>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="inputMon" value="1" /> Monday
+                                        <input type="checkbox" id="editSectionInputMon" name="inputMon" value="1" /> Monday
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="inputTue" value="1" /> Tuesday
+                                        <input type="checkbox" id="editSectionInputTue" name="inputTue" value="1" /> Tuesday
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="inputWed" value="1" /> Wednesday
+                                        <input type="checkbox" id="editSectionInputWed" name="inputWed" value="1" /> Wednesday
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="inputThu" value="1" /> Thursday
+                                        <input type="checkbox" id="editSectionInputThu" name="inputThu" value="1" /> Thursday
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="inputFri" value="1" /> Friday
+                                        <input type="checkbox" id="editSectionInputFri" name="inputFri" value="1" /> Friday
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="inputSat" value="1" /> Saturday
+                                        <input type="checkbox" id="editSectionInputSat" name="inputSat" value="1" /> Saturday
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="inputSun" value="1" /> Sunday
+                                        <input type="checkbox" id="editSectionInputSun" name="inputSun" value="1" /> Sunday
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Start Time: </label>
-                                <input type="text" id="newSectionFormStartTimeInput" name="inputStartTime" placeholder="Ex: 4:30PM" class="form-control" />
+                                <input type="text" id="editSectionInputStartTime" name="inputStartTime" placeholder="Ex: 4:30PM" class="form-control" />
                             </div>
                             <div class="form-group">
                                 <label>End Time: </label>
-                                <input type="text" id="newSectionFormEndTimeInput" name="inputEndTime" placeholder="Ex: 6:00PM" class="form-control" />
+                                <input type="text" id="editSectionInputEndTime" name="inputEndTime" placeholder="Ex: 6:00PM" class="form-control" />
                             </div>
                             <div class="form-actions">
                             </div>
@@ -583,6 +582,8 @@
     $('.console-container').fadeIn();
     $('#inputDate').pickadate();
     $('#inputTime').pickatime();
+    $('#editSectionInputStartTime').pickatime();
+    $('#editSectionInputEndTime').pickadate();
 
     $('#auditLogTable').DataTable();
 
@@ -776,7 +777,38 @@
     });
 
     $('.sectionActions').on('click', function() {
-
+        var tr = $(this).closest('tr');
+        console.log("data-sid = " + tr.attr('data-sid'));
+        $('#editSectionInputSID').val(tr.attr('data-sid'));
+        $('#editSectionInputType option[value="'+ tr.attr('data-type')  +'"]').attr("selected", true);
+        $('#editSectionInputLocation').val(tr.attr('data-location'));
+        $('#editSectionInputGSI option[value="'+ tr.attr('data-gsi')  +'"]').attr("selected", true);
+        $('#editSectionInputSecond_GSI option[value="'+ tr.attr('data-second_gsi')  +'"]').attr("selected", true);
+        $('#editSectionInputMaxLas').val(tr.attr('data-max_las'));
+        var mon = tr.attr('data-mon');
+        var tue = tr.attr('data-tue');
+        var wed = tr.attr('data-wed');
+        var thu = tr.attr('data-thu');
+        var fri = tr.attr('data-fri');
+        var sat = tr.attr('data-sat');
+        var sun = tr.attr('data-sun');
+        if (mon == 1)
+            $('#editSectionInputMon').attr("checked", true);
+        if (tue == 1)
+            $('#editSectionInputTue').attr("checked", true);
+        if (wed == 1)
+            $('#editSectionInputWed').attr("checked", true);
+        if (thu == 1)
+            $('#editSectionInputThu').attr("checked", true);
+        if (fri == 1)
+            $('#editSectionInputFri').attr("checked", true);
+        if (sat == 1)
+            $('#editSectionInputSat').attr("checked", true);
+        if (sun == 1)
+            $('#editSectionInputSun').attr("checked", true);
+        $('#editSectionInputStartTime').val(tr.attr('data-start_time'))
+        $('#editSectionInputEndTime').val(tr.attr('data-end_time'))
+        $('#editSectionModal').modal('show');
     });
 
 @endsection
