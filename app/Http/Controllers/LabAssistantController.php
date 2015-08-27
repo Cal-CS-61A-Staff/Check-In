@@ -4,8 +4,11 @@ use Validator, Auth, Request, Hash, Mail, View;
 use App\Checkin;
 use App\Password;
 use App\Audit;
+use App\Assignment;
+use App\Preference;
 use App\User;
 use App\Type;
+use App\Section;
 use App\Announcement;
 class LabAssistantController extends Controller {
 
@@ -18,6 +21,71 @@ class LabAssistantController extends Controller {
         $types = Type::where("hidden", "=", 0)->get();
         $tas = User::where("access", ">", 0)->orderBy("name", "ASC")->get();
         return view("la.checkin")->with(["types" => $types, "tas" => $tas]);
+    }
+
+    public function get_assignments() {
+        //Get our assignments
+        $assignments = Assignment::with("sec.category")->with("sec.ta")->with("sec.ta2")->where("uid", "=", Auth::user()->id)->get();
+        //Get our preferences
+        $preferences = Preference::with("sec.category")->with("sec.ta")->with("sec.ta2")->where("uid", "=", Auth::user()->id)->get();
+        //Get all sections
+        $sections = Section::with('category')->with('ta')->with('ta2')->orderBy('type')->orderBy("mon")->orderBy("tue")->orderBy("wed")->orderBy("thu")->orderBy("fri")->orderBy("sat")->orderBy("sun")->orderBy('start_time')->get();
+        $preferenceSids = array();
+        foreach ($preferences as $preference) {
+            $preferenceSids[$preference->section] = $preference->section;
+        }
+        //Return our Response
+        return view('assignments')->with(["preferenceSids" => $preferenceSids, "sections" => $sections, "assignments" => $assignments, "preferences" => $preferences]);
+    }
+
+    public function post_assignments() {
+        //Get our input fields
+        $hours = Request::input('inputHours');
+        $units = Request::input('inputUnits');
+        //Ensure we have a value for hours and units
+        if ($hours == "" || $units == "") {
+            return redirect()->route("laassignments")->with("message", "Hours and Units must be provided.");
+        }
+        //Ensure both of these numbers are number
+        if (!is_numeric($hours) || !is_numeric($units)) {
+            return redirect()->route("laassignments")->with("message", "Hours and Units must be numeric.");
+        }
+        $u = User::findOrFail(Auth::user()->id);
+        $u->hours = $hours;
+        $u->units = $units;
+        $u->save();
+        $sections = Request::input('inputSections');
+        //Current requested sections
+        $preferences = Preference::where("uid", "=", Auth::user()->id)->get();
+        //start by adding all our current preferences
+        $preferencesToDelete =  array();
+        foreach ($preferences as $preference) {
+            $preferencesToDelete[$preference->id] = $preference->id;
+        }
+        if (!empty($sections)) {
+            foreach ($sections as $section) {
+                //Ensure that this is a valid section
+                $count = Section::where("id", "=", $section)->count();
+                if ($count == 0) {
+                    return redirect()->route("laassignments")->with("message", "It appears you selected an invalid section.");
+                }
+                if (in_array($section, $preferencesToDelete)) {
+                    unset($preferencesToDelete[$section]);
+                }
+                else {
+                    $p = new Preference;
+                    $p->uid = Auth::user()->id;
+                    $p->section = $section;
+                    $p->save();
+                }
+
+            }
+        }
+        foreach ($preferencesToDelete as $ptd) {
+            $p = Preference::findOrFail($ptd);
+            $p->delete();
+        }
+        return redirect()->route("laassignments")->with("message", "Preferences saved successfully.");
     }
 
     public function post_checkin() {
