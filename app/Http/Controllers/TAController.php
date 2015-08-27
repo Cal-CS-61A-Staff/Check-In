@@ -439,6 +439,13 @@ class TAController extends Controller {
         return redirect()->route("taconsole")->with("message", "The new section was successfully created.");
     }
 
+    public function get_section_delete($sid) {
+        $section = Section::findOrFail($sid);
+        //TODO remove lab assistant assignments for this section
+        //Delete the section
+        $section->delete();
+        return redirect()->route("taconsole")->with("message", "The section was successfully deleted.");
+    }
     public function post_section_edit() {
         //Get all of our data
         $sid = Request::input('inputSID');

@@ -308,9 +308,9 @@
                                                 <td>Coming Soon</td>
                                                 <td><a class="sectionViewActionsLink" href="#">View Actions</a>
                                                     <p class="sectionActions" style="display: none;">
-                                                        <button class="btn btn-warning">
+                                                        <button class="btn btn-warning sectionEditBtn">
                                                             <i class="fa fa-edit fa-fw"></i>
-                                                        </button> <button class="btn btn-danger">
+                                                        </button> <button class="btn btn-danger sectionDeleteBtn">
                                                             <i class="fa fa-times fa-fw"></i>
                                                         </button>
                                                     </p>
@@ -471,6 +471,25 @@
                         <input type="submit" class="btn btn-info" value="Check In" />
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    <div id="deleteSectionModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Delete Section</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this section? This is an <strong>irreversible action</strong> and all
+                        <strong>lab assistant assignments</strong> for this section will also be <strong>permanently removed</strong>.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a id="deleteSectionFinalLink" href="#"><button class="btn btn-danger"><i class="fa fa-times fa-fw"></i> Permanently Delete Section</button></a>
+                </div>
             </div>
         </div>
     </div>
@@ -776,7 +795,7 @@
         $(this).siblings('.sectionActions').fadeIn();
     });
 
-    $('.sectionActions').on('click', function() {
+    $('.sectionEditBtn').on('click', function() {
         var tr = $(this).closest('tr');
         console.log("data-sid = " + tr.attr('data-sid'));
         $('#editSectionInputSID').val(tr.attr('data-sid'));
@@ -809,6 +828,10 @@
         $('#editSectionInputStartTime').val(tr.attr('data-start_time'))
         $('#editSectionInputEndTime').val(tr.attr('data-end_time'))
         $('#editSectionModal').modal('show');
+    });
+    $('.sectionDeleteBtn').on('click', function() {
+        $('#deleteSectionFinalLink').attr("href", "{{{ URL::to('ta/section/delete') }}}/" + $(this).closest('tr').attr('data-sid'));
+        $('#deleteSectionModal').modal('show');
     });
 
 @endsection
