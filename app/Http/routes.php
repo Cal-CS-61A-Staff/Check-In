@@ -40,6 +40,7 @@
     //POST
     Route::post('docheckin', ["as" => "dolacheckin", "uses" => "LabAssistantController@post_checkin", "middleware" => "auth"]);
     Route::post('account', ["as" => "doaccount", "uses" => "LabAssistantController@post_account", "middleware" => "auth"]);
+    Route::post('assignments', ["as" => "doassignments", "uses" => "LabAssistantController@post_assignments", "middleware" => "auth"]);
 
 //TA/Tutor Routes
     //GET
