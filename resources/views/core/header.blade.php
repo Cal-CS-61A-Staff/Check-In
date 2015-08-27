@@ -25,7 +25,7 @@
                 <span style="background-color: #999999" class="icon-bar"></span>
                 <span style="background-color: #999999" class="icon-bar"></span>
             </button>
-            <a href="../" class="navbar-brand">CS61A <small>LAM 1.0</small></a>
+            <a href="../" class="navbar-brand">CS61A <small>LAM 1.1</small></a>
         </div>
         <div id="navbarCollapse" class="nav collapse navbar-collapse bs-navbar-collapse">
             <ul class="nav navbar-nav">
