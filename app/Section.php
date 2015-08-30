@@ -49,4 +49,12 @@ class Section extends Model {
         return $this->hasOne('App\User', 'id', 'second_gsi');
     }
 
+    public function pref() {
+        return $this->hasMany('App\Preference', 'section', 'id');
+    }
+
+    public function assigned() {
+        return $this->hasMany('App\Assignment', 'section', 'id');
+    }
+
 }

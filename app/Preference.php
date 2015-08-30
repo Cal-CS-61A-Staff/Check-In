@@ -26,4 +26,8 @@ class Preference extends Model
     public function sec() {
         return $this->hasOne('App\Section', "id", "section");
     }
+
+    public function user() {
+        return $this->hasOne('App\User', "id", "uid");
+    }
 }

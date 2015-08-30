@@ -35,7 +35,7 @@ class TAController extends Controller {
         //Get our audits
         $audits = Audit::with("user")->orderBy('created_at', 'DESC')->get();
         //Get our sections
-        $sections = Section::with("ta")->with("ta2")->with("category")->orderBy("type", "ASC")->get();
+        $sections = Section::with("pref.user")->with("assigned.user")->with("ta")->with("ta2")->with("category")->orderBy("type", "ASC")->get();
         //Get our announcements
         $announcements = Announcement::with("user")->orderBy("hidden", "DESC")->orderBy("created_at", "DESC")->get();
         return view("ta.console")->with(["sections" => $sections, "user_hours" => $user_hours, "checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);

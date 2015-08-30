@@ -27,4 +27,8 @@ class Assignment extends Model
         return $this->hasOne('App\Section', "id", "section");
     }
 
+    public function user() {
+        return $this->hasOne('App\User', "id", "uid");
+    }
+
 }

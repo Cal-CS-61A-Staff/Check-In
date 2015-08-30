@@ -291,7 +291,7 @@
                             <div class="col-lg-12">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover table-striped">
-                                        <tr><th>Type</th><th>Location</th><th>Days</th><th>Start Time</th><th>End Time</th><th>GSI</th><th>Max Lab Assistants</th><th>Lab Assistants</th><th>Actions</th></tr>
+                                        <tr><th>Type</th><th>Location</th><th>Days</th><th>Start Time</th><th>End Time</th><th>GSI</th><th>Max Lab Assistants</th><th>Assigned</th><th>Requested</th><th>Actions</th></tr>
                                         @foreach ($sections as $s)
                                             <tr data-sid="{{{ $s->id }}}" data-type="{{{ $s->type }}}" data-location="{{{ $s->location }}}" data-max_las="{{{ $s->max_las}}}" data-mon="{{{ $s->mon }}}" data-tue="{{{ $s->tue }}}" data-wed="{{{ $s->wed }}}" data-thu="{{{ $s->thu }}}" data-fri="{{{ $s->fri }}}" data-sat="{{{ $s->sat }}}" data-sun="{{{ $s->sun }}}" data-gsi="{{{ $s->gsi }}}" data-second_gsi="{{{ $s->second_gsi }}}" data-start_time="{{{ $s->start_time }}}" data-end_time="{{{ $s->end_time }}}">
                                                 <td>{{{ $s->category->name }}}</td>
@@ -304,8 +304,9 @@
                                             @else
                                                 <td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $s->ta->name }}}</span> @if ($s->second_gsi != -1) <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $s->ta2->name }}}</span> @endif </td>
                                             @endif
-                                                <td>{{{ $s->max_las }}}</td>
-                                                <td>Coming Soon</td>
+                                                <td>@if ($s->max_las == -1 ) &infin; @else {{{ $s->max_las }}} @endif</td>
+                                                <td>@foreach ($s->assigned as $assigned) {{{ $assigned->user->name }}} @endforeach</td>
+                                                <td>@foreach ($s->pref as $assigned) {{{ $assigned->user->name }}} @endforeach</td>
                                                 <td><a class="sectionViewActionsLink" href="#">View Actions</a>
                                                     <p class="sectionActions" style="display: none;">
                                                         <button class="btn btn-warning sectionEditBtn">
