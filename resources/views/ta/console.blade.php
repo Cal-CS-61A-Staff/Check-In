@@ -622,7 +622,7 @@
     $('#inputDate').pickadate();
     $('#inputTime').pickatime();
     $('#editSectionInputStartTime').pickatime();
-    $('#editSectionInputEndTime').pickadate();
+    $('#editSectionInputEndTime').pickatime();
 
     $('#auditLogTable').DataTable();
 
