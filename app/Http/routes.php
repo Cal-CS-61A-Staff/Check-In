@@ -61,4 +61,5 @@
     Route::post("ta/announcement/new", ["as" => "taannouncementnew", "uses" => "TAController@post_announcement_new", "middleware" => "auth.tutor"]);
     Route::post("ta/section/new", ["as" => "tasectionnew", "uses" => "TAController@post_section_new", "middleware" => "auth.ta"]);
     Route::post("ta/section/edit", ["as" => "tasectionedit", "uses" => "TAController@post_section_edit", "middleware" => "auth.ta"]);
+    Route::post("ta/section/assign", ["as" => "tasectionassign", "uses" => "TAController@post_section_assign", "middleware" => "auth.ta"]);
 

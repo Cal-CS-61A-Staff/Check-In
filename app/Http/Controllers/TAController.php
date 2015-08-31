@@ -9,6 +9,7 @@ use App\Audit;
 use App\Type;
 use App\Password;
 use App\Section;
+use App\Assignment;
 
 class TAController extends Controller {
 
@@ -609,6 +610,21 @@ class TAController extends Controller {
         $section->save();
         //Return a redirect Response
         return redirect()->route("taconsole")->with("message", "The section was edited successfully.");
+    }
+
+    public function post_section_assign() {
+        $uid = Request::input('inputUID');
+        $section = Request::input('inputSID');
+        $assignment = Assignment::where("uid", "=", $uid)->where("section", "=", $section)->count();
+        $u = User::findOrFail($uid);
+        $s = Section::findOrFail($section);
+        if ($assignment == 0) {
+            $assignment = new Assignment;
+            $assignment->uid = $uid;
+            $assignment->section = $section;
+            $assignment->save();
+        }
+        return "1";
     }
 
 }

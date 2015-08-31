@@ -308,8 +308,12 @@
                                                     <td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $s->ta->name }}}</span> @if ($s->second_gsi != -1) <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $s->ta2->name }}}</span> @endif </td>
                                                 @endif
                                                     <td>@if ($s->max_las == -1 ) &infin; @else {{{ $s->max_las }}} @endif</td>
-                                                    <td>@foreach ($s->assigned as $assigned) {{{ $assigned->user->name }}}, @endforeach</td>
-                                                    <td>@foreach ($s->pref as $assigned) <a href="#" data-toggle="tooltip" data-placement="top" data-title="{{{ $assigned_hours[$assigned->uid]  }}}/{{{ $assigned->user->hours }}} requested hours for {{{ $assigned->user->units }}} units">{{{ $assigned->user->name }}}</a>, @endforeach</td>
+                                                    <td class="sectionTableAssigned">@foreach ($s->assigned as $assigned) {{{ $assigned->user->name }}}, @endforeach</td>
+                                                    <td>
+                                                        <a class="sectionTableViewRequests" href="#">View Requests</a>
+                                                        <p style="display: none;">
+                                                            @foreach ($s->pref as $assigned) <a class="assignLabAssistantLink" data-name="{{{ $assigned->user->name }}}" data-uid="{{{ $assigned->uid }}}" data-sid="{{{ $assigned->section }}}" href="#" data-toggle="tooltip" data-placement="top" data-title="{{{ $assigned_hours[$assigned->uid]  }}}/{{{ $assigned->user->hours }}} requested hours for {{{ $assigned->user->units }}} units">{{{ $assigned->user->name }}}</a>, @endforeach</td>
+                                                        </p>
                                                     <td><a class="sectionViewActionsLink" href="#">View Actions</a>
                                                         <p class="sectionActions" style="display: none;">
                                                             <button class="btn btn-warning sectionEditBtn">
@@ -840,6 +844,29 @@
     });
     $('[data-toggle="tooltip"]').tooltip();
     $('#sectionTable').DataTable();
+    $('.sectionTableViewRequests').on('click', function(e) {
+        e.preventDefault();
+        $(this).hide();
+        $(this).siblings('p').fadeIn();
+    });
+    $('.assignLabAssistantLink').on('click', function(e) {
+        e.preventDefault();
+        var sid = $(this).attr('data-sid');
+        var uid = $(this).attr('data-uid');
+        var name = $(this).attr('data-name');
+        var l = $(this);
+        var _token = "{{{ csrf_token() }}}";
+        $.ajax({
+            type: "POST",
+            url: "{{ route("tasectionassign") }}",
+            data: {_token: _token, inputSID: sid, inputUID: uid}
+        })
+            .success(function(received) {
+                var assigned = l.closest('td').siblings('.sectionTableAssigned');
+                assigned.html(assigned.html() + " " + name + ",");
+            }
+        );
+    });
 
 @endsection
 @include('core.footer')
