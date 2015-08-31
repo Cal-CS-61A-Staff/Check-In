@@ -308,7 +308,7 @@
                                                     <td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $s->ta->name }}}</span> @if ($s->second_gsi != -1) <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $s->ta2->name }}}</span> @endif </td>
                                                 @endif
                                                     <td>@if ($s->max_las == -1 ) &infin; @else {{{ $s->max_las }}} @endif</td>
-                                                    <td class="sectionTableAssigned">@foreach ($s->assigned as $assigned) @if (array_key_exists($assigned->uid, $over_hours)) <p style="background-color: red;">{{{ $assigned->user->name }}}</p> @else {{{ $assigned->user->name }}}@endif, @endforeach</td>
+                                                    <td class="sectionTableAssigned">@foreach ($s->assigned as $assigned) <a class="unassignLabAssistantLink" data-name="{{{ $assigned->user->name }}}" data-uid="{{{ $assigned->uid }}}" data-sid="{{{ $assigned->section }}}" href="#" data-toggle="tooltip" data-placement="top" data-title="{{{ $assigned_hours[$assigned->uid]  }}}/{{{ $assigned->user->hours }}} requested hours for {{{ $assigned->user->units }}} units">@if (array_key_exists($assigned->uid, $over_hours)) <p style="background-color: red;">{{{ $assigned->user->name }}}</p> @else {{{ $assigned->user->name }}}@endif, @endforeach</a></td>
                                                     <td>
                                                         <a class="sectionTableViewRequests" href="#">View Requests</a>
                                                         <p style="">
@@ -866,6 +866,22 @@
             }
         );
     });
-
+$('.unassignLabAssistantLink').on('click', function(e) {
+        e.preventDefault();
+        var sid = $(this).attr('data-sid');
+        var uid = $(this).attr('data-uid');
+        var name = $(this).attr('data-name');
+        var l = $(this);
+        var _token = "{{{ csrf_token() }}}";
+        $.ajax({
+            type: "POST",
+            url: "{{ route("tasectionunassign") }}",
+            data: {_token: _token, inputSID: sid, inputUID: uid}
+        })
+            .success(function(received) {
+                l.fadeOut();
+            }
+        );
+    });
 @endsection
 @include('core.footer')
