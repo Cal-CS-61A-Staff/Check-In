@@ -308,7 +308,18 @@
                                                     <td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $s->ta->name }}}</span> @if ($s->second_gsi != -1) <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $s->ta2->name }}}</span> @endif </td>
                                                 @endif
                                                     <td>@if ($s->max_las == -1 ) &infin; @else {{{ $s->max_las }}} @endif</td>
-                                                    <td class="sectionTableAssigned">@foreach ($s->assigned as $assigned) <a class="unassignLabAssistantLink" data-name="{{{ $assigned->user->name }}}" data-uid="{{{ $assigned->uid }}}" data-sid="{{{ $assigned->section }}}" href="#" data-toggle="tooltip" data-placement="top" data-title="{{{ $assigned_hours[$assigned->uid]  }}}/{{{ $assigned->user->hours }}} requested hours for {{{ $assigned->user->units }}} units">@if (array_key_exists($assigned->uid, $over_hours) && $assigned->user->hours > 0) <span style="background-color: yellow;">{{{ $assigned->user->name }}}</span> @else {{{ $assigned->user->name }}}@endif, @endforeach</a></td>
+                                                    <td class="sectionTableAssigned">@foreach ($s->assigned as $assigned)
+                                                            <a class="unassignLabAssistantLink"
+                                                               data-name="{{{ $assigned->user->name }}}"
+                                                               data-uid="{{{ $assigned->uid }}}"
+                                                               data-sid="{{{ $assigned->section }}}"
+                                                               href="#" data-toggle="tooltip" data-placement="top"
+                                                               data-title="{{{ $assigned_hours[$assigned->uid]  }}}/{{{ $assigned->user->hours }}} requested hours for {{{ $assigned->user->units }}} units">
+                                                                @if (array_key_exists($assigned->uid, $double_booked)) <span style="background-color: red;">{{{ $assigned->user->name }}}</span> @else @if (array_key_exists($assigned->uid, $over_hours) && $assigned->user->hours > 0)
+                                                                    <span style="background-color: yellow;">{{{ $assigned->user->name }}}</span>
+                                                                @else {{{ $assigned->user->name }}}@endif @endif, @endforeach
+                                                            </a>
+                                                    </td>
                                                     <td>
                                                         <a class="sectionTableViewRequests" href="#">View Requests</a>
                                                         <p style="">

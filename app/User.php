@@ -49,6 +49,28 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
         return $over_hours;
     }
+
+    public static function get_doubleBooked($assignments) {
+        $users = [];
+        $double_booked = [];
+        foreach ($assignments as $assignment) {
+            $days = Section::daysToString($assignment->sec);
+            if (!array_key_exists($assignment->uid, $double_booked)) {
+                $double_booked[$assignment->uid] = [$days => [$assignment->sec->start_time => $assignment->sec->start_time ]];
+            }
+            else if (!array_key_exists($days, $double_booked[$assignment->uid])) {
+                $double_booked[$assignment->uid][$days] = [$assignment->sec->start_time => $assignment->sec->start_time];
+            }
+            else if (array_key_exists($assignment->sec->start_time, $double_booked[$assignment->uid][$days])) {
+                $users[$assignment->uid] = $assignment->uid;
+            }
+            else {
+                $double_booked[$assignment->uid][$days][$assignment->sec->start_time] = $assignment->sec->start_time;
+            }
+        }
+        return $users;
+    }
+
 	/**
 	 * The database table used by the model.
 	 *
