@@ -307,8 +307,8 @@
                                                 @else
                                                     <td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $s->ta->name }}}</span> @if ($s->second_gsi != -1) <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $s->ta2->name }}}</span> @endif </td>
                                                 @endif
-                                                    <td>@if ($s->max_las == -1 ) &infin; @else @if (array_key_exists($s->uid, $over_hours)) <p style="background-color: red;"> {{{ $s->max_las }}}</p> @else {{{ $s->max_las }}} @endif @endif</td>
-                                                    <td class="sectionTableAssigned">@foreach ($s->assigned as $assigned) {{{ $assigned->user->name }}}, @endforeach</td>
+                                                    <td>@if ($s->max_las == -1 ) &infin; @else {{{ $s->max_las }}} @endif</td>
+                                                    <td class="sectionTableAssigned">@foreach ($s->assigned as $assigned) @if (array_key_exists($assigned->uid, $over_hours)) <p style="background-color: red;">{{{ $assigned->user->name }}}</p> @else {{{ $assigned->user->name }}}@endif, @endforeach</td>
                                                     <td>
                                                         <a class="sectionTableViewRequests" href="#">View Requests</a>
                                                         <p style="">
