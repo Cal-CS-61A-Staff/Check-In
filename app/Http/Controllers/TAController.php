@@ -29,6 +29,8 @@ class TAController extends Controller {
         $users = User::with("assignments.sec.category")->orderBy("name", "ASC")->get();
         //Get our assigned hours
         $assigned_hours = User::get_assignedHours($users);
+        //Get under hours
+        $under_hours = User::get_underHours($users, $assigned_hours);
         //Get our password
         $password = Password::where("gsi", "=", Auth::user()->id)->first()->password;
         //Get our gsis
@@ -41,7 +43,7 @@ class TAController extends Controller {
         $sections = Section::with("pref.user")->with("assigned.user")->with("ta")->with("ta2")->with("category")->orderBy("type", "ASC")->get();
         //Get our announcements
         $announcements = Announcement::with("user")->orderBy("hidden", "DESC")->orderBy("created_at", "DESC")->get();
-        return view("ta.console")->with(["assigned_hours" => $assigned_hours,"sections" => $sections, "user_hours" => $user_hours, "checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
+        return view("ta.console")->with(["under_hours" => $under_hours, "assigned_hours" => $assigned_hours,"sections" => $sections, "user_hours" => $user_hours, "checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
     }
 
     public function post_update_password() {
