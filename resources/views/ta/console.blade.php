@@ -894,5 +894,8 @@ $('.unassignLabAssistantLink').on('click', function(e) {
             }
         );
     });
+    $('#sectionTable').DataTable({
+        paging: false
+    });
 @endsection
 @include('core.footer')
