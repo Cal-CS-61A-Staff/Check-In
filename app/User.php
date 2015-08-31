@@ -40,6 +40,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $under_hours;
     }
 
+    public static function get_overHours($users, $assigned_hours) {
+        $over_hours = [];
+        foreach ($users as $user) {
+            if ($assigned_hours[$user->id] > $user->hours) {
+                $over_hours[$user->id] = $assigned_hours[$user->id] - $user->hours;
+            }
+        }
+        return $over_hours;
+    }
 	/**
 	 * The database table used by the model.
 	 *
