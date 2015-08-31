@@ -843,7 +843,6 @@
         $('#deleteSectionModal').modal('show');
     });
     $('[data-toggle="tooltip"]').tooltip();
-    $('#sectionTable').DataTable();
     $('.sectionTableViewRequests').on('click', function(e) {
         e.preventDefault();
         $(this).hide();
