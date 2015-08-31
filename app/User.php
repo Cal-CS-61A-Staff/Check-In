@@ -18,6 +18,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->toDateTimeString();
     }
 
+    public static function get_assignedHours($users) {
+        $assigned_hours = [];
+        foreach ($users as $user) {
+            if (!array_key_exists($user->id, $assigned_hours)) {
+                $assigned_hours[$user->id] = 0;
+            }
+            foreach ($user->assignments as $assignment)
+                $assigned_hours[$user->id] += $assignment->sec->category->hours;
+        }
+        return $assigned_hours;
+    }
+
 	/**
 	 * The database table used by the model.
 	 *
@@ -39,6 +51,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	protected $hidden = ['password', 'remember_token'];
 
+    public function assignments() {
+        return $this->hasMany('App\Assignment', 'uid');
+    }
 
     public function checkins() {
         return $this->hasMany('App\Checkin', 'uid');
