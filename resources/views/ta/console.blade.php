@@ -306,7 +306,7 @@
                                             @endif
                                                 <td>@if ($s->max_las == -1 ) &infin; @else {{{ $s->max_las }}} @endif</td>
                                                 <td>@foreach ($s->assigned as $assigned) {{{ $assigned->user->name }}}, @endforeach</td>
-                                                <td>@foreach ($s->pref as $assigned) <a href="#" data-toggle="tooltip" data-placement="top" data-title="{{{ $assigned_hours[$assigned->uid]  }}}/{{{ $assigned->user->hours }}} requested hours">{{{ $assigned->user->name }}}</a>, @endforeach</td>
+                                                <td>@foreach ($s->pref as $assigned) <a href="#" data-toggle="tooltip" data-placement="top" data-title="{{{ $assigned_hours[$assigned->uid]  }}}/{{{ $assigned->user->hours }}} requested hours for {{{ $assigned->user->units }}} units">{{{ $assigned->user->name }}}</a>, @endforeach</td>
                                                 <td><a class="sectionViewActionsLink" href="#">View Actions</a>
                                                     <p class="sectionActions" style="display: none;">
                                                         <button class="btn btn-warning sectionEditBtn">
