@@ -34,7 +34,7 @@ class TAController extends Controller {
         //Get over hours
         $over_hours = User::get_overHours($users, $assigned_hours);
         //Get assignments
-        $assignments = Assignment::with("sec.user")->get();
+        $assignments = Assignment::with("sec")->with("user")->get();
         //Get double booked
         $doubled_booked = User::get_doubleBooked($assignments);
         //Get our password
