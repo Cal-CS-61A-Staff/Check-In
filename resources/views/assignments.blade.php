@@ -118,10 +118,10 @@
                             {{{ App\Section::daysToString($assignment->sec) }}}
                         </td>
                         <td>
-                            {{{ $assignment->start_time }}}
+                            {{{ $assignment->sec->start_time }}}
                         </td>
                         <td>
-                            {{{ $assignment->end_time }}}
+                            {{{ $assignment->sec->end_time }}}
                         </td>
                     </tr>
                 @endforeach
