@@ -311,7 +311,7 @@
                                                     <td class="sectionTableAssigned">@foreach ($s->assigned as $assigned) {{{ $assigned->user->name }}}, @endforeach</td>
                                                     <td>
                                                         <a class="sectionTableViewRequests" href="#">View Requests</a>
-                                                        <p style="display: none;">
+                                                        <p style="">
                                                             @foreach ($s->pref as $assigned) <a class="assignLabAssistantLink" data-name="{{{ $assigned->user->name }}}" data-uid="{{{ $assigned->uid }}}" data-sid="{{{ $assigned->section }}}" href="#" data-toggle="tooltip" data-placement="top" data-title="{{{ $assigned_hours[$assigned->uid]  }}}/{{{ $assigned->user->hours }}} requested hours for {{{ $assigned->user->units }}} units">@if (array_key_exists($assigned->user->id, $under_hours)) <strong> {{{ $assigned->user->name }}}</strong> @else {{{ $assigned->user->name }}}@endif</a>, @endforeach</td>
                                                         </p>
                                                     <td><a class="sectionViewActionsLink" href="#">View Actions</a>
