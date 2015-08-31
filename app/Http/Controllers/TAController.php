@@ -631,4 +631,12 @@ class TAController extends Controller {
         return "1";
     }
 
+    public function post_section_unassign() {
+        $uid = Request::input('inputUID');
+        $section = Request::input('inputSID');
+        $assignment = Assignment::where("uid", "=", $uid)->where("section", "=", $section)->first();
+        $assignment->delete();
+        return "1";
+    }
+
 }
