@@ -37,6 +37,7 @@
     Route::get('attendance', ["as" => "laattendance", "uses" => "LabAssistantController@get_attendance", "middleware" => "auth"]);
     Route::get('assignments', ["as" => "laassignments", "uses" => "LabAssistantController@get_assignments", "middleware" => "auth"]);
     Route::get('account', ["as" => "laaccount", "uses" => "LabAssistantController@get_account", "middleware" => "auth"]);
+    Route::get('queue', ["as" => "laqueue", "uses" => "LabAssistantController@get_queue", "middleware" => "auth"]);
     //POST
     Route::post('docheckin', ["as" => "dolacheckin", "uses" => "LabAssistantController@post_checkin", "middleware" => "auth"]);
     Route::post('account', ["as" => "doaccount", "uses" => "LabAssistantController@post_account", "middleware" => "auth"]);

@@ -245,4 +245,8 @@ class LabAssistantController extends Controller {
         //Redirect back to the form and advise them that everything was successful.
         return redirect()->route("laaccount")->with("message", "Your account changes were saved successfully.");
     }
+
+    public function get_queue() {
+        return view("la.queue");
+    }
 }
