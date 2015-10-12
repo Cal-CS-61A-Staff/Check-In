@@ -10,6 +10,7 @@ use App\Type;
 use App\Password;
 use App\Section;
 use App\Assignment;
+use App\Preference;
 
 class TAController extends Controller {
 
@@ -452,7 +453,8 @@ class TAController extends Controller {
 
     public function get_section_delete($sid) {
         $section = Section::findOrFail($sid);
-        //TODO remove lab assistant assignments for this section
+        $assignments = Assignment::where('section', '=', $sid)->delete();
+        $preferences = Preference::where('section', '=', $sid)->delete();
         //Delete the section
         $section->delete();
         return redirect()->route("taconsole")->with("message", "The section was successfully deleted.");
