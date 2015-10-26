@@ -158,9 +158,7 @@
         var cid = nid - 1;
         var currentStep = $('#step' + cid);
         var nextStep = $('#step' + nid);
-        $('.boxLoading').fadeIn();
         currentStep.addClass('animated fadeOutUp').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-            $('.boxLoading').fadeOut();
             currentStep.hide().removeClass('animated fadeOutUp');
             nextStep.show().addClass('animated fadeInUp').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
                $(this).removeClass('animated fadeInUp');

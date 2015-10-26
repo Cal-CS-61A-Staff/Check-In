@@ -72,6 +72,7 @@ class IndexController extends Controller {
     {
         $email = Request::input("inputEmail");
         $password = Request::input("inputPassword");
+        $remember = (Request::has('inputRemember')) ? true: false;
         //Start our validator
         $validator = Validator::make([
             "email" => $email,
@@ -92,7 +93,7 @@ class IndexController extends Controller {
         //Alright all good, lets pull our user model
         $user = User::where("email", "=", $email)->first();
         //Let's try to log them in
-        if (Auth::attempt(['email' => $email, 'password' => $password]))
+        if (Auth::attempt(['email' => $email, 'password' => $password], $remember))
         {
             //Log the sign-in as an audit
             Audit::log("Logged in");
