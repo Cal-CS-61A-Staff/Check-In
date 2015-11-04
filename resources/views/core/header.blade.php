@@ -61,6 +61,8 @@
         </div>
     </div>
 </nav>
+
+@if (Auth::guest())
 <header class="marquee">
     <div class="row">
         <div class="col-lg-12" style="text-align: center;">
@@ -73,6 +75,8 @@
         </div>
     </div>
 </header>
+@endif
+
 <div class="container">
     @if (count($announcements) > 0)
         <div class="row">
