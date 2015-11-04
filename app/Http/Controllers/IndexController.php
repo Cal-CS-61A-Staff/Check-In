@@ -100,7 +100,7 @@ class IndexController extends Controller {
 
             //Great they are logged in. Let's redirect them to the appropriate page
             if ($user->is_gsi()) {
-                return redirect()->route("ta/console");
+                return redirect()->route("taconsole");
             }
             return redirect()->route("lacheckin");
         }
