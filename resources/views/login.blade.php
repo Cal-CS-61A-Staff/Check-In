@@ -41,6 +41,10 @@
                 <input type="password" class="form-control" name="inputPassword" id="inputPassword" placeholder="●●●●●●●●" required />
             </div>
             <div class="form-group">
+                <label for="inputRemember">Remember Me:</label>
+                <input type="checkbox" class="" name="inputRemember" value="1" />
+            </div>
+            <div class="form-group">
                 <input type="submit" class="btn btn-success" value="Log In" />
                 <input type="reset" class="btn btn-default" value="Reset" />
             </div>

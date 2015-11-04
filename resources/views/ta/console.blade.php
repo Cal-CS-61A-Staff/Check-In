@@ -622,7 +622,7 @@
     $('#inputDate').pickadate();
     $('#inputTime').pickatime();
     $('#editSectionInputStartTime').pickatime();
-    $('#editSectionInputEndTime').pickadate();
+    $('#editSectionInputEndTime').pickatime();
 
     $('#auditLogTable').DataTable();
 
@@ -893,6 +893,9 @@ $('.unassignLabAssistantLink').on('click', function(e) {
                 l.fadeOut();
             }
         );
+    });
+    $('#sectionTable').DataTable({
+        paging: false
     });
 @endsection
 @include('core.footer')

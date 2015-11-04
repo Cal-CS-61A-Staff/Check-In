@@ -106,22 +106,23 @@
                             {{{ $assignment->sec->category->name }}}
                         </td>
                         <td>
-                            {{{ $assignment->location }}}
+                            {{{ $assignment->sec->location }}}
                         </td>
                         <td>
                             <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $assignment->sec->ta->name }}}</span>
-                            @if ($assignment->sec->ta2 != -1)
+                            @if ($assignment->sec->second_gsi != -1)
                                 <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $assignment->sec->ta2->name }}}</span>
                             @endif
                         </td>
                         <td>
                             {{{ App\Section::daysToString($assignment->sec) }}}
                         </td>
+
                         <td>
-                            {{{ $assignment->start_time }}}
+                            {{{ $assignment->sec->start_time }}}
                         </td>
                         <td>
-                            {{{ $assignment->end_time }}}
+                            {{{ $assignment->sec->end_time }}}
                         </td>
                     </tr>
                 @endforeach

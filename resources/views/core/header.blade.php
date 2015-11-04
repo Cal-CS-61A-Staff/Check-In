@@ -35,6 +35,7 @@
                 @endif
                 @if (Auth::check())
                     <li><a href="{{ URL::route("lacheckin") }}"><i class="fa fa-check-circle-o fa-fw"></i> Check In</a></li>
+                    <li><a href="{{ URL::route("laqueue") }}"><i class="fa fa-hand-paper-o fa-fw"></i> Queue</a></li>
                     <li><a href="{{ URL::route('laattendance') }}"><i class="fa fa-list-ol fa-fw"></i> Attendance</a></li>
                     <li><a href="{{ URL::route('laassignments') }}"><i class="fa fa-map-signs fa-fw"></i> Assignments</a></li>
                     @if (Auth::user()->is_gsi())
@@ -60,6 +61,8 @@
         </div>
     </div>
 </nav>
+
+@if (Auth::guest())
 <header class="marquee">
     <div class="row">
         <div class="col-lg-12" style="text-align: center;">
@@ -72,6 +75,8 @@
         </div>
     </div>
 </header>
+@endif
+
 <div class="container">
     @if (count($announcements) > 0)
         <div class="row">
