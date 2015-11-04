@@ -97,7 +97,11 @@ class IndexController extends Controller {
         {
             //Log the sign-in as an audit
             Audit::log("Logged in");
-            //Great they are logged in. Let's redirect them to the check in page
+
+            //Great they are logged in. Let's redirect them to the appropriate page
+            if ($user->is_gsi()) {
+                return redirect()->route("ta/console");
+            }
             return redirect()->route("lacheckin");
         }
         else
