@@ -14,18 +14,6 @@
         <hr />
     </div>
 </div>
-@if (!empty($errors))
-    <div class="row">
-        <div class="col-lg-12">
-            @foreach ($errors->all() as $error)
-                <div class="alert alert-danger alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert">×</button>
-                    {{{ $error }}}
-                </div>
-            @endforeach
-        </div>
-    </div>
-@endif
 <div class="row">
     <div class="col-lg-12">
         <form id="loginForm" method="POST" data-toggle="validator" action="#">
