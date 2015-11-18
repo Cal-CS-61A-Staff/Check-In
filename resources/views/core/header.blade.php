@@ -9,6 +9,7 @@
     <link media="all" type="text/css" rel="stylesheet" href="/css/theme.css">
     <link media="all" type="text/css" rel="stylesheet" href="/css/custom.css">
     <link media="all" type="text/css" rel="stylesheet" href="/css/animate.css">
+    <link media="all" type="text/css" rel="stylesheet" href="/css/sweetalert.css">
     <link media="all" type="text/css" rel="stylesheet" href="/packages/pickadate/themes/classic.css">
     <link media="all" type="text/css" rel="stylesheet" href="/packages/pickadate/themes/classic.date.css">
     <link media="all" type="text/css" rel="stylesheet" href="/packages/pickadate/themes/classic.time.css">
