@@ -161,10 +161,12 @@ class LabAssistantController extends Controller {
         Audit::log("Check In Successful");
         //Send an email notification
         $data = ['name' => Auth::user()->name, 'date' => $input["date"], 'time' => $input["time"], 'email' => Auth::user()->email];
-        Mail::send('emails.checkin', $data, function($message) use ($data)
+        if ($user->email_notifications == 1)
         {
-            $message->to($data["email"], $data["name"])->subject('CS61A - Lab Assistant Check In');
-        });
+            Mail::send('emails.checkin', $data, function ($message) use ($data) {
+                $message->to($data["email"], $data["name"])->subject('CS61A - Lab Assistant Check In');
+            });
+        }
         return 1;
     }
 
@@ -197,16 +199,20 @@ class LabAssistantController extends Controller {
                 "name" => $input["inputName"],
                 "email" => $input["inputEmail"],
                 "password" => $input["inputPassword"],
+                "email_notifications" => $input["inputEmailNotifications"],
             ], [
                 "name" => "required",
                 "email" => "required|email|unique:users,email",
                 "password" => "min:8",
+                "email_notifications" => "required|in:0,1",
             ], [
                 "name.required" => "Please enter your name.",
                 "email.required" => "Please enter your email address.",
                 "email.email" => "That does not appear to be a valid email address.",
                 "email.unique" => "That email appears to be in use with another account.",
                 "password.min" => "Please ensure that your password is 8 or more characters long.",
+                "email_notifications.required" => "Please specify your email notifications preferences.",
+                "email_notifications.in" => "Invalid value for email notifications",
             ]);
         }
         else {
@@ -214,15 +220,19 @@ class LabAssistantController extends Controller {
                 "name" => $input["inputName"],
                 "email" => $input["inputEmail"],
                 "password" => $input["inputPassword"],
+                "email_notifications" => $input["inputEmailNotifications"],
             ], [
                 "name" => "required",
                 "email" => "required|email",
                 "password" => "min:8",
+                "email_notifications" => "required|in:0,1",
             ], [
                 "name.required" => "Please enter your name.",
                 "email.required" => "Please enter your email address.",
                 "email.email" => "That does not appear to be a valid email address.",
                 "password.min" => "Please ensure that your password is 8 or more characters long.",
+                "email_notifications.required" => "Please specify your email notifications preferences.",
+                "email_notifications.in" => "Invalid value for email notifications",
             ]);
         }
 
@@ -235,9 +245,11 @@ class LabAssistantController extends Controller {
         //Alright validation is complete let's make some changes folks
         $user->name = $input["inputName"];
         $user->email = $input["inputEmail"];
+        //Hash up our password.
         if ($input["inputPassword"] != "") {
             $user->password = Hash::make($input["inputPassword"]);
         }
+        $user->email_notifications = $input["inputEmailNotifications"];
         //Save our data
         $user->save();
         //Make an audit log entry
