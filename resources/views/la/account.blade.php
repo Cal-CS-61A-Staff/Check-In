@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label for="inputEmailNotifications">Email Notifications: </label>
-                <input type="checkbox" id="inputEmailNotifications" name="inputEmailNotifications" @if ($user->email_notifications) checked="checked" />
+                <input type="checkbox" id="inputEmailNotifications" name="inputEmailNotifications" @if ($user->email_notifications) checked="checked" @endif />
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-success" value="Edit Account" />

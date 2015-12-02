@@ -161,7 +161,7 @@ class LabAssistantController extends Controller {
         Audit::log("Check In Successful");
         //Send an email notification
         $data = ['name' => Auth::user()->name, 'date' => $input["date"], 'time' => $input["time"], 'email' => Auth::user()->email];
-        if ($user->email_notifications == 1)
+        if (Auth::user()->email_notifications == 1)
         {
             Mail::send('emails.checkin', $data, function ($message) use ($data) {
                 $message->to($data["email"], $data["name"])->subject('CS61A - Lab Assistant Check In');
@@ -189,6 +189,10 @@ class LabAssistantController extends Controller {
     public function post_account() {
         //Get our data
         $input = Request::all();
+        if (Request::has('inputEmailNotifications'))
+            $input["inputEmailNotifications"] = 1;
+        else
+            $input["inputEmailNotifications"] = 0;
         //And our user
         $user = Auth::user();
         //This is a bit messy, but it needs to happen. We need two different
