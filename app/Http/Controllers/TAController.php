@@ -139,7 +139,7 @@ class TAController extends Controller {
         $user->access = 1;
         $user->save();
         //Create an audit log for this
-        Audit::log("Promoted " . $user->name . " from Lab Assistant to GSI);
+        Audit::log("Promoted " . $user->name . " from Lab Assistant to GSI");
         //Set a default secret word for them
         $password = new Password;
         $password->gsi = $id;
@@ -157,7 +157,7 @@ class TAController extends Controller {
         $user->access = 0;
         $user->save();
         //Create an audit log for this
-        Audit::log("Demoted " . $user->name . " to Lab Assistant);
+        Audit::log("Demoted " . $user->name . " to Lab Assistant");
         //Delete their password
         $password = Password::where("gsi", "=", $user->id)->first();
         $password->delete();
