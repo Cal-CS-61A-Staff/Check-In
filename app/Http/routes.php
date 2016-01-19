@@ -15,7 +15,7 @@
 
     //Redirect routes
     Route::get('meeting/slides', function() {
-        return redirect("https://docs.google.com/a/berkeley.edu/presentation/d/1jONL7LzSwCQhWqmP6s66Ida3_hrnhwiNhbA1TyAZcmU");
+        return redirect("https://docs.google.com/a/berkeley.edu/presentation/d/1CJMDtzof49vVB4OXJ7pybmnLbOsWomPBpF4yzVdfPNE");
     });
 
     //GET
