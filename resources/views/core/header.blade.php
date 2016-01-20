@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>CS61A - Check In</title>
+    <title>{{ trans('global.class') }} - Check In</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <link media="all" type="text/css" rel="stylesheet" href="/css/theme.css">
     <link media="all" type="text/css" rel="stylesheet" href="/css/custom.css">
@@ -26,7 +26,7 @@
                 <span style="background-color: #999999" class="icon-bar"></span>
                 <span style="background-color: #999999" class="icon-bar"></span>
             </button>
-            <a href="../" class="navbar-brand">CS61A <small>LAM 1.1</small></a>
+            <a href="../" class="navbar-brand">{{ trans('global.class') }} <small>LAM 1.1</small></a>
         </div>
         <div id="navbarCollapse" class="nav collapse navbar-collapse bs-navbar-collapse">
             <ul class="nav navbar-nav">
@@ -67,7 +67,7 @@
 <header class="marquee">
     <div class="row">
         <div class="col-lg-12" style="text-align: center;">
-            <h1>CS61A <small>Lab Assistant Manager</small></h1>
+            <h1>{{ trans('global.class') }} <small>Lab Assistant Manager</small></h1>
         </div>
     </div>
     <div class="row">
