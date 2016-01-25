@@ -29,13 +29,13 @@ class LabAssistantController extends Controller {
         //Get our preferences
         $preferences = Preference::with("sec.category")->with("sec.ta")->with("sec.ta2")->where("uid", "=", Auth::user()->id)->get();
         //Get all sections
-        $sections = Section::with('category')->with('ta')->with('ta2')->orderBy('type')->orderBy("mon")->orderBy("tue")->orderBy("wed")->orderBy("thu")->orderBy("fri")->orderBy("sat")->orderBy("sun")->orderBy('start_time')->get();
-        $preferenceSids = array();
-        foreach ($preferences as $preference) {
-            $preferenceSids[$preference->section] = $preference->section;
+        $sections = Section::with('category')->with('assigned')->with('ta')->with('ta2')->orderBy('type')->orderBy("mon")->orderBy("tue")->orderBy("wed")->orderBy("thu")->orderBy("fri")->orderBy("sat")->orderBy("sun")->orderBy('start_time')->get();
+        $assignmentSids = array();
+        foreach ($assignments as $assignment) {
+            $assignmentSids[$assignment->section] = $assignment->section;
         }
         //Return our Response
-        return view('assignments')->with(["preferenceSids" => $preferenceSids, "sections" => $sections, "assignments" => $assignments, "preferences" => $preferences]);
+        return view('assignments')->with(["assignmentSids" => $assignmentSids, "sections" => $sections, "assignments" => $assignments, "preferences" => $preferences]);
     }
 
     public function post_assignments() {
@@ -56,7 +56,7 @@ class LabAssistantController extends Controller {
         $u->save();
         $sections = Request::input('inputSections');
         //Current requested sections
-        $preferences = Preference::where("uid", "=", Auth::user()->id)->get();
+        $preferences = Assignment::where("uid", "=", Auth::user()->id)->get();
         //start by adding all our current preferences
         $preferencesToDelete =  array();
         foreach ($preferences as $preference) {
@@ -69,23 +69,29 @@ class LabAssistantController extends Controller {
                 if ($count == 0) {
                     return redirect()->route("laassignments")->with("message", "It appears you selected an invalid section.");
                 }
+                $sData = Section::where("id", "=", $section)->with("assigned")->first();
                 if (in_array($section, $preferencesToDelete)) {
                     unset($preferencesToDelete[$section]);
                 }
+                else if ($sData->max_las != -1 && count($sData->assigned) >= $sData->max_las) {
+                    //Too many lab assistants in this section.
+                    return redirect()->route("laassignments")->with("message", "It appears one or more of the sections you have requested is now full. Please choose another.");
+                }
                 else {
-                    $p = new Preference;
-                    $p->uid = Auth::user()->id;
-                    $p->section = $section;
-                    $p->save();
+                    //All good. Let's make the new assignment
+                    $a = new Assignment;
+                    $a->uid = Auth::user()->id;
+                    $a->section = $section;
+                    $a->save();
                 }
 
             }
         }
         foreach ($preferencesToDelete as $ptd) {
-            $p = Preference::findOrFail($ptd);
+            $p = Assignment::findOrFail($ptd);
             $p->delete();
         }
-        return redirect()->route("laassignments")->with("message", "Preferences saved successfully.");
+        return redirect()->route("laassignments")->with("message", "Section assignments saved successfully.");
     }
 
     public function post_checkin() {
