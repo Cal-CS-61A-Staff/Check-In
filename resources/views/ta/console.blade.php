@@ -292,7 +292,7 @@
                                 <div class="table-responsive">
                                     <table id="sectionTable" class="table table-bordered table-hover table-striped">
                                         <thead>
-                                        <tr><th>Type</th><th>Location</th><th>Days</th><th>Start Time</th><th>End Time</th><th>GSI</th><th>Max Lab Assistants</th><th>Assigned</th><th>Requested</th><th>Actions</th></tr>
+                                        <tr><th>Type</th><th>Location</th><th>Days</th><th>Start Time</th><th>End Time</th><th>GSI</th><th>Max Lab Assistants</th><th>Assigned</th><th>Actions</th></tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($sections as $s)
@@ -320,11 +320,6 @@
                                                                 @else {{{ $assigned->user->name }}}@endif @endif, @endforeach
                                                             </a>
                                                     </td>
-                                                    <td>
-                                                        <a class="sectionTableViewRequests" href="#">View Requests</a>
-                                                        <p style="display: none;">
-                                                            @foreach ($s->pref as $assigned) <a class="assignLabAssistantLink" data-name="{{{ $assigned->user->name }}}" data-uid="{{{ $assigned->uid }}}" data-sid="{{{ $assigned->section }}}" href="#" data-toggle="tooltip" data-placement="top" data-title="{{{ $assigned_hours[$assigned->uid]  }}}/{{{ $assigned->user->hours }}} requested hours for {{{ $assigned->user->units }}} units">@if (array_key_exists($assigned->user->id, $under_hours)) <strong> {{{ $assigned->user->name }}}</strong> @else {{{ $assigned->user->name }}}@endif</a>, @endforeach</td>
-                                                        </p>
                                                     <td><a class="sectionViewActionsLink" href="#">View Actions</a>
                                                         <p class="sectionActions" style="display: none;">
                                                             <button class="btn btn-warning sectionEditBtn">
@@ -858,24 +853,6 @@
         e.preventDefault();
         $(this).hide();
         $(this).siblings('p').fadeIn();
-    });
-    $('.assignLabAssistantLink').on('click', function(e) {
-        e.preventDefault();
-        var sid = $(this).attr('data-sid');
-        var uid = $(this).attr('data-uid');
-        var name = $(this).attr('data-name');
-        var l = $(this);
-        var _token = "{{{ csrf_token() }}}";
-        $.ajax({
-            type: "POST",
-            url: "{{ route("tasectionassign") }}",
-            data: {_token: _token, inputSID: sid, inputUID: uid}
-        })
-            .success(function(received) {
-                var assigned = l.closest('td').siblings('.sectionTableAssigned');
-                assigned.html(assigned.html() + " " + name + ",");
-            }
-        );
     });
 $('.unassignLabAssistantLink').on('click', function(e) {
         e.preventDefault();
