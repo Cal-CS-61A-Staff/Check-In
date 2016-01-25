@@ -48,7 +48,7 @@
                                         <input name="inputSections[]" value="{{{ $section->id }}}" type="checkbox" @if (in_array($section->id, $assignmentSids)) checked="checked" @elseif($section->max_las != -1 && count($section->assigned) >= $section->max_las) disabled="disabled" @endif />
                                     </td>
                                     <td>
-                                        <strong>{{{ count($section->assigned) }}}/@if ($section->max_las == -1)&infin;@else{{{ $section->max_las }}} @endif</strong>
+                                        <strong>{{{ count($section->assigned) }}}/@if ($section->max_las == -1)&infin;@else{{{ $section->max_las }}}  @if (count($section->assigned) == $section->max_las) <span class="label label-warning">Full</span> @endif @endif</strong>
                                     </td>
                                     <td>
                                         {{{ $section->category->name }}}
