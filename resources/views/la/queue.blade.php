@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="oh-container">
-            <iframe width="100%" height="800px" src="http://oh.cs61a.org/assist" allowfullscreen="" frameborder="0"></iframe>
+            <iframe width="100%" height="800px" src="http://queue.cs61a.org/assist" allowfullscreen="" frameborder="0"></iframe>
         </div>
     </div>
 </div>
