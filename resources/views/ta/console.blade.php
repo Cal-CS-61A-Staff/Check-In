@@ -81,7 +81,7 @@
                                             <td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $checkin->ta->name }}}</span></td>
                                             <td>@if ($checkin->makeup == 1) Yes @else No @endif</td>
                                             <td>{{{ $checkin->created_at }}}</td>
-                                            <td><a href="#">View Actions</a></td>
+                                            <td><span class="checkInActionsContainer" style="display: none;"><a class="btn btn-info" href="#"><i class="fa fa-edit fa-fw"></i></a> <a class="btn btn-warning"><i class="fa fa-times fa-fw"></i></a></span><a class="checkInActionsBtn" href="#">View Actions</a></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -874,6 +874,11 @@ $('.unassignLabAssistantLink').on('click', function(e) {
     });
     $('#sectionTable').DataTable({
         paging: false
+    });
+    $('.checkInActionsBtn').on('click', function(e) {
+        e.preventDefault();
+        $(this).hide();
+        $(this).siblings('.checkInActionsContainer').fadeIn();
     });
 @endsection
 @include('core.footer')
