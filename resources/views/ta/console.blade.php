@@ -68,8 +68,8 @@
                     <div class="panel-body">
                         <div class="table-responsive">
                             <table id="consoleCheckInTable" class="table table-hover table-striped">
-                                <thead><tr><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></thead>
-                                <tfoot><tr><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></tfoot>
+                                <thead><tr><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th><th>Actions</th></tr></thead>
+                                <tfoot><tr><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th><th>Actions</th></tr></tfoot>
                                 <tbody>
                                     @foreach ($checkins as $checkin)
                                         <tr>
@@ -81,6 +81,7 @@
                                             <td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $checkin->ta->name }}}</span></td>
                                             <td>@if ($checkin->makeup == 1) Yes @else No @endif</td>
                                             <td>{{{ $checkin->created_at }}}</td>
+                                            <td><a href="#">View Actions</a></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
