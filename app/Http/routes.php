@@ -54,6 +54,7 @@
     Route::get("ta/announcement/delete/{id}", ["as" => "taannouncementdelete", "uses" => "TAController@get_announcement_delete", "middleware" => "auth.tutor"]);
     Route::get("ta/announcement/visibility/{id}", ["as" => "taannouncementvisibility", "uses" => "TAController@get_announcement_visibility", "middleware" => "auth.tutor"]);
     Route::get("ta/section/delete/{sid}", ["as" => "tasectiondelete", "uses" => "TAController@get_section_delete", "middleware" => "auth.ta"]);
+    Route::get("ta/checkin/remove/{id}", ["as" => "tacheckinremove", "uses" => "TAController@post_checkin_remove", "middleware" => "auth.tutor"]);
     //POST
     Route::post("ta/update/password", ["as" => "taupdatepassword", "uses" => "TAController@post_update_password", "middleware" => "auth.tutor"]);
     Route::post("ta/user/checkin", ["as" => "tacheckinuser", "uses" => "TAController@post_checkin_user", "middleware" => "auth.tutor"]);
