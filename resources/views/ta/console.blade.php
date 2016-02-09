@@ -68,8 +68,8 @@
                     <div class="panel-body">
                         <div class="table-responsive">
                             <table id="consoleCheckInTable" class="table table-hover table-striped">
-                                <thead><tr><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></thead>
-                                <tfoot><tr><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></tfoot>
+                                <thead><tr><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th><th>Actions</th></tr></thead>
+                                <tfoot><tr><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th><th>Actions</th></tr></tfoot>
                                 <tbody>
                                     @foreach ($checkins as $checkin)
                                         <tr>
@@ -81,6 +81,7 @@
                                             <td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $checkin->ta->name }}}</span></td>
                                             <td>@if ($checkin->makeup == 1) Yes @else No @endif</td>
                                             <td>{{{ $checkin->created_at }}}</td>
+                                            <td><span class="checkInActionsContainer" style="display: none;"><a data-id="{{{ $checkin->id }}}" class="btn btn-warning removeCheckInBtn"><i class="fa fa-times fa-fw"></i></a></span><a class="checkInActionsBtn" href="#">View Actions</a></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -489,6 +490,24 @@
             </div>
         </div>
     </div>
+    <div id="removeCheckInModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Delete Check In</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this check in? The lab assistant's <strong>hours will be decreased</strong> and this check in <strong>permanently removed</strong>. This action will be logged.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a id="removeCheckInFinalLink" href="#"><button class="btn btn-danger"><i class="fa fa-times fa-fw"></i> Permanently Remove Check In</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="deleteSectionModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -629,6 +648,18 @@
         e.preventDefault();
         $(this).hide();
         $(this).siblings("span").fadeIn();
+    });
+    $('.checkInActionsBtn').on('click', function(e) {
+        e.preventDefault();
+        $(this).hide();
+        $(this).siblings("span").fadeIn();
+    });
+    $('.removeCheckInBtn').on('click', function(e) {
+        e.preventDefault();
+        var id = $(this).attr('data-id');
+        var url = "{{ route("tacheckinremove", "") }}/" + id;
+        $('#removeCheckInModal').modal('show');
+        $('#removeCheckInFinalLink').attr("href", url);
     });
 
     $('#newEventTypeBtn').on('click', function() {
@@ -874,5 +905,7 @@ $('.unassignLabAssistantLink').on('click', function(e) {
     $('#sectionTable').DataTable({
         paging: false
     });
+
+
 @endsection
 @include('core.footer')
