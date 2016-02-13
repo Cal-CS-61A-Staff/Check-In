@@ -125,6 +125,17 @@ class TAController extends Controller {
         return redirect()->route("taconsole")->with("message", "Manual check in for " . $user->name . " was successful.");
     }
 
+    public function post_checkin_remove($id) {
+        //Does the checkin exists?
+        $checkin = Checkin::with("user")->findOrFail($id);
+        //Remove the checkin
+        $checkin->delete();
+        //Make an audit notation
+        Audit::log(Auth::user()->name . " manually removed check in for " . $checkin->user->name);
+        //Return our redirect
+        return redirect()->route("taconsole")->with("message", "Check in for " . $checkin->user->name . " successfully manually removed.");
+    }
+
     public function get_user_promote_tutor($id) {
         $user = User::findOrFail($id);
         if ($user->is_gsi() || $user->is_tutor())
