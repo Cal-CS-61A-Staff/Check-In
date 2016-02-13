@@ -190,7 +190,14 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <button id="createSectionBtn" class="btn btn-info">Create Section <i class="fa fa-plus fa-fw"></i></button>
+                                <button id="viewYourLabAssistantsBtn" class="btn btn-default">View Your Lab Assistants <i class="fa fa-eye fa-fw"></i></button>
                             </div>
+                        </div>
+                        <br />
+                        <div id="viewYourLabAssistantsDiv" class="well" style="display: none;">
+                            <h5>Your sections' lab assistants:</h5><br />
+                            Names: <input type="text" class="form-control" value="{{{ implode(",", $yourLabAssistantsNames) }}}" disabled="disabled"/>
+                            Emails: <input type="text" class="form-control" value="{{{ implode(", ", $yourLabAssistantsEmails) }}}" disabled="disabled"/>
                         </div>
                         <div id="createSectionForm" style="margin-top: 5px; display: none;" class="row">
                             <div class="col-lg-12">
@@ -873,6 +880,9 @@ $('.unassignLabAssistantLink').on('click', function(e) {
     });
     $('#sectionTable').DataTable({
         paging: false
+    });
+    $('#viewYourLabAssistantsBtn').on('click', function() {
+        $('#viewYourLabAssistantsDiv').slideToggle();
     });
 @endsection
 @include('core.footer')

@@ -50,7 +50,19 @@ class TAController extends Controller {
         $sections = Section::with("assigned.user")->with("ta")->with("ta2")->with("category")->orderBy("type", "ASC")->get();
         //Get our announcements
         $announcements = Announcement::with("user")->orderBy("hidden", "DESC")->orderBy("created_at", "DESC")->get();
-        return view("ta.console")->with(["double_booked" => $double_booked, "over_hours" => $over_hours, "under_hours" => $under_hours, "assigned_hours" => $assigned_hours,"sections" => $sections, "user_hours" => $user_hours, "checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
+        //Get GSis lab assistants
+        $yourLabAssistants = Section::with("assigned.user")->where("gsi", "=", Auth::user()->id)->orWhere("second_gsi", "=", Auth::user()->id)->get();
+        $yourLabAssistantsEmails =  array();
+        $yourLabAssistantsNames =  array();
+        foreach ($yourLabAssistants as $ylas) {
+            foreach($ylas->assigned as $ylas) {
+                if (!in_array($ylas->user->email, $yourLabAssistantsEmails)) {
+                    $yourLabAssistantsEmails[] = $ylas->user->email;
+                    $yourLabAssistantsNames[] = $ylas->user->name;
+                }
+            }
+        }
+        return view("ta.console")->with(["yourLabAssistantsEmails" => $yourLabAssistantsEmails, "yourLabAssistantsNames" => $yourLabAssistantsNames, "double_booked" => $double_booked, "over_hours" => $over_hours, "under_hours" => $under_hours, "assigned_hours" => $assigned_hours,"sections" => $sections, "user_hours" => $user_hours, "checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
     }
 
     public function post_update_password() {
