@@ -66,3 +66,7 @@
     Route::post("ta/section/assign", ["as" => "tasectionassign", "uses" => "TAController@post_section_assign", "middleware" => "auth.ta"]);
     Route::post("ta/section/unassign", ["as" => "tasectionunassign", "uses" => "TAController@post_section_unassign", "middleware" => "auth.ta"]);
 
+//Admin/Maintenance Routes
+    //GET
+    Route::get('admin/import_checkins', ["as" => "adminimportcheckins", "uses" => "AdminController@get_import_checkins", "middleware" => "auth.ta"]);
+
