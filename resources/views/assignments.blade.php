@@ -14,9 +14,10 @@
 
 <div class="row" style="margin-top: 20px;">
    <div class="col-lg-12" >
-       <button id="submitAvailabilityBtn" class="btn btn-info"><i class="fa fa-plus fa-fw"></i> Choose Sections</button>
+       <button id="submitAvailabilityBtn" class="btn btn-info" @if ($allowSectionSignups == 0) disabled="disabled" @endif><i class="fa fa-plus fa-fw"></i> Choose Sections</button> @if ($allowSectionSignups == 0) <span class="label label-default">(disabled)</span> @endif
    </div>
 </div>
+@if ($allowSectionSignups == 1)
 <div id="submitAvailabilityDiv" class="row" style="display: none; margin-top: 20px;">
     <div class="col-lg-12" >
         <form action="{{{ route("doassignments") }}}" method="POST">
@@ -82,6 +83,7 @@
         </div>
     </div>
 </div>
+@endif
 <div class="row" style="margin-top: 20px;">
     <div class="col-lg-12">
         <h4>Your Assignments: </h4>

@@ -10,6 +10,7 @@ use App\User;
 use App\Type;
 use App\Section;
 use App\Announcement;
+use App\Setting;
 class LabAssistantController extends Controller {
 
     public function __construct() {
@@ -34,8 +35,9 @@ class LabAssistantController extends Controller {
         foreach ($assignments as $assignment) {
             $assignmentSids[$assignment->section] = $assignment->section;
         }
+        $allowSectionSignups = Setting::getValue("allow_section_signups");
         //Return our Response
-        return view('assignments')->with(["assignmentSids" => $assignmentSids, "sections" => $sections, "assignments" => $assignments, "preferences" => $preferences]);
+        return view('assignments')->with(["allowSectionSignups" => $allowSectionSignups, "assignmentSids" => $assignmentSids, "sections" => $sections, "assignments" => $assignments, "preferences" => $preferences]);
     }
 
     public function post_assignments() {

@@ -190,6 +190,13 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-12">
+                                <form method="POST" action="{{ route("tasavesectionsignupsetting") }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                                    <div class="form-group">
+                                        <label>Allow Section Signups</label>
+                                        <input class="form-control" type="checkbox" name="inputAllowSectionSignups" @if ($allowSectionSignups == 1) checked="checked" @endif />
+                                    </div>
+                                </form>
                                 <button id="createSectionBtn" class="btn btn-info">Create Section <i class="fa fa-plus fa-fw"></i></button>
                                 <button id="viewYourLabAssistantsBtn" class="btn btn-default">View Your Lab Assistants <i class="fa fa-eye fa-fw"></i></button>
                             </div>

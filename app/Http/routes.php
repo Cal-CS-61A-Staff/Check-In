@@ -65,6 +65,7 @@
     Route::post("ta/section/edit", ["as" => "tasectionedit", "uses" => "TAController@post_section_edit", "middleware" => "auth.ta"]);
     Route::post("ta/section/assign", ["as" => "tasectionassign", "uses" => "TAController@post_section_assign", "middleware" => "auth.ta"]);
     Route::post("ta/section/unassign", ["as" => "tasectionunassign", "uses" => "TAController@post_section_unassign", "middleware" => "auth.ta"]);
+    Route::post("ta/section/allowsignups", ["as" => "tasavesectionsignupsetting", "uses" => "TAController@post_section_allowsignups", "middleware" => "auth.ta"]);
 
 //Admin/Maintenance Routes
     //GET
