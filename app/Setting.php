@@ -21,4 +21,11 @@ class Setting extends Model
         return Setting::where("name", "=", $name)->firstOrFail()->value;
     }
     
+    public static function change($name, $value)
+    {
+        $setting = Setting::where("name", "=", $name)->firstOrFail();
+        $setting->value = $value;
+        $setting->save();
+    }
+    
 }

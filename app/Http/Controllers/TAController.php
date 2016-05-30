@@ -671,4 +671,15 @@ class TAController extends Controller {
         return "1";
     }
 
+    public function post_settings_save() {
+        $allowSectionSignups = Request::input('inputAllowSectionSignups');
+        if ($allowSectionSignups == 1) {
+           Setting::change("allow_section_signups", 1);
+        }
+        else {
+           Setting::change("allow_section_signups", 0);
+        }
+        return redirect()->route("taconsole")->with("message", "The settings were saved successfully.");
+    }
+
 }
