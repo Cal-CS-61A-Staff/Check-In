@@ -11,6 +11,7 @@ use App\Password;
 use App\Section;
 use App\Assignment;
 use App\Preference;
+use App\Setting;
 
 class TAController extends Controller {
 
@@ -62,7 +63,9 @@ class TAController extends Controller {
                 }
             }
         }
-        return view("ta.console")->with(["yourLabAssistantsEmails" => $yourLabAssistantsEmails, "yourLabAssistantsNames" => $yourLabAssistantsNames, "double_booked" => $double_booked, "over_hours" => $over_hours, "under_hours" => $under_hours, "assigned_hours" => $assigned_hours,"sections" => $sections, "user_hours" => $user_hours, "checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
+        //And one more setting
+        $allowSectionSignups = Setting::getValue("allow_section_signups");
+        return view("ta.console")->with(["allowSectionSignups" => $allowSectionSignups, "yourLabAssistantsEmails" => $yourLabAssistantsEmails, "yourLabAssistantsNames" => $yourLabAssistantsNames, "double_booked" => $double_booked, "over_hours" => $over_hours, "under_hours" => $under_hours, "assigned_hours" => $assigned_hours,"sections" => $sections, "user_hours" => $user_hours, "checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
     }
 
     public function post_update_password() {
@@ -666,6 +669,17 @@ class TAController extends Controller {
         $assignment = Assignment::where("uid", "=", $uid)->where("section", "=", $section)->first();
         $assignment->delete();
         return "1";
+    }
+
+    public function post_settings_save() {
+        $allowSectionSignups = Request::input('inputAllowSectionSignups');
+        if ($allowSectionSignups == 1) {
+           Setting::change("allow_section_signups", 1);
+        }
+        else {
+           Setting::change("allow_section_signups", 0);
+        }
+        return redirect()->route("taconsole")->with("message", "The settings were saved successfully.");
     }
 
 }

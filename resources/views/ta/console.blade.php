@@ -22,6 +22,7 @@
                 <li><a href="#statsPanel" data-toggle="pill"><i class="fa fa-bar-chart fa-fw"></i> Statistics</a></li>
                 <li><a href="#eventTypesPanel" data-toggle="pill"><i class="fa fa-tags fa-fw"></i> Event Types</a></li>
                 <li><a href="#auditLogPanel" data-toggle="pill"><i class="fa fa-history fa-fw"></i> Audit Log</a></li>
+                <li><a href="#settingsPanel" data-toggle="pill"><i class="fa fa-cogs fa-fw"></i> Settings</a></li>
                 @endif
             </ul>
         </div>
@@ -439,6 +440,27 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="settingsPanel" class="col-lg-10 tab-pane fade">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h5><i class="fa fa-cogs fa-fw"></i> Settings</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form action="{{ route("tasavesettings") }}" method="POST">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                                    <div class="form-group">
+                                        <label>Allow Section Signups:</label>
+                                        <input type="checkbox" name="inputAllowSectionSignups" value="1" @if ($allowSectionSignups == 1) checked="checked" @endif />
+                                    </div>
+                                    <input type="submit" value="Save" class="btn btn-success" />
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
