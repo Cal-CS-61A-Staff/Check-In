@@ -458,6 +458,10 @@
                                         <label>Allow Section Signups:</label>
                                         <input type="checkbox" name="inputAllowSectionSignups" value="1" @if ($allowSectionSignups == 1) checked="checked" @endif />
                                     </div>
+                                    <div class="form-group">
+                                        <label>Information Content:</label>
+                                        <textarea name="inputInformationContent" id="informationContentTextArea" rows="10">{!! $informationContent !!}</textarea>
+                                    </div>
                                     <input type="submit" value="Save" class="btn btn-success" />
                                 </form>
                             </div>
@@ -668,6 +672,7 @@
     $('#editSectionInputEndTime').pickatime();
 
     $('#auditLogTable').DataTable();
+    CKEDITOR.replace('informationContentTextArea');
 
     $('#announcementNewBtn').on('click', function() {
         $('#announcementNewForm').slideToggle();

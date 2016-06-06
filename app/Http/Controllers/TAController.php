@@ -63,9 +63,10 @@ class TAController extends Controller {
                 }
             }
         }
-        //And one more setting
+        //Add some settings
         $allowSectionSignups = Setting::getValue("allow_section_signups");
-        return view("ta.console")->with(["allowSectionSignups" => $allowSectionSignups, "yourLabAssistantsEmails" => $yourLabAssistantsEmails, "yourLabAssistantsNames" => $yourLabAssistantsNames, "double_booked" => $double_booked, "over_hours" => $over_hours, "under_hours" => $under_hours, "assigned_hours" => $assigned_hours,"sections" => $sections, "user_hours" => $user_hours, "checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
+        $informationContent = Setting::getValue("information_content");
+        return view("ta.console")->with(["informationContent" => $informationContent, "allowSectionSignups" => $allowSectionSignups, "yourLabAssistantsEmails" => $yourLabAssistantsEmails, "yourLabAssistantsNames" => $yourLabAssistantsNames, "double_booked" => $double_booked, "over_hours" => $over_hours, "under_hours" => $under_hours, "assigned_hours" => $assigned_hours,"sections" => $sections, "user_hours" => $user_hours, "checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
     }
 
     public function post_update_password() {
@@ -679,6 +680,8 @@ class TAController extends Controller {
         else {
            Setting::change("allow_section_signups", 0);
         }
+        $informationContent = Request::input('inputInformationContent');
+        Setting::change("information_content", $informationContent);
         return redirect()->route("taconsole")->with("message", "The settings were saved successfully.");
     }
 

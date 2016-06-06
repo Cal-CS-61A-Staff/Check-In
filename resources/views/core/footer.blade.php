@@ -13,6 +13,7 @@
     <script src="/packages/pickadate/picker.js"></script>
     <script src="/packages/pickadate/picker.date.js"></script>
     <script src="/packages/pickadate/picker.time.js"></script>
+    <script src="/packages/ckeditor/ckeditor.js"></script>
     <script>
         $(function() {
             @yield('js')
