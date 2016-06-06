@@ -13,7 +13,7 @@ class Setting extends Model
     {
         return Carbon::createFromTimestamp(strtotime($value))
             ->timezone('America/Los_Angeles')
-            ->toDateTimeString();
+           ->toDateTimeString();
     }
 
     public static function getValue($name)

@@ -4,6 +4,7 @@ use Auth, Request, Validator, Hash, Mail, View;
 use App\User;
 use App\Audit;
 use App\Announcement;
+use App\Setting;
 use Illuminate\Routing\Controller;
 
 class IndexController extends Controller {
@@ -176,7 +177,8 @@ class IndexController extends Controller {
     }
 
     public function get_information() {
-        return view("information");
+        $informationContent = Setting::getValue("information_content");
+        return view("information")->with(array("informationContent" => $informationContent));
     }
 
 }
