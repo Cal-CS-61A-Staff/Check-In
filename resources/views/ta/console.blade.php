@@ -192,6 +192,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <button id="createSectionBtn" class="btn btn-info">Create Section <i class="fa fa-plus fa-fw"></i></button>
+                                <button id="uploadSectionsCSVBtn" class="btn btn-info">Upload Sections CSV <i class="fa fa-file fa-fw"></i></button>
                                 <button id="viewYourLabAssistantsBtn" class="btn btn-default">View Your Lab Assistants <i class="fa fa-eye fa-fw"></i></button>
                             </div>
                         </div>
@@ -200,6 +201,51 @@
                             <h5>Your sections' lab assistants:</h5><br />
                             Names: <input type="text" class="form-control" value="{{{ implode(",", $yourLabAssistantsNames) }}}" disabled="disabled"/>
                             Emails: <input type="text" class="form-control" value="{{{ implode(", ", $yourLabAssistantsEmails) }}}" disabled="disabled"/>
+                        </div>
+                        <div id="uploadSectionsCSV" style="display: none;" class="row">
+                            <div class="col-lg-12">
+                                <div class="well">
+                                    The CSV needs to have the following structure with the headers being present:
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Type</th>
+                                                    <th>Location</th>
+                                                    <th>GSI Email</th>
+                                                    <th>Second GSI Email</th>
+                                                    <th>Max Lab Assistants</th>
+                                                    <th>Monday</th>
+                                                    <th>Tuesday</th>
+                                                    <th>Wednesday</th>
+                                                    <th>Thursday</th>
+                                                    <th>Friday</th>
+                                                    <th>Saturday</th>
+                                                    <th>Sunday</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    Notes:
+                                    <ul>
+                                        <li><strong>Type</strong> values need to be spelled exactly as they were entered here on the site</li>
+                                        <li><strong>GSI Email</strong> user must already exist with email specified</li>
+                                        <li><strong>Second GSI Email</strong> optional field if left blank</li>
+                                        <li><strong>Max Lab Assistants</strong> set as -1 for unlimited</li>
+                                        <li><strong>Monday - Saturday</strong> set as 1 if section occurs on that day and 0 if not</li>
+                                    </ul>
+                                    <form method="POST" enctype="multipart/form-data" action="{{ route("tasectionimport") }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                                        <div class="form-group">
+                                            <label>CSV File: </label>
+                                            <input type="file" name="inputSectionCSVFile" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="submit" class="btn btn-success" value="Import Sections" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                         <div id="createSectionForm" style="margin-top: 5px; display: none;" class="row">
                             <div class="col-lg-12">
@@ -866,6 +912,9 @@
 
     $('#createSectionBtn').on('click', function() {
         $('#createSectionForm').slideToggle();
+    });
+    $('#uploadSectionsCSVBtn').on('click', function() {
+        $('#uploadSectionsCSV').slideToggle();
     });
     $('#newSectionFormStartTimeInput').pickatime();
     $('#newSectionFormEndTimeInput').pickatime();
