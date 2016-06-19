@@ -324,6 +324,196 @@ class TAController extends Controller {
         return redirect()->route('taconsole')->with("message", "The announcement was deleted successfully");
     }
 
+    public function post_section_import() {
+        //Get our file
+        $file = Request::file('inputSectionCSVFile');
+        $file_path = $file->getPathName();
+        $delimiter = ',';
+        ini_set('auto_detect_line_endings',TRUE);
+        if(!file_exists($file_path) || !is_readable($file_path))
+            return FALSE;
+
+        $header = NULL;
+        $data = array();
+        if (($handle = fopen($file_path, 'r')) !== FALSE)
+        {
+            while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE)
+            {
+                if (!$header) {
+                    $header = $row;
+                }
+                else {
+                    if (count($header) > count($row)) {
+                        $difference = count($header) - count($row);
+                        for ($i = 1; $i <= $difference; $i++) {
+                            $row[count($row) + 1] = $delimiter;
+                        }
+                    }
+                    $data[] = array_combine($header, $row);
+                }
+            }
+            fclose($handle);
+        } 
+        foreach ($data as $row) {
+            $type = $row["Type"];
+            $location = $row["Location"];
+            $gsi = User::where("email", "=", $row["GSI Email"])->firstOrFail()->id;
+            $second_gsi = $row["Second GSI Email"];
+            if (!empty($second_gsi))
+                $second_gsi = User::where("email", "=", $second_gsi)->firstOrFail()->id;
+            else
+                $second_gsi = -1;
+            $maxLas = $row["Max Lab Assistants"];
+            $mon = $row["Monday"];
+            $tue = $row["Tuesday"];
+            $wed= $row["Wednesday"];
+            $thu= $row["Thursday"];
+            $fri = $row["Friday"];
+            $sat = $row["Saturday"];
+            $sun = $row["Sunday"];
+            $start_time = $row["Start Time"];
+            $end_time = $row["End Time"];
+            $count = 0;
+            $count++;
+            if ($second_gsi != -1) {
+                $validator = Validator::make([
+                    "type" => $type,
+                    "location" => $location,
+                    "gsi" => $gsi,
+                    "second_gsi" => $second_gsi,
+                    "maxLas" => $maxLas,
+                    "mon" => $mon,
+                    "tue" => $tue,
+                    "wed" => $wed,
+                    "thu" => $thu,
+                    "fri" => $fri,
+                    "sat" => $sat,
+                    "sun" => $sun,
+                    "start_time" => $start_time,
+                    "end_time" => $end_time,
+                ], [
+                    "type" => "required|exists:types,id",
+                    "gsi" => "required|exists:passwords,gsi",
+                    "second_gsi" => "required_with:gsi|different:gsi|exists:passwords,gsi",
+                    "maxLas" => "required|integer|min:-1",
+                    "location" => "required",
+                    "mon" => "in:,0,1",
+                    "tue" => "in:,0,1",
+                    "wed" => "in:,0,1",
+                    "thu" => "in:,0,1",
+                    "fri" => "in:,0,1",
+                    "sat" => "in:,0,1",
+                    "sun" => "in:,0,1",
+                    "start_time" => "required",
+                    "end_time" => "required",
+                ], [
+                    "type.required" => "Please select a section type.",
+                    "type.exists" => "That does not appear to be a valid section type.",
+                    "gsi.required" => "Please select a GSI.",
+                    "gsi.exists" => "That does not appear to be a valid GSI.",
+                    "second_gsi.exists" => "That does not appear to be a valid GSI.",
+                    "second_gsi.different" => "You may not choose the same GSI as the second GSI. Simply leave the second GSI field empty.",
+                    "maxLas.required" => "Please enter the maximum amount of lab assistants for this section.",
+                    "maxLas.integer" => "The max amount of lab assistants needs to be an integer value.",
+                    "maxLas.min" => "Please enter a max lab assistants integer value equal to or greater than -1",
+                    "location.required" => "Please enter a location for the section."
+                ]);
+            }
+            else {
+                $validator = Validator::make([
+                    "type" => $type,
+                    "location" => $location,
+                    "gsi" => $gsi,
+                    "second_gsi" => $second_gsi,
+                    "maxLas" => $maxLas,
+                    "mon" => $mon,
+                    "tue" => $tue,
+                    "wed" => $wed,
+                    "thu" => $thu,
+                    "fri" => $fri,
+                    "sat" => $sat,
+                    "sun" => $sun,
+                    "start_time" => $start_time,
+                    "end_time" => $end_time,
+                ], [
+                    "type" => "required|exists:types,id",
+                    "gsi" => "required|exists:passwords,gsi",
+                    "maxLas" => "required|integer|min:-1",
+                    "location" => "required",
+                    "mon" => "in:,0,1",
+                    "tue" => "in:,0,1",
+                    "wed" => "in:,0,1",
+                    "thu" => "in:,0,1",
+                    "fri" => "in:,0,1",
+                    "sat" => "in:,0,1",
+                    "sun" => "in:,0,1",
+                    "start_time" => "required",
+                    "end_time" => "required",
+                ], [
+                    "type.required" => "Please select a section type.",
+                    "type.exists" => "That does not appear to be a valid section type.",
+                    "gsi.required" => "Please select a GSI.",
+                    "gsi.exists" => "That does not appear to be a valid GSI.",
+                    "second_gsi.exists" => "That does not appear to be a valid GSI.",
+                    "second_gsi.different" => "You may not choose the same GSI as the second GSI. Simply leave the second GSI field empty.",
+                    "maxLas.required" => "Please enter the maximum amount of lab assistants for this section.",
+                    "maxLas.integer" => "The max amount of lab assistants needs to be an integer value.",
+                    "maxLas.min" => "Please enter a max lab assistants integer value equal to or greater than -1",
+                    "location.required" => "Please enter a location for the section."
+                ]);
+            }
+            //Route our validator
+            if ($validator->fails()) {
+                return redirect()->route('taconsole')->withErrors($validator);
+            }
+            //Create a new instance of our Section model
+            $section = new Section;
+            $section->type = $type;
+            $section->location = $location;
+            $section->gsi = $gsi;
+            $section->second_gsi = $second_gsi;
+            $section->max_las = $maxLas;
+            //Yes someone who reads this and thinks it looks as
+            //awful as I do. Please make a PR and fix this before
+            //I get too mad looking at it and come up with a more
+            //elegant solution using a loop. :P
+            if ($mon != 1)
+                $section->mon = 0;
+            else
+                $section->mon = 1;
+            if ($tue != 1)
+                $section->tue = 0;
+            else
+                $section->tue = 1;
+            if ($wed != 1)
+                $section->wed = 0;
+            else
+                $section->wed = 1;
+            if ($thu != 1)
+                $section->thu = 0;
+            else
+                $section->thu = 1;
+            if ($fri != 1)
+                $section->fri = 0;
+            else
+                $section->fri = 1;
+            if ($sat != 1)
+                $section->sat = 0;
+            else
+                $section->sat = 1;
+            if ($sun != 1)
+                $section->sun = 0;
+            else
+                $section->sun = 1;
+            $section->start_time = $start_time;
+            $section->end_time = $end_time;
+            //Push to the DB
+            $section->save();
+            return redirect()->route("taconsole")->with("message", "Imported " . $count . " sections.");
+        }
+        
+    }
+    
     public function post_section_new() {
         //Get all of our data
         $type = Request::input('inputType');
@@ -648,6 +838,7 @@ class TAController extends Controller {
         //Return a redirect Response
         return redirect()->route("taconsole")->with("message", "The section was edited successfully.");
     }
+    
 
     public function post_section_assign() {
         $uid = Request::input('inputUID');
