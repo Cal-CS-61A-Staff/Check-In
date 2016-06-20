@@ -62,7 +62,7 @@ class LabAssistantController extends Controller {
         //start by adding all our current preferences
         $preferencesToDelete =  array();
         foreach ($preferences as $preference) {
-            $preferencesToDelete[$preference->id] = $preference->id;
+            $preferencesToDelete[$preference->id] = $preference->section;
         }
         if (!empty($sections)) {
             foreach ($sections as $section) {
@@ -72,8 +72,8 @@ class LabAssistantController extends Controller {
                     return redirect()->route("laassignments")->with("message", "It appears you selected an invalid section.");
                 }
                 $sData = Section::where("id", "=", $section)->with("assigned")->first();
-                if (in_array($section, $preferencesToDelete)) {
-                    unset($preferencesToDelete[$section]);
+                if (($key = array_search($section, $preferencesToDelete)) !== false) {
+                    unset($preferencesToDelete[$key]);
                 }
                 else if ($sData->max_las != -1 && count($sData->assigned) >= $sData->max_las) {
                     //Too many lab assistants in this section.
@@ -89,8 +89,8 @@ class LabAssistantController extends Controller {
 
             }
         }
-        foreach ($preferencesToDelete as $ptd) {
-            $p = Assignment::findOrFail($ptd);
+        foreach ($preferencesToDelete as $pid => $sid) {
+            $p = Assignment::findOrFail($pid);
             $p->delete();
         }
         return redirect()->route("laassignments")->with("message", "Section assignments saved successfully.");
