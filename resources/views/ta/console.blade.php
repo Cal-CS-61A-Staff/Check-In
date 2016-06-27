@@ -377,9 +377,13 @@
                                                     </td>
                                                     <td><a class="sectionViewActionsLink" href="#">View Actions</a>
                                                         <p class="sectionActions" style="display: none;">
-                                                            <button class="btn btn-warning sectionEditBtn">
+                                                            <button data-toggle="tooltip" data-placement="top" data-title="Assign Lab Assistant" class="btn btn-info sectionAddLABtn">
+                                                                <i class="fa fa-user fa-fw"></i>
+                                                            </button>
+                                                            <button data-toggle="tooltip" data-placement="top" data-title="Edit Section" class="btn btn-warning sectionEditBtn">
                                                                 <i class="fa fa-edit fa-fw"></i>
-                                                            </button> <button class="btn btn-danger sectionDeleteBtn">
+                                                            </button>
+                                                            <button data-toggle="tooltip" data-placement="top" data-title="Delete Section" class="btn btn-danger sectionDeleteBtn">
                                                                 <i class="fa fa-times fa-fw"></i>
                                                             </button>
                                                         </p>
@@ -584,6 +588,30 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <a id="removeCheckInFinalLink" href="#"><button class="btn btn-danger"><i class="fa fa-times fa-fw"></i> Permanently Remove Check In</button></a>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div id="addSectionLAModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Add Lab Assistant to Section</h4>
+                </div>
+                <form action="{{ route("tasectionaddla") }}" method="POST">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                    <input type="hidden" id="addSectionLAInputSID" name="inputSection" value="" />
+                    <div class="modal-body">
+                            <div class="form-group">
+                                <label for="inputEmail">Lab Assistant Email:</label>
+                                <input type="text" name="inputEmail" class="form-control" />
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <input type="submit" class="btn btn-success" value="Add Lab Assistant" />
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -924,9 +952,15 @@
         $(this).siblings('.sectionActions').fadeIn();
     });
 
+    $('.sectionAddLABtn').on('click', function() {
+        console.log("triggered");
+        var tr = $(this).closest('tr');
+        $('#addSectionLAInputSID').val(tr.attr('data-sid'));
+        $('#addSectionLAModal').modal('show');
+
+    });
     $('.sectionEditBtn').on('click', function() {
         var tr = $(this).closest('tr');
-        console.log("data-sid = " + tr.attr('data-sid'));
         $('#editSectionInputSID').val(tr.attr('data-sid'));
         $('#editSectionInputType option[value="'+ tr.attr('data-type')  +'"]').attr("selected", true);
         $('#editSectionInputLocation').val(tr.attr('data-location'));

@@ -676,6 +676,16 @@ class TAController extends Controller {
         $section->delete();
         return redirect()->route("taconsole")->with("message", "The section was successfully deleted.");
     }
+    public function post_section_addla() {
+        $section = Section::findOrFail(Request::input('inputSection'));
+        $email= Request::input('inputEmail');
+        $user = User::where("email", "=", $email)->firstOrFail();
+        $assignment = new Assignment;
+        $assignment->section = $section->id;
+        $assignment->uid= $user->id;
+        $assignment->save();
+        return redirect()->route("taconsole")->with("message", $user->name . " successfully added to section.");
+    }
     public function post_section_edit() {
         //Get all of our data
         $sid = Request::input('inputSID');
