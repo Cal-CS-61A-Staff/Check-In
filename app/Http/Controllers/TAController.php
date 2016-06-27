@@ -684,6 +684,8 @@ class TAController extends Controller {
         $assignment->section = $section->id;
         $assignment->uid= $user->id;
         $assignment->save();
+        //Log this
+        Audit::log("Assigned " . $user->name . " to section id " . $section->id);
         return redirect()->route("taconsole")->with("message", $user->name . " successfully added to section.");
     }
     public function post_section_edit() {
@@ -870,6 +872,7 @@ class TAController extends Controller {
         $section = Request::input('inputSID');
         $assignment = Assignment::where("uid", "=", $uid)->where("section", "=", $section)->first();
         $assignment->delete();
+        Audit::log("Removed " . $uid . " from section id " . $section);
         return "1";
     }
 
