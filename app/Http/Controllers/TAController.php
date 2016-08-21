@@ -509,9 +509,10 @@ class TAController extends Controller {
             $section->end_time = $end_time;
             //Push to the DB
             $section->save();
-            return redirect()->route("taconsole")->with("message", "Imported " . $count . " sections.");
         }
-        
+
+        return redirect()->route("taconsole")->with("message", "Imported " . $count . " sections.");
+
     }
     
     public function post_section_new() {
