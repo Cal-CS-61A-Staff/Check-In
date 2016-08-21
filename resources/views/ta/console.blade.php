@@ -215,6 +215,8 @@
                                                     <th>GSI Email</th>
                                                     <th>Second GSI Email</th>
                                                     <th>Max Lab Assistants</th>
+                                                    <th>Start Time</th>
+                                                    <th>End Time</th>
                                                     <th>Monday</th>
                                                     <th>Tuesday</th>
                                                     <th>Wednesday</th>
