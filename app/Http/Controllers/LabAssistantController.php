@@ -273,4 +273,8 @@ class LabAssistantController extends Controller {
     public function get_queue() {
         return view("la.queue");
     }
+
+    public function get_solutions() {
+        return view("la.solutions");
+    }
 }
