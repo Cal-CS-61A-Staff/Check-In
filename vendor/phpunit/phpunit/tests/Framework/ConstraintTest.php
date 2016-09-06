@@ -9,11 +9,6 @@
  */
 
 /**
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
 class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
@@ -861,14 +856,12 @@ Failed asserting that two objects are equal.
 -        'obj' => stdClass Object &$ahash (
 -            'foo' => 'bar'
 -        )
--        'inf' => null
--    )
--    '$bhash' => Array &1 (
 +SplObjectStorage Object &$storage2hash (
 +    '$bhash' => Array &0 (
-         'obj' => stdClass Object &$bhash ()
++        'obj' => stdClass Object &$bhash ()
          'inf' => null
      )
+-    '$bhash' => Array &0
  )
 
 EOF
@@ -3485,7 +3478,8 @@ EOF
     /**
      * Removes spaces in front of newlines
      *
-     * @param  string $string
+     * @param string $string
+     *
      * @return string
      */
     private function trimnl($string)

@@ -11,14 +11,7 @@
 /**
  * Abstract base class for test case classes.
  *
- * @category   PHP
- * @package    CodeCoverage
- * @subpackage Tests
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://github.com/sebastianbergmann/php-code-coverage
- * @since      Class available since Release 1.0.0
+ * @since Class available since Release 1.0.0
  */
 abstract class PHP_CodeCoverage_TestCase extends PHPUnit_Framework_TestCase
 {
@@ -27,8 +20,8 @@ abstract class PHP_CodeCoverage_TestCase extends PHPUnit_Framework_TestCase
         return array(
             array(
                 TEST_FILES_PATH . 'BankAccount.php' => array(
-                    8 =>  1,
-                    9 => -2,
+                    8  => 1,
+                    9  => -2,
                     13 => -1,
                     14 => -1,
                     15 => -1,
@@ -44,7 +37,7 @@ abstract class PHP_CodeCoverage_TestCase extends PHPUnit_Framework_TestCase
             ),
             array(
                 TEST_FILES_PATH . 'BankAccount.php' => array(
-                    8 => 1,
+                    8  => 1,
                     13 => 1,
                     16 => 1,
                     29 => 1,
@@ -52,7 +45,7 @@ abstract class PHP_CodeCoverage_TestCase extends PHPUnit_Framework_TestCase
             ),
             array(
                 TEST_FILES_PATH . 'BankAccount.php' => array(
-                    8 => 1,
+                    8  => 1,
                     13 => 1,
                     16 => 1,
                     22 => 1,
@@ -60,7 +53,7 @@ abstract class PHP_CodeCoverage_TestCase extends PHPUnit_Framework_TestCase
             ),
             array(
                 TEST_FILES_PATH . 'BankAccount.php' => array(
-                    8 => 1,
+                    8  => 1,
                     13 => 1,
                     14 => 1,
                     15 => 1,
@@ -221,7 +214,7 @@ abstract class PHP_CodeCoverage_TestCase extends PHPUnit_Framework_TestCase
                     0 => 'BankAccountTest::testBalanceIsInitiallyZero',
                     1 => 'BankAccountTest::testDepositWithdrawMoney'
                 ),
-                9 => null,
+                9  => null,
                 13 => array(),
                 14 => array(),
                 15 => array(),

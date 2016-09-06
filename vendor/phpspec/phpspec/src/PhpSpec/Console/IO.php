@@ -14,12 +14,9 @@
 namespace PhpSpec\Console;
 
 use PhpSpec\IO\IOInterface;
-use Symfony\Component\Console\Helper\DialogHelper;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpSpec\Config\OptionsConfig;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Class IO deals with input and output from command line interaction
@@ -31,12 +28,12 @@ class IO implements IOInterface
     const COL_MAX_WIDTH = 80;
 
     /**
-     * @var \Symfony\Component\Console\Input\InputInterface
+     * @var InputInterface
      */
     private $input;
 
     /**
-     * @var \Symfony\Component\Console\Output\OutputInterface
+     * @var OutputInterface
      */
     private $output;
 
@@ -344,5 +341,27 @@ class IO implements IOInterface
             $width = self::COL_MAX_WIDTH;
         }
         return $width;
+    }
+
+    /**
+     * @param string $message
+     * @param int $indent
+     */
+    public function writeBrokenCodeBlock($message, $indent = 0)
+    {
+        $message = wordwrap($message, $this->getBlockWidth() - ($indent * 2), "\n", true);
+
+        if ($indent) {
+            $message = $this->indentText($message, $indent);
+        }
+
+        $this->output->writeln("<broken-bg>".str_repeat(" ", $this->getBlockWidth())."</broken-bg>");
+
+        foreach (explode("\n", $message) as $line) {
+            $this->output->writeln("<broken-bg>".str_pad($line, $this->getBlockWidth(), ' ')."</broken-bg>");
+        }
+
+        $this->output->writeln("<broken-bg>".str_repeat(" ", $this->getBlockWidth())."</broken-bg>");
+        $this->output->writeln('');
     }
 }

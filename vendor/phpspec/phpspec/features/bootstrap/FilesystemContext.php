@@ -1,18 +1,14 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
-use Behat\Gherkin\Node\TableNode;
-use Matcher\FileExistsMatcher;
-use Matcher\FileHasContentsMatcher;
-use PhpSpec\Matcher\MatchersProviderInterface;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Defines application features from the specific context.
  */
-class FilesystemContext implements Context, MatchersProviderInterface
+class FilesystemContext implements Context
 {
     /**
      * @var string
@@ -38,6 +34,12 @@ class FilesystemContext implements Context, MatchersProviderInterface
         $this->filesystem->remove($this->workingDirectory);
         $this->filesystem->mkdir($this->workingDirectory);
         chdir($this->workingDirectory);
+
+        $this->filesystem->mkdir($this->workingDirectory . '/vendor');
+        $this->filesystem->copy(
+            __DIR__ . '/autoloader/autoload.php',
+            $this->workingDirectory . '/vendor/autoload.php'
+        );
     }
 
     /**
@@ -45,7 +47,11 @@ class FilesystemContext implements Context, MatchersProviderInterface
      */
     public function removeWorkingDirectory()
     {
-        $this->filesystem->remove($this->workingDirectory);
+        try {
+            $this->filesystem->remove($this->workingDirectory);
+        } catch (IOException $e) {
+            //ignoring exception
+        }
     }
 
     /**
@@ -58,13 +64,20 @@ class FilesystemContext implements Context, MatchersProviderInterface
 
     /**
      * @Given the class file :file contains:
-     * @Given the spec file :file contains:
      * @Given the trait file :file contains:
      */
-    public function theClassOrTraitOrSpecFileContains($file, PyStringNode $contents)
+    public function theClassOrTraitFileContains($file, PyStringNode $contents)
     {
         $this->theFileContains($file, $contents);
         require_once($file);
+    }
+
+    /**
+     * @Given the spec file :file contains:
+     */
+    public function theSpecFileContains($file, PyStringNode $contents)
+    {
+        $this->theFileContains($file, $contents);
     }
 
     /**
@@ -80,8 +93,12 @@ class FilesystemContext implements Context, MatchersProviderInterface
      */
     public function thereIsNoFile($file)
     {
-        expect($file)->toNotExist();
-        expect(file_exists($file))->toBe(false);
+        if (file_exists($file)) {
+            throw new \Exception(sprintf(
+                "File unexpectedly exists at path '%s'",
+                $file
+            ));
+        }
     }
 
     /**
@@ -90,18 +107,37 @@ class FilesystemContext implements Context, MatchersProviderInterface
      */
     public function theFileShouldContain($file, PyStringNode $contents)
     {
-        expect($file)->toExist();
-        expect($file)->toHaveContents($contents);
+        if (!file_exists($file)) {
+            throw new \Exception(sprintf(
+                "File did not exist at path '%s'",
+                $file
+            ));
+        }
+
+        $expectedContents = (string)$contents;
+        if ($expectedContents != file_get_contents($file)) {
+            throw new \Exception(sprintf(
+                "File at '%s' did not contain expected contents.\nExpected: '%s'\nActual: '%s'",
+                $file,
+                $expectedContents,
+                file_get_contents($file)
+            ));
+        }
     }
 
     /**
-     * @return array
+     * @Given the config file located in :folder contains:
      */
-    public function getMatchers()
+    public function theConfigFileInFolderContains($folder, PyStringNode $contents)
     {
-        return array(
-            new FileExistsMatcher(),
-            new FileHasContentsMatcher()
-        );
+        $this->theFileContains($folder.DIRECTORY_SEPARATOR.'phpspec.yml', $contents);
+    }
+
+    /**
+     * @Given I have not configured an autoloader
+     */
+    public function iHaveNotConfiguredAnAutoloader()
+    {
+        $this->filesystem->remove($this->workingDirectory . '/vendor/autoload.php');
     }
 }
