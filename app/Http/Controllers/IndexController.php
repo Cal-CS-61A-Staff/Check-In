@@ -31,6 +31,7 @@ class IndexController extends Controller {
 
         // Fetch our OK service
         $okService = \OAuth::consumer('Ok');
+        dd($okService);
 
         // Is the code provided?
         if (!is_null($code)) {
