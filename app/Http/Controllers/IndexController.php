@@ -27,12 +27,24 @@ class IndexController extends Controller {
     public function get_login(Request $request)
     {
         // Fetch our data from the request
-        $
+        $code = $request->get('code');
 
-        $url = OAuth2Client::getRedirectUrl(Config::get('oauth2-client::auth_endpoint'),
-            route('oauth'));
-        return $url;
-        return redirect()->setTargetUrl(OAuth2Client::getRedirectUrl());
+        // Fetch our OK service
+        $okService = \OAuth::consumer('Ok');
+
+        // Is the code provided?
+        if (!is_null($code)) {
+            // This is a callback request from OK
+            $token = $okService->requestAccessToken($code);
+
+            //Send a request to fetch user info
+            $result = json_decode($okService->request('https://okpy.org/api/v3/user/?access_token=' . $token), true);
+            dd($result);
+        }
+        else {
+            $url = $okService->getAuthorizationUri();
+            return redirect((string) $url);
+        }
     }
 
     public function get_reset()

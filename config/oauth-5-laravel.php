@@ -20,7 +20,7 @@ return [
         /**
          * OK
          */
-        'ok' => [
+        'Ok' => [
             'client_id'     => 'la-manager',
             'client_secret' => env('CoFR9qnNn1ohISWAPsVA0tnHtpVue9O', 'SomeRandomKey'),
             'scope'         => ['email'],
