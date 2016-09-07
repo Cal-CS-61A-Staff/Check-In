@@ -27,7 +27,7 @@ class IndexController extends Controller {
     public function get_login(Request $request)
     {
         // Fetch our data from the request
-        $code = $request->get('code');
+        $code = Request::input('code');
 
         // Fetch our OK service
         $okService = \OAuth::consumer('Ok');
