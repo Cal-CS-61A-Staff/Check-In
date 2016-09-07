@@ -110,7 +110,6 @@ return [
 
 	'providers' => [
 
-        'Artdarek\OAuth\OAuthServiceProvider',
 		/*
 		 * Laravel Framework Service Providers...
 		 */
@@ -161,7 +160,6 @@ return [
 	*/
 
 	'aliases' => [
-
 		'App'       => 'Illuminate\Support\Facades\App',
 		'Artisan'   => 'Illuminate\Support\Facades\Artisan',
 		'Auth'      => 'Illuminate\Support\Facades\Auth',
@@ -194,7 +192,6 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
-        'OAuth'     => 'Artdarek\OAuth\Facade\OAuth',
 	],
 
 ];
