@@ -110,7 +110,7 @@ return [
 
 	'providers' => [
 
-        'Artdarek\OAuth\OAuthServiceProvider::class',
+        'Artdarek\OAuth\OAuthServiceProvider',
 		/*
 		 * Laravel Framework Service Providers...
 		 */
@@ -194,7 +194,7 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
-        'OAuth'     => 'Artdarek\OAuth\Facade\OAuth::class',
+        'OAuth'     => 'Artdarek\OAuth\Facade\OAuth',
 	],
 
 ];
