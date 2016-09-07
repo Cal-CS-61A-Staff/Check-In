@@ -26,24 +26,32 @@ class IndexController extends Controller {
 
     public function get_login(Request $request)
     {
+
+        $provider = new \League\OAuth2\Client\Provider\GenericProvider([
+            'clientId'                => 'la-manager',    // The client ID assigned to you by the provider
+            'clientSecret'            =>  env('APP_OAUTH_KEY', 'SomeRandomKey'),   // The client password assigned to you by the provider
+            'redirectUri'             =>  route('oauth'),
+            'urlAuthorize'            => 'http://okpy.org/oauth/authorize',
+            'urlAccessToken'          => 'http://okpy.org/oauth/token',
+            'urlResourceOwnerDetails' => 'http://okpy.org/oauth/resource'
+        ]);
+
         // Fetch our data from the request
         $code = Request::input('code');
-
-        // Fetch our OK service
-        $okService = \OAuth::consumer('Ok');
 
         // Is the code provided?
         if (!is_null($code)) {
             // This is a callback request from OK
-            $token = $okService->requestAccessToken($code);
-
+            $accessToken = $provider->getAccessToken('authorization_code', [
+                'code' => $code
+            ]);
             //Send a request to fetch user info
-            $result = json_decode($okService->request('https://okpy.org/api/v3/user/?access_token=' . $token), true);
+            $result = json_decode($okService->request('https://okpy.org/api/v3/user/?access_token=' . $accessToken), true);
             dd($result);
         }
         else {
-            $url = $okService->getAuthorizationUri();
-            return redirect((string) $url);
+            $authorizationUrl = $provider->getAuthorizationUrl();
+            return redirect((string) $authorizationUrl);
         }
     }
 
