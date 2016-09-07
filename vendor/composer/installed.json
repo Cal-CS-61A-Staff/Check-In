@@ -536,57 +536,6 @@
         ]
     },
     {
-        "name": "symfony/yaml",
-        "version": "v2.8.10",
-        "version_normalized": "2.8.10.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/yaml.git",
-            "reference": "e7540734bad981fe59f8ef14b6fc194ae9df8d9c"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/yaml/zipball/e7540734bad981fe59f8ef14b6fc194ae9df8d9c",
-            "reference": "e7540734bad981fe59f8ef14b6fc194ae9df8d9c",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.9"
-        },
-        "time": "2016-09-02 01:57:56",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.8-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Component\\Yaml\\": ""
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Yaml Component",
-        "homepage": "https://symfony.com"
-    },
-    {
         "name": "sebastian/version",
         "version": "1.0.6",
         "version_normalized": "1.0.6.0",
@@ -1523,68 +1472,6 @@
             }
         ],
         "description": "Symfony Finder Component",
-        "homepage": "https://symfony.com"
-    },
-    {
-        "name": "symfony/event-dispatcher",
-        "version": "v2.8.10",
-        "version_normalized": "2.8.10.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/event-dispatcher.git",
-            "reference": "889983a79a043dfda68f38c38b6dba092dd49cd8"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/889983a79a043dfda68f38c38b6dba092dd49cd8",
-            "reference": "889983a79a043dfda68f38c38b6dba092dd49cd8",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.9"
-        },
-        "require-dev": {
-            "psr/log": "~1.0",
-            "symfony/config": "~2.0,>=2.0.5|~3.0.0",
-            "symfony/dependency-injection": "~2.6|~3.0.0",
-            "symfony/expression-language": "~2.6|~3.0.0",
-            "symfony/stopwatch": "~2.3|~3.0.0"
-        },
-        "suggest": {
-            "symfony/dependency-injection": "",
-            "symfony/http-kernel": ""
-        },
-        "time": "2016-07-28 16:56:28",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.8-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Component\\EventDispatcher\\": ""
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony EventDispatcher Component",
         "homepage": "https://symfony.com"
     },
     {
@@ -2899,57 +2786,6 @@
         ]
     },
     {
-        "name": "symfony/filesystem",
-        "version": "v2.8.10",
-        "version_normalized": "2.8.10.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/filesystem.git",
-            "reference": "ab4c3f085c8f5a56536845bf985c4cef30bf75fd"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/filesystem/zipball/ab4c3f085c8f5a56536845bf985c4cef30bf75fd",
-            "reference": "ab4c3f085c8f5a56536845bf985c4cef30bf75fd",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.9"
-        },
-        "time": "2016-07-20 05:41:28",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.8-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Component\\Filesystem\\": ""
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Filesystem Component",
-        "homepage": "https://symfony.com"
-    },
-    {
         "name": "laravel/framework",
         "version": "v5.0.35",
         "version_normalized": "5.0.35.0",
@@ -3078,54 +2914,291 @@
         ]
     },
     {
-        "name": "advanced-store/oauth2-client",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
+        "name": "symfony/filesystem",
+        "version": "v2.8.11",
+        "version_normalized": "2.8.11.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/advancedSTORE/oauth2-client.git",
-            "reference": "8ba4c6636d6ca60bdc712776e4ce63c4fffae149"
+            "url": "https://github.com/symfony/filesystem.git",
+            "reference": "44b499521defddf2eae17a18c811bbdae4f98bdf"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/advancedSTORE/oauth2-client/zipball/8ba4c6636d6ca60bdc712776e4ce63c4fffae149",
-            "reference": "8ba4c6636d6ca60bdc712776e4ce63c4fffae149",
+            "url": "https://api.github.com/repos/symfony/filesystem/zipball/44b499521defddf2eae17a18c811bbdae4f98bdf",
+            "reference": "44b499521defddf2eae17a18c811bbdae4f98bdf",
             "shasum": ""
         },
         "require": {
-            "illuminate/config": "5.0.*",
-            "illuminate/support": "5.0.*",
-            "php": ">=5.3.0"
+            "php": ">=5.3.9"
         },
-        "time": "2015-10-20 13:47:05",
+        "time": "2016-09-06 10:55:00",
         "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.8-dev"
+            }
+        },
         "installation-source": "dist",
         "autoload": {
-            "classmap": [
-                "src/migrations"
-            ],
+            "psr-4": {
+                "Symfony\\Component\\Filesystem\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Filesystem Component",
+        "homepage": "https://symfony.com"
+    },
+    {
+        "name": "symfony/yaml",
+        "version": "v2.8.11",
+        "version_normalized": "2.8.11.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/yaml.git",
+            "reference": "e7540734bad981fe59f8ef14b6fc194ae9df8d9c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/yaml/zipball/e7540734bad981fe59f8ef14b6fc194ae9df8d9c",
+            "reference": "e7540734bad981fe59f8ef14b6fc194ae9df8d9c",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.9"
+        },
+        "time": "2016-09-02 01:57:56",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.8-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Yaml\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Yaml Component",
+        "homepage": "https://symfony.com"
+    },
+    {
+        "name": "symfony/event-dispatcher",
+        "version": "v2.8.11",
+        "version_normalized": "2.8.11.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/event-dispatcher.git",
+            "reference": "889983a79a043dfda68f38c38b6dba092dd49cd8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/889983a79a043dfda68f38c38b6dba092dd49cd8",
+            "reference": "889983a79a043dfda68f38c38b6dba092dd49cd8",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.9"
+        },
+        "require-dev": {
+            "psr/log": "~1.0",
+            "symfony/config": "~2.0,>=2.0.5|~3.0.0",
+            "symfony/dependency-injection": "~2.6|~3.0.0",
+            "symfony/expression-language": "~2.6|~3.0.0",
+            "symfony/stopwatch": "~2.3|~3.0.0"
+        },
+        "suggest": {
+            "symfony/dependency-injection": "",
+            "symfony/http-kernel": ""
+        },
+        "time": "2016-07-28 16:56:28",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.8-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\EventDispatcher\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony EventDispatcher Component",
+        "homepage": "https://symfony.com"
+    },
+    {
+        "name": "lusitanian/oauth",
+        "version": "v0.8.9",
+        "version_normalized": "0.8.9.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Lusitanian/PHPoAuthLib.git",
+            "reference": "29bda6e176df6c292a9b1c43ae8a44d56a87c30b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Lusitanian/PHPoAuthLib/zipball/29bda6e176df6c292a9b1c43ae8a44d56a87c30b",
+            "reference": "29bda6e176df6c292a9b1c43ae8a44d56a87c30b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*",
+            "predis/predis": "0.8.*@dev",
+            "squizlabs/php_codesniffer": "2.*",
+            "symfony/http-foundation": "~2.1"
+        },
+        "suggest": {
+            "ext-openssl": "Allows for usage of secure connections with the stream-based HTTP client.",
+            "predis/predis": "Allows using the Redis storage backend.",
+            "symfony/http-foundation": "Allows using the Symfony Session storage backend."
+        },
+        "time": "2016-02-24 00:20:18",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "0.1-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
             "psr-0": {
-                "AdvancedStore\\Oauth2Client\\": "src/"
+                "OAuth": "src",
+                "OAuth\\Unit": "tests"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "Creative Commons Attribution-NonCommercial-NoDerivatives 4.0"
+            "MIT"
         ],
         "authors": [
             {
-                "name": "advanced STORE GmbH",
-                "email": "jj@advanced-store.com"
+                "name": "David Desberg",
+                "email": "david@daviddesberg.com"
+            },
+            {
+                "name": "Elliot Chance",
+                "email": "elliotchance@gmail.com"
+            },
+            {
+                "name": "Pieter Hordijk",
+                "email": "info@pieterhordijk.com"
             }
         ],
-        "description": "Oauth2-Client for simple connect with Oauth2-Server (3rd Party or Own-Aplications)",
+        "description": "PHP 5.3+ oAuth 1/2 Library",
         "keywords": [
-            "client",
+            "Authentication",
+            "authorization",
+            "oauth",
+            "security"
+        ]
+    },
+    {
+        "name": "oriceon/oauth-5-laravel",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/oriceon/oauth-5-laravel.git",
+            "reference": "3f6c663b48c9878cc1d8c56e16ad6c2c3d019dc8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/oriceon/oauth-5-laravel/zipball/3f6c663b48c9878cc1d8c56e16ad6c2c3d019dc8",
+            "reference": "3f6c663b48c9878cc1d8c56e16ad6c2c3d019dc8",
+            "shasum": ""
+        },
+        "require": {
+            "lusitanian/oauth": "~0.3",
+            "php": ">=5.4"
+        },
+        "require-dev": {
+            "illuminate/support": "~5"
+        },
+        "time": "2016-04-27 17:19:16",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Artdarek\\OAuth": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Artdarek",
+                "email": "artdarek@gmail.com",
+                "role": "Developer"
+            },
+            {
+                "name": "oriceon",
+                "email": "oriceon@gmail.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "OAuth Service Provider for Laravel 5",
+        "homepage": "https://github.com/oriceon/oauth-5-laravel",
+        "keywords": [
+            "Lusitanian",
             "laravel",
             "oauth",
-            "oauth-client",
-            "oauth2",
-            "oauth2-client"
+            "php"
         ]
     }
 ]
