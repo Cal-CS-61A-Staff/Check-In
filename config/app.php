@@ -110,6 +110,8 @@ return [
 
 	'providers' => [
 
+	    'AdvancedStore\Oauth2Client\Oauth2ClientServiceProvider',
+
 		/*
 		 * Laravel Framework Service Providers...
 		 */
@@ -145,6 +147,7 @@ return [
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
 
+
 	],
 
 	/*
@@ -160,6 +163,7 @@ return [
 
 	'aliases' => [
 
+        'OAuth2Client' => 'AdvancedStore\Oauth2Client\Facades\Oauth2ClientFacade',
 		'App'       => 'Illuminate\Support\Facades\App',
 		'Artisan'   => 'Illuminate\Support\Facades\Artisan',
 		'Auth'      => 'Illuminate\Support\Facades\Auth',
