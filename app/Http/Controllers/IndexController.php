@@ -6,6 +6,7 @@ use App\Audit;
 use App\Announcement;
 use App\Setting;
 use Illuminate\Routing\Controller;
+use League\OAuth2\Client\Provider\GenericProvider;
 
 class IndexController extends Controller {
 
@@ -27,7 +28,7 @@ class IndexController extends Controller {
     public function get_login(Request $request)
     {
 
-        $provider = new \League\OAuth2\Client\Provider\GenericProvider([
+        $provider = new GenericProvider([
             'clientId'                => 'la-manager',    // The client ID assigned to you by the provider
             'clientSecret'            =>  env('APP_OAUTH_KEY', 'SomeRandomKey'),   // The client password assigned to you by the provider
             'redirectUri'             =>  route('oauth'),
