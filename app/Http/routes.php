@@ -70,6 +70,9 @@
     Route::post("ta/section/unassign", ["as" => "tasectionunassign", "uses" => "TAController@post_section_unassign", "middleware" => "auth.ta"]);
     Route::post("ta/settings/save", ["as" => "tasavesettings", "uses" => "TAController@post_settings_save", "middleware" => "auth.ta"]);
 
+// OAuth Routes
+    Route::get("auth/oauth", ["as" => "oauth", "uses" => "IndexController@get_oauth", "middleware" => "guest"]);
+
 //Admin/Maintenance Routes
     //GET
     Route::get('admin/import_checkins', ["as" => "adminimportcheckins", "uses" => "AdminController@get_import_checkins", "middleware" => "auth.ta"]);
