@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use Auth, Config, Request, Validator, Hash, Mail, View, OAuth2Client;
+use Auth, Config, Request, Validator, Hash, Mail, View;
 use App\User;
 use App\Audit;
 use App\Announcement;
@@ -24,8 +24,11 @@ class IndexController extends Controller {
         return redirect()->route('login');
     }
 
-    public function get_login()
+    public function get_login(Request $request)
     {
+        // Fetch our data from the request
+        $
+
         $url = OAuth2Client::getRedirectUrl(Config::get('oauth2-client::auth_endpoint'),
             route('oauth'));
         return $url;
