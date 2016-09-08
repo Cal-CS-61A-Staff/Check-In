@@ -48,7 +48,7 @@ class IndexController extends Controller {
                     $staff = True;
 
                 }
-                else if ($val["role"] == "student") {
+                else if ($val["role"] != "lab assistant") {
                     //This is a student and shouldn't have access to console
                     abort(403, 'Unauthorized action');
 
