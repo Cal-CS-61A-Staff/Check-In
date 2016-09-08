@@ -27,7 +27,7 @@ class IndexController extends Controller {
     public function get_login(Request $request)
     {
 
-        $client = new OAuth2\Client('la-manager', env('APP_OAUTH_KEY', 'SomeRandomKey'), OAuth2\Client::AUTH_TYPE_AUTHORIZATION_BASIC);
+        $client = new \OAuth2\Client('la-manager', env('APP_OAUTH_KEY', 'SomeRandomKey'), \OAuth2\Client::AUTH_TYPE_AUTHORIZATION_BASIC);
         $client->setCurlOption(CURLOPT_USERAGENT, "CheckIn/1.1");
 
         // Fetch our data from the request
