@@ -21,7 +21,7 @@ class IndexController extends Controller {
             return redirect()->route('lacheckin');
         }
         //They are not, let's redirect to the login page
-        return redirect()->route('login');
+        return redirect()->route('information');
     }
 
     public function get_oauth() {
@@ -39,6 +39,11 @@ class IndexController extends Controller {
 
         $response = $client->fetch("https://okpy.org/api/v3/user/?access_token=" . $accessToken);
         $data = $response["result"]["data"];
+        //Manually log in this user
+        $user = User::where("email", "=", $data["email"])->first();
+        //Check if we need to give elevated permissions
+
+        Auth::login($user, true);
         dd($data);
 
     }
