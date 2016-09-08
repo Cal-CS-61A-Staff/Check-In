@@ -91,6 +91,11 @@ class IndexController extends Controller {
         }
         //Manually log in this user
         Auth::login($user, true);
+
+        if ($user->is_gsi()) {
+            return redirect()->route("taconsole");
+        }
+        return redirect()->route("lacheckin");
     }
     public function get_login()
     {
