@@ -27,7 +27,32 @@ class IndexController extends Controller {
     public function get_login(Request $request)
     {
 
-        $provider = new League\OAuth2\Client\Provider\GenericProvider([
+        $client = new OAuth2\Client('la-manager', env('APP_OAUTH_KEY', 'SomeRandomKey'), OAuth2\Client::AUTH_TYPE_AUTHORIZATION_BASIC);
+        $client->setCurlOption(CURLOPT_USERAGENT, "CheckIn/1.1");
+
+        // Fetch our data from the request
+        $code = Request::input('code');
+
+        if (!isset($code)) {
+            $authUrl = $client->getAuthenticationUrl("https://okpy.org/oauth/authorize",
+                route("oauth"), array("scope" => "identity", "state" => csrf_token()));
+            return redirect()->setTargetUrl($authUrl);
+        }
+
+        else {
+            $params = array("code" => $code, "redirect_uri" => route("oauth"));
+            $response = $client->getAccessToken("https://okpy.org/oauth/token", "authorization_code", $params);
+            $accessToken = $response["result"]["access_token"];
+            $client->setAccessToken($accessToken);
+            $client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
+
+            $response = $client->fetch("https://okpy.org/api/v3/user/?access_token=" . $accessTokenclient);
+            dd($response);
+
+        }
+
+
+        $provider = new \League\OAuth2\Client\Provider\GenericProvider([
             'clientId'                => 'la-manager',    // The client ID assigned to you by the provider
             'clientSecret'            =>  env('APP_OAUTH_KEY', 'SomeRandomKey'),   // The client password assigned to you by the provider
             'redirectUri'             =>  route('oauth'),
@@ -36,8 +61,6 @@ class IndexController extends Controller {
             'urlResourceOwnerDetails' => 'http://okpy.org/oauth/resource'
         ]);
 
-        // Fetch our data from the request
-        $code = Request::input('code');
 
         // Is the code provided?
         if (!is_null($code)) {
