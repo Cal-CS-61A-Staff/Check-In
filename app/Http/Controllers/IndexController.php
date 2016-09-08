@@ -35,10 +35,11 @@ class IndexController extends Controller {
         $response = $client->getAccessToken("https://okpy.org/oauth/token", "authorization_code", $params);
         $accessToken = $response["result"]["access_token"];
         $client->setAccessToken($accessToken);
-        $client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
+        $client->setAccessTokenType($client::ACCESS_TOKEN_BEARER);
 
-        $response = $client->fetch("https://okpy.org/api/v3/user/?access_token=" . $accessTokenclient);
-        dd($response);
+        $response = $client->fetch("https://okpy.org/api/v3/user/?access_token=" . $accessToken);
+        $data = $response["result"]["data"];
+        dd($data);
 
     }
     public function get_login()
