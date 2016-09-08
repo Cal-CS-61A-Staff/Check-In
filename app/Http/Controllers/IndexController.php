@@ -35,7 +35,7 @@ class IndexController extends Controller {
 
         if (!isset($code)) {
             $authUrl = $client->getAuthenticationUrl("https://okpy.org/oauth/authorize",
-                route("oauth"), array("scope" => "identity", "state" => csrf_token()));
+                route("oauth"), array("scope" => "email", "state" => csrf_token()));
             return Redirect::to($authUrl);
         }
 
