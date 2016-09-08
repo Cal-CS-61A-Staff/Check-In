@@ -85,7 +85,7 @@ class IndexController extends Controller {
             $user->save();
             // Create check in password
             $password = new Password;
-            $password->gsi = $id;
+            $password->gsi = $user->id;
             $password->password = "recursion";
             $password->save();
         }
