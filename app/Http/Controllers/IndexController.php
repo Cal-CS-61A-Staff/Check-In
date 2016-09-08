@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use Auth, Config, Request, Validator, Hash, Mail, View;
+use Auth, Config, Request, Validator, Hash, Mail, View, Redirect;
 use App\User;
 use App\Audit;
 use App\Announcement;
@@ -36,7 +36,7 @@ class IndexController extends Controller {
         if (!isset($code)) {
             $authUrl = $client->getAuthenticationUrl("https://okpy.org/oauth/authorize",
                 route("oauth"), array("scope" => "identity", "state" => csrf_token()));
-            return redirect()->setTargetUrl($authUrl);
+            return Redirect::to($authUrl);
         }
 
         else {
