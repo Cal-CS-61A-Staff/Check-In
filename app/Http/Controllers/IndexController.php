@@ -39,13 +39,58 @@ class IndexController extends Controller {
 
         $response = $client->fetch("https://okpy.org/api/v3/user/?access_token=" . $accessToken);
         $data = $response["result"]["data"];
-        //Manually log in this user
-        $user = User::where("email", "=", $data["email"])->first();
         //Check if we need to give elevated permissions
+        $staff = False;
+        foreach ($data["participations"] as $key => $val) {
+            if ($val["course"]["offering"] == env("OK_COURSE_OFFERING", "cal/cs61a/fa16")) {
+                if ($val["role"] == "staff") {
+                    //Give this user TA permissions
+                    $staff = True;
 
+                }
+                else if ($val["role"] == "student") {
+                    //This is a student and shouldn't have access to console
+                    abort(403, 'Unauthorized action');
+
+                }
+            }
+        }
+        $user = User::where("email", "=", $data["email"])->first();
+        if (count($user) == 0) {
+            $user = new User;
+            $user->name = $data["name"];
+            $user->email = $data["email"];
+            // Are we staff?
+            if ($staff) {
+                $user->access = 1;
+                // Create check in password
+                $password = new Password;
+                $password->gsi = $id;
+                $password->password = "recursion";
+                $password->save();
+            }
+            $user->save();
+
+        }
+        else if ($user->access > 0 && !$staff) {
+            //We need to demote this user
+            $user->access = 0;
+            $user->save();
+            $password = Password::where("gsi", "=", $user->id)->first();
+            $password->delete();
+        }
+        else if ($user->access == 0 && $staff) {
+            //We need to promote this user
+            $user->access = 1;
+            $user->save();
+            // Create check in password
+            $password = new Password;
+            $password->gsi = $id;
+            $password->password = "recursion";
+            $password->save();
+        }
+        //Manually log in this user
         Auth::login($user, true);
-        dd($data);
-
     }
     public function get_login()
     {
