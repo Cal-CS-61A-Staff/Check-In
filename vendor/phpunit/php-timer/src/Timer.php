@@ -11,12 +11,6 @@
 /**
  * Utility class for timing.
  *
- * @package    PHP
- * @subpackage Timer
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://github.com/sebastianbergmann/php-timer
  * @since      Class available since Release 1.0.0
  */
 class PHP_Timer
@@ -61,7 +55,7 @@ class PHP_Timer
     /**
      * Formats the elapsed time as a string.
      *
-     * @param  float $time
+     * @param  float  $time
      * @return string
      */
     public static function secondsToTimeString($time)
@@ -71,6 +65,7 @@ class PHP_Timer
         foreach (self::$times as $unit => $value) {
             if ($ms >= $value) {
                 $time = floor($ms / $value * 100.0) / 100.0;
+
                 return $time . ' ' . ($time == 1 ? $unit : $unit . 's');
             }
         }
@@ -96,7 +91,7 @@ class PHP_Timer
     public static function resourceUsage()
     {
         return sprintf(
-            'Time: %s, Memory: %4.2fMb',
+            'Time: %s, Memory: %4.2fMB',
             self::timeSinceStartOfRequest(),
             memory_get_peak_usage(true) / 1048576
         );
