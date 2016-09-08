@@ -71,7 +71,7 @@
     Route::post("ta/settings/save", ["as" => "tasavesettings", "uses" => "TAController@post_settings_save", "middleware" => "auth.ta"]);
 
 // OAuth Routes
-    Route::get("auth/oauth", ["as" => "oauth", "uses" => "IndexController@get_oauth", "middleware" => "guest"]);
+    Route::get("auth/ok", ["as" => "oauth", "uses" => "IndexController@get_oauth", "middleware" => "guest"]);
 
 //Admin/Maintenance Routes
     //GET
