@@ -3,6 +3,7 @@
 use Auth, Config, Request, Validator, Hash, Mail, View, Redirect;
 use App\User;
 use App\Audit;
+use App\Password;
 use App\Announcement;
 use App\Setting;
 use Illuminate\Routing\Controller;
@@ -60,16 +61,18 @@ class IndexController extends Controller {
             $user = new User;
             $user->name = $data["name"];
             $user->email = $data["email"];
+            $user->save();
             // Are we staff?
             if ($staff) {
-                $user->access = 1;
                 // Create check in password
                 $password = new Password;
-                $password->gsi = $id;
+                $password->gsi = $user->id;
                 $password->password = "recursion";
                 $password->save();
+
+                $user->access = 1;
+                $user->save();
             }
-            $user->save();
 
         }
         else if ($user->access > 0 && !$staff) {
