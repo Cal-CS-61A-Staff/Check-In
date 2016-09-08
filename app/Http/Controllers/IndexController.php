@@ -24,58 +24,34 @@ class IndexController extends Controller {
         return redirect()->route('login');
     }
 
-    public function get_login(Request $request)
-    {
-
+    public function get_oauth() {
         $client = new \OAuth2\Client('la-manager', env('APP_OAUTH_KEY', 'SomeRandomKey'), \OAuth2\Client::AUTH_TYPE_AUTHORIZATION_BASIC);
         $client->setCurlOption(CURLOPT_USERAGENT, "CheckIn/1.1");
 
         // Fetch our data from the request
         $code = Request::input('code');
 
-        if (!isset($code)) {
-            $authUrl = $client->getAuthenticationUrl("https://okpy.org/oauth/authorize",
-                route("oauth"), array("scope" => "email", "state" => csrf_token()));
-            return Redirect::to($authUrl);
-        }
+        $params = array("code" => $code, "redirect_uri" => route("oauth"));
+        $response = $client->getAccessToken("https://okpy.org/oauth/token", "authorization_code", $params);
+        $accessToken = $response["result"]["access_token"];
+        $client->setAccessToken($accessToken);
+        $client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
 
-        else {
-            $params = array("code" => $code, "redirect_uri" => route("oauth"));
-            $response = $client->getAccessToken("https://okpy.org/oauth/token", "authorization_code", $params);
-            $accessToken = $response["result"]["access_token"];
-            $client->setAccessToken($accessToken);
-            $client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
+        $response = $client->fetch("https://okpy.org/api/v3/user/?access_token=" . $accessTokenclient);
+        dd($response);
 
-            $response = $client->fetch("https://okpy.org/api/v3/user/?access_token=" . $accessTokenclient);
-            dd($response);
+    }
+    public function get_login()
+    {
 
-        }
+        $client = new \OAuth2\Client('la-manager', env('APP_OAUTH_KEY', 'SomeRandomKey'), \OAuth2\Client::AUTH_TYPE_AUTHORIZATION_BASIC);
+        $client->setCurlOption(CURLOPT_USERAGENT, "CheckIn/1.1");
 
 
-        $provider = new \League\OAuth2\Client\Provider\GenericProvider([
-            'clientId'                => 'la-manager',    // The client ID assigned to you by the provider
-            'clientSecret'            =>  env('APP_OAUTH_KEY', 'SomeRandomKey'),   // The client password assigned to you by the provider
-            'redirectUri'             =>  route('oauth'),
-            'urlAuthorize'            => 'http://okpy.org/oauth/authorize',
-            'urlAccessToken'          => 'http://okpy.org/oauth/token',
-            'urlResourceOwnerDetails' => 'http://okpy.org/oauth/resource'
-        ]);
+        $authUrl = $client->getAuthenticationUrl("https://okpy.org/oauth/authorize",
+            route("oauth"), array("scope" => "email", "state" => csrf_token()));
+        return Redirect::to($authUrl);
 
-
-        // Is the code provided?
-        if (!is_null($code)) {
-            // This is a callback request from OK
-            $accessToken = $provider->getAccessToken('authorization_code', [
-                'code' => $code
-            ]);
-            //Send a request to fetch user info
-            $result = json_decode($okService->request('https://okpy.org/api/v3/user/?access_token=' . $accessToken), true);
-            dd($result);
-        }
-        else {
-            $authorizationUrl = $provider->getAuthorizationUrl();
-            return redirect((string) $authorizationUrl);
-        }
     }
 
     public function get_reset()
