@@ -23,7 +23,7 @@
     Route::get('login', ["as" => "login", "uses" => "IndexController@get_login", "middleware" => "guest"]);
     Route::get('logout', ["as" => "logout", "uses" => "IndexController@get_logout", "middleware" => "auth"]);
     Route::get('reset', ["as" => "reset", "uses" => "IndexController@get_reset", "middleware" => "guest"]);
-    Route::get('registration', ["as" => "registration", "uses" => "IndexController@get_registration", "middleware" => "guest"]);
+    Route::get('registration', ["as" => "registration", "uses" => "IndexController@get_login", "middleware" => "guest"]);
     Route::get('information', ["as" => "information", "uses" => "IndexController@get_information"]);
     Route::get('tokenauth/{token}', ["as" => "tokenauth", "uses" => "IndexController@get_tokenauth", "middleware" => "guest"]);
     //POST
