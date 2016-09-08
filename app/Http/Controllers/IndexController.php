@@ -92,6 +92,9 @@ class IndexController extends Controller {
         //Manually log in this user
         Auth::login($user, true);
 
+        //Log the sign-in as an audit
+        Audit::log("Logged in");
+
         if ($user->is_gsi()) {
             return redirect()->route("taconsole");
         }
@@ -201,7 +204,7 @@ class IndexController extends Controller {
         //Log the user out
         Auth::logout();
         //Redirect back to the index with a message
-        return redirect()->route("login")->with("message", "You have been successfully logged out.");
+        return redirect()->route("information")->with("message", "You have been successfully logged out.");
     }
 
     public function get_registration()
