@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use Validator, Auth, Request, Hash, Mail, View;
+use Validator, Auth, Request, Hash, Mail, View, Redirect;
 use App\Checkin;
 use App\Password;
 use App\Audit;
@@ -271,7 +271,7 @@ class LabAssistantController extends Controller {
     }
 
     public function get_queue() {
-        return view("la.queue");
+        return Redirect::to("http://oh.cs61a.org");
     }
 
     public function get_solutions() {
