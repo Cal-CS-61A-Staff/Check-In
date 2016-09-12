@@ -53,13 +53,13 @@ class IndexController extends Controller {
                 }
                 else if ($val["role"] != "lab assistant") {
                     //This is a student and shouldn't have access to console
-                    return redirect()->route("information")->with(array("mesage" => "You must be enrolled as a lab 
+                    return redirect()->route("information")->with(array("message" => "You must be enrolled as a lab 
                         assistant on OK to use la.cs61a.org. Contact TA."));
                 }
             }
         }
 	if (!$inCS61A) {
-        return redirect()->route("information")->with(array("mesage" => "You must be enrolled as a lab 
+        return redirect()->route("information")->with(array("message" => "You must be enrolled as a lab 
                         assistant on OK to use la.cs61a.org. Contact TA."));
 	}
         $user = User::where("email", "=", $data["email"])->first();
