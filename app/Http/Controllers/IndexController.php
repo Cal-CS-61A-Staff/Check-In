@@ -42,8 +42,10 @@ class IndexController extends Controller {
         $data = $response["result"]["data"];
         //Check if we need to give elevated permissions
         $staff = False;
+	$inCS61A = False;
         foreach ($data["participations"] as $key => $val) {
             if ($val["course"]["offering"] == env("OK_COURSE_OFFERING", "cal/cs61a/fa16")) {
+		$inCS61A = True;
                 if ($val["role"] == "staff") {
                     //Give this user TA permissions
                     $staff = True;
@@ -56,9 +58,15 @@ class IndexController extends Controller {
                 }
             }
         }
+	if (!$inCS61A) {
+	    abort(403, 'Not enrolled as lab assistant');
+	}
         $user = User::where("email", "=", $data["email"])->first();
         if (count($user) == 0) {
             $user = new User;
+	    if (empty($data["name"])) {
+	        $data["name"] = "";
+	    }
             $user->name = $data["name"];
             $user->email = $data["email"];
             $user->save();
