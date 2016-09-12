@@ -53,13 +53,14 @@ class IndexController extends Controller {
                 }
                 else if ($val["role"] != "lab assistant") {
                     //This is a student and shouldn't have access to console
-                    abort(403, 'Unauthorized action');
-
+                    return redirect()->route("information")->with(array("mesage" => "You must be enrolled as a lab 
+                        assistant on OK to use la.cs61a.org. Contact TA."));
                 }
             }
         }
 	if (!$inCS61A) {
-	    abort(403, 'Not enrolled as lab assistant');
+        return redirect()->route("information")->with(array("mesage" => "You must be enrolled as a lab 
+                        assistant on OK to use la.cs61a.org. Contact TA."));
 	}
         $user = User::where("email", "=", $data["email"])->first();
         if (count($user) == 0) {
