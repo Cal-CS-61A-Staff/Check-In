@@ -29,6 +29,11 @@ class IndexController extends Controller {
         $client = new \OAuth2\Client('la-manager', env('APP_OAUTH_KEY', 'SomeRandomKey'), \OAuth2\Client::AUTH_TYPE_AUTHORIZATION_BASIC);
         $client->setCurlOption(CURLOPT_USERAGENT, "CheckIn/1.1");
 
+        $error = Request::input('error');
+        if (!empty($error)) {
+            return redirect()->route("information")->with("message", "Try logging in again and granting permission.");
+        }
+
         // Fetch our data from the request
         $code = Request::input('code');
 
