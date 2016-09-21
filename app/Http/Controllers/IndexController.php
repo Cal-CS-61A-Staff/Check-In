@@ -89,16 +89,16 @@ class IndexController extends Controller {
             }
 
         }
-        else if ($user->access > 0 && !$staff) {
+        else if ($user->access > 0 && !$staff && !$tutor) {
             //We need to demote this user
             $user->access = 0;
             $user->save();
             $password = Password::where("gsi", "=", $user->id)->first();
             $password->delete();
         }
-        else if ($user->access == 0 && $staff) {
+        else if ($user->access == 0 && ($staff || $tutor)) {
             //We need to promote this user
-            $user->access = 1;
+            $user->access = ($staff ? 1 : 0.5);
             $user->save();
             // Create check in password
             $password = new Password;
