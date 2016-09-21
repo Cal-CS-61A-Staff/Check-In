@@ -42,7 +42,8 @@ class IndexController extends Controller {
         $data = $response["result"]["data"];
         //Check if we need to give elevated permissions
         $staff = False;
-	$inCS61A = False;
+        $tutor = False;
+        $inCS61A = False;
         foreach ($data["participations"] as $key => $val) {
             if ($val["course"]["offering"] == env("OK_COURSE_OFFERING", "cal/cs61a/fa16")) {
 		$inCS61A = True;
@@ -50,6 +51,10 @@ class IndexController extends Controller {
                     //Give this user TA permissions
                     $staff = True;
 
+                }
+                else if ($val["role"] == "grader") {
+                    //Give this user tutor permissions
+                    $tutor = True;
                 }
                 else if ($val["role"] != "lab assistant") {
                     //This is a student and shouldn't have access to console
@@ -72,14 +77,14 @@ class IndexController extends Controller {
             $user->email = $data["email"];
             $user->save();
             // Are we staff?
-            if ($staff) {
+            if ($staff || $tutor) {
                 // Create check in password
                 $password = new Password;
                 $password->gsi = $user->id;
                 $password->password = "recursion";
                 $password->save();
 
-                $user->access = 1;
+                $user->access = ($staff ? 1 : 0.5);
                 $user->save();
             }
 
