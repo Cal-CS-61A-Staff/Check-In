@@ -53,7 +53,15 @@
                                         <td><span class="badge">{{{ ($user_hours[$user->id]) }}}</span></td>
                                         <td>{{{ count($user->checkins) }}}</td>
                                         <td>{{{ $user->created_at }}}</td>
-                                        <td>@if (Auth::user()->is_gsi()) <span class="userActionsSpan"><a href="#">View Actions</a></span><span id="actions" style="display: none;">@if ($user->is_tutor()) <a href="{{ route("tauserpromote", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make TA</button></a>  @endif @if ($user->access == 0) <a href="{{ route("tauserpromotetutor", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make Tutor</button></a> <a href="{{ route("tauserpromote", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make TA</button></a> @else <a href="{{ route("tauserdemote", $user->id) }}"><button class="btn btn-danger"><i class="fa fa-arrow-down fa-fw"></i> Demote</button></a> @endif @endif <button data-toggle="tooltip" data-placement="top" title="Check In User" data-uid="{{{ $user->id }}}" data-name="{{{ $user->name }}}" class="btn btn-info checkInUserBtn"><i class="fa fa-check-circle-o fa-fw"></i></button></span></td>
+                                        <td><span class="userActionsSpan"><a href="#">View Actions</a></span><span id="actions" style="display: none;">
+                                                <a href="#">
+                                                   <button class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Add internal only feedback"><i class="fa fa-comment fa-fw"></i></button>
+                                                </a>
+                                                <button data-toggle="tooltip" data-placement="top" title="Check In User" data-uid="{{{ $user->id }}}" data-name="{{{ $user->name }}}" class="btn btn-info checkInUserBtn">
+                                                    <i class="fa fa-check-circle-o fa-fw"></i>
+                                                </button>
+                                            </span>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </table>
