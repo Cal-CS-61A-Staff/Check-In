@@ -12,6 +12,7 @@ use App\Section;
 use App\Assignment;
 use App\Preference;
 use App\Setting;
+use App\Feedback;
 
 class TAController extends Controller {
 
@@ -888,6 +889,19 @@ class TAController extends Controller {
         $informationContent = Request::input('inputInformationContent');
         Setting::change("information_content", $informationContent);
         return redirect()->route("taconsole")->with("message", "The settings were saved successfully.");
+    }
+
+    public function post_feedback_add() {
+        $uid = Request::input('inputLA');
+        // Ensure the user exists
+        User::findOrFail($uid);
+        $comment = Request::input('inputFeedback');
+        $feedback = new Feedback;
+        $feedback->uid = $uid;
+        $feedback->gsi = Auth::user()->id;
+        $feedback->comment = $comment;
+        $feedback->save();
+        return redirect()->route("taconsole")->with("message", "Feedback successfully saved.");
     }
 
 }
