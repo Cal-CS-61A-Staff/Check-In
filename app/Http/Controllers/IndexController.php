@@ -27,6 +27,7 @@ class IndexController extends Controller {
 
     public function get_oauth() {
         $client = new \OAuth2\Client('la-manager', env('APP_OAUTH_KEY', 'SomeRandomKey'), \OAuth2\Client::AUTH_TYPE_AUTHORIZATION_BASIC);
+        $client->setClientAuthType(\OAuth2\Client::AUTH_TYPE_URI);
         $client->setCurlOption(CURLOPT_USERAGENT, "CheckIn/1.1");
 
         $error = Request::input('error');
@@ -127,6 +128,8 @@ class IndexController extends Controller {
 
         $client = new \OAuth2\Client('la-manager', env('APP_OAUTH_KEY', 'SomeRandomKey'), \OAuth2\Client::AUTH_TYPE_AUTHORIZATION_BASIC);
         $client->setCurlOption(CURLOPT_USERAGENT, "CheckIn/1.1");
+        $client->setClientAuthType(\OAuth2\Client::AUTH_TYPE_URI);
+
 
 
         $authUrl = $client->getAuthenticationUrl("https://okpy.org/oauth/authorize",
