@@ -65,7 +65,7 @@ class IndexController extends Controller {
                 else if ($val["role"] != "lab assistant") {
                     //This is a student and shouldn't have access to console
                     return redirect()->route("information")->with(array("message" => "You must be enrolled as a lab 
-                        assistant on OK to use la.cs61a.org. Contact TA."));
+                        assistant on OK to use the lab assistant manager. Contact TA."));
                 }
             }
         }
