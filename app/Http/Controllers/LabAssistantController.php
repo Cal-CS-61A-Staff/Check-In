@@ -52,6 +52,10 @@ class LabAssistantController extends Controller {
         if (!is_numeric($hours) || !is_numeric($units)) {
             return redirect()->route("laassignments")->with("message", "Hours and Units must be numeric.");
         }
+        if ($hours > 2.5 || $units > 1 || $hours < 0 || $units < 0) {
+            return redirect()->route("laassignments")->with("message", "You must sign up for no more than 1 unit and 2.5 hours.");
+        }
+
         $u = User::findOrFail(Auth::user()->id);
         $u->hours = $hours;
         $u->units = $units;
