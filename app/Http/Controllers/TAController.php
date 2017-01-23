@@ -356,7 +356,7 @@ class TAController extends Controller {
             fclose($handle);
         } 
         foreach ($data as $row) {
-            $type = $row["Type"];
+            $type = Type::where("name", "=", $row["Type"])->firstOrFail()->id;
             $location = $row["Location"];
             $gsi = User::where("email", "=", $row["GSI Email"])->firstOrFail()->id;
             $second_gsi = $row["Second GSI Email"];
