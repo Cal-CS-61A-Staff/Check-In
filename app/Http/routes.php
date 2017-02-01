@@ -75,7 +75,11 @@
 // OAuth Routes
     Route::get("auth/ok", ["as" => "oauth", "uses" => "IndexController@get_oauth", "middleware" => "guest"]);
 
-//Admin/Maintenance Routes
+// Admin/Maintenance Routes
     //GET
     Route::get('admin/import_checkins', ["as" => "adminimportcheckins", "uses" => "AdminController@get_import_checkins", "middleware" => "auth.ta"]);
+
+// Development Routes
+    //GET
+    Route::get('dev/login/{id}', ["as" => "devlogin", "uses" => "DevController@get_login", "middleware" => "dev"]);
 
