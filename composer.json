@@ -40,6 +40,10 @@
 			"php -r \"copy('.env.example', '.env');\"",
 			"php artisan key:generate"
 		]
+        "post-deploy-cmd": [
+                "chmod -R 755 bootstrap\/cache",
+                "php artisan cache:clear"
+        ]
 	},
 	"config": {
 		"preferred-install": "dist"
