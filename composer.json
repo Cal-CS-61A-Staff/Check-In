@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"type": "project",
 	"require": {
-		"laravel/framework": "5.0.*",
+		"laravel/framework": "5.1.*",
 		"guzzlehttp/guzzle": "^5.3",
 		"adoy/oauth2": "dev-master",
 		"sentry/sentry-laravel": "^0.3.0",
