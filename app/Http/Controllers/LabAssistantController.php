@@ -279,6 +279,6 @@ class LabAssistantController extends Controller {
     }
 
     public function get_solutions() {
-        return view("la.solutions");
+        return Redirect::to("http://staging.cs61a.org");
     }
 }

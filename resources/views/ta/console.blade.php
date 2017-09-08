@@ -782,7 +782,9 @@
     $('#editSectionInputEndTime').pickatime();
 
     $('#auditLogTable').DataTable();
+    @if (Auth::user()->is_gsi())
     CKEDITOR.replace('informationContentTextArea');
+    @endif
 
     $('#announcementNewBtn').on('click', function() {
         $('#announcementNewForm').slideToggle();
