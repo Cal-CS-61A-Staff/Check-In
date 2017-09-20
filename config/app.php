@@ -149,7 +149,7 @@ return [
         /*
          * Custom
          */
-        'Sentry\SentryLaravel\SentryLaravelServiceProvider',
+        Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
 
 
 	],
@@ -195,7 +195,7 @@ return [
 		'Route'     => 'Illuminate\Support\Facades\Route',
 		'Schema'    => 'Illuminate\Support\Facades\Schema',
 		'Session'   => 'Illuminate\Support\Facades\Session',
-		'Sentry' 	=> 'Sentry\SentryLaravel\SentryFacade',
+		'Sentry' 	=> Sentry\SentryLaravel\SentryFacade::class,
 		'Storage'   => 'Illuminate\Support\Facades\Storage',
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
