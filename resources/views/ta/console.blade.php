@@ -90,7 +90,15 @@
                                             <td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $checkin->ta->name }}}</span></td>
                                             <td>@if ($checkin->makeup == 1) Yes @else No @endif</td>
                                             <td>{{{ $checkin->created_at }}}</td>
-                                            <td><span class="checkInActionsContainer" style="display: none;"><a data-id="{{{ $checkin->id }}}" class="btn btn-warning removeCheckInBtn"><i class="fa fa-times fa-fw"></i></a></span><a class="checkInActionsBtn" href="#">View Actions</a></td>
+                                            <td><span class="checkInActionsContainer" style="display: none;">
+                                                    <a data-name="{{{ $checkin->user->name }}}"
+                                                       data-id="{{{ $checkin->id }}}"
+                                                       data-type="{{{ $checkin->type->id }}}"
+                                                       data-gsi="{{{ $checkin->ta->id }}}"
+                                                       data-date="{{{ $checkin->date }}}"
+                                                       data-time="{{{ $checkin->time }}}"
+                                                       data-makeup="{{{ $checkin->makeup }}}"
+                                                       class="btn btn-info editCheckInBtn"><i class="fa fa-edit fa-fw"></i></a><a data-id="{{{ $checkin->id }}}" class="btn btn-warning removeCheckInBtn"><i class="fa fa-times fa-fw"></i></a></span><a class="checkInActionsBtn" href="#">View Actions</a></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -532,37 +540,38 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title">Check In <strong><span id="checkInUserName"></span></strong></h4>
                 </div>
-                <form class="form" method="POST" action="{{ route("tacheckinuser") }}">
+                <form id="checkInModalForm" class="form" method="POST" action="{{ route("tacheckinuser") }}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                     <input type="hidden" id="inputUID" name="inputUID" value="" />
+                    <input type="hidden" id="checkInInputID" name="inputID" value="" />
                     <div class="modal-body">
                             <div class="form-group">
-                                <label for="inputLocation">Type</label>
-                                <select class="form-control" name="inputLocation" id="inputLocation">
+                                <label for="checkInInputLocation">Type</label>
+                                <select class="form-control" name="inputLocation" id="checkInInputLocation">
                                     @foreach ($types as $type)
                                         <option value="{{{ $type->id }}}">{{{ $type->name }}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="inputDate">Section Date</label>
-                                <input type="text" readonly name="inputDate" id="inputDate" placeholder="Date" />
+                                <label for="checkInInputDate">Section Date</label>
+                                <input class="inputDate" type="text" readonly name="inputDate" id="checkInInputDate" placeholder="Date" />
                             </div>
                             <div class="form-group">
-                                <label for="inputTime">Section <strong>Start</strong> Time</label>
-                                <input type="text" readonly name="inputTime" id="inputTime" placeholder="Start Time" />
+                                <label for="checkInInputTime">Section <strong>Start</strong> Time</label>
+                                <input class="inputTime" type="text" readonly name="inputTime" id="checkInInputTime" placeholder="Start Time" />
                             </div>
                             <div class="form-group">
-                                <label for="inputGSI">GSI: </label>
-                                <select class="form-control" name="inputGSI">
+                                <label for="checkInInputGSI">GSI: </label>
+                                <select class="form-control" id="checkInInputGSI" name="inputGSI">
                                     @foreach ($gsis as $gsi)
                                         <option value="{{{ $gsi->id }}}">{{{ $gsi->name }}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="inputMakeup">Makeup: </label>
-                                <select class="form-control" name="inputMakeup">
+                                <label for="checkInInputMakeup">Makeup: </label>
+                                <select class="form-control" id="checkInInputMakeup" name="inputMakeup">
                                     <option value="0">No</option>
                                     <option value="1">Yes</option>
                                 </select>
@@ -570,7 +579,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <input type="submit" class="btn btn-info" value="Check In" />
+                        <input type="submit" class="btn btn-info" id="checkInSubmitBtn" value="Check In" />
                     </div>
                 </form>
             </div>
@@ -767,13 +776,15 @@
 @section('js')
     $('#loading').hide();
     $('.console-container').fadeIn();
-    $('#inputDate').pickadate();
-    $('#inputTime').pickatime();
+    $('#inputDate, .inputDate').pickadate();
+    $('#inputTime, .inputTime').pickatime();
     $('#editSectionInputStartTime').pickatime();
     $('#editSectionInputEndTime').pickatime();
 
     $('#auditLogTable').DataTable();
+    @if (Auth::user()->is_gsi())
     CKEDITOR.replace('informationContentTextArea');
+    @endif
 
     $('#announcementNewBtn').on('click', function() {
         $('#announcementNewForm').slideToggle();
@@ -812,9 +823,29 @@
             $('#modifyEventTypeDiv').slideDown();
         }
     });
+    $('.editCheckInBtn').on('click', function() {
+        $('#checkInModalForm').attr('action', '{{{ route("taeditcheckinuser") }}}');
+        $('#checkInInputID').val($(this).attr("data-id"));
+        $('#checkInUserName').html($(this).attr("data-name"));
+        $('#checkInInputLocation').val($(this).attr("data-type"));
+        $('#checkInInputDate').val($(this).attr("data-date"));
+        $('#checkInInputTime').val($(this).attr("data-time"));
+        $('#checkInInputGSI').val($(this).attr("data-gsi"));
+        $('#checkInInputMakeup').val($(this).attr("data-makeup"));
+        $('#checkInSubmitBtn').val("Edit Check In");
+        $('#checkInUserModal').modal('show');
+    });
     $('.checkInUserBtn').on('click', function() {
+        $('#checkInModalForm').attr('action', '{{{ route("tacheckinuser") }}}');
         $('#checkInUserName').html($(this).attr("data-name"));
         $('#inputUID').val($(this).attr("data-uid"));
+        $('#checkInInputID').val("");
+        $('#checkInInputLocation')[0].selectedIndex = 0
+        $('#checkInInputDate').val($(this).attr("data-date"));
+        $('#checkInInputTime').val($(this).attr("data-time"));
+        $('#checkInInputGSI')[0].selectedIndex = 0
+        $('#checkInInputMakeup')[0].selectedIndex = 0
+        $('#checkInSubmitBtn').val("Check In");
         $('#checkInUserModal').modal('show');
     });
     $('.addLAFeedbackBtn').on('click', function() {

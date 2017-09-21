@@ -83,6 +83,54 @@ class TAController extends Controller {
         return redirect()->route("taconsole")->with("message", "You have successfully updated your secret word");
     }
 
+    public function post_edit_checkin_user() {
+        $input = Request::all();
+        //Start some validation
+        $validator = Validator::make([
+            "id" => $input["inputID"],
+            "location" => $input["inputLocation"],
+            "date" => $input["inputDate"],
+            "time" => $input["inputTime"],
+            "gsi" => $input["inputGSI"],
+            "makeup" => $input["inputMakeup"],
+        ], [
+            "id" => "required|exists:checkins,id",
+            "location" => "required|exists:types,id",
+            "date" => "required",
+            "time" => "required",
+            "gsi" => "required|exists:passwords,gsi",
+            "makeup" => "required|in:0,1",
+        ], [
+            "id.required" => "Invalid check in to edit",
+            "id.exists" => "Invalid check in to edit",
+            "location.required" => "Please go back and choose your section type. (Lab, office hours etc...).",
+            "location.exists" => "That doesn't appear to be a valid event type (Lab, office hours etc...).",
+            "date.required" => "Please choose a date for your check in.",
+            "time.required" => "Please go back and choose the start time.",
+            "gsi.required" => "Please go back and choose the GSI that is leading your section today",
+            "gsi.exists" => "That does not appear to be a valid GSI selection",
+            "makeup.required" => "Please go back and choose if this is a makeup check in.",
+            "makeup.in" => "That doesn't appear to be a valid choice for if this is a makeup check in.",
+        ]);
+        //Run our validator
+        if ($validator->fails())
+        {
+            return redirect()->route('taconsole')->with("message", "Your form submission had errors. Please ensure you have filled out all of the fields.");
+        }
+        // Find our existing check in
+        $checkin = Checkin::with("user")->findOrFail($input["inputID"]);
+        $checkin->location = $input["inputLocation"];
+        $checkin->date = $input["inputDate"];
+        $checkin->time = $input["inputTime"];
+        $checkin->gsi = $input["inputGSI"];
+        $checkin->makeup = $input["inputMakeup"];
+        //Save our new checkin
+        $checkin->save();
+        //Make an audit log entry for this checkin
+        Audit::log("GSI " . Auth::user()->name . " edited existing checked in for " . $checkin->user->name);
+        return redirect()->route("taconsole")->with("message", "Editing check in for " . $checkin->user->name . " was successful.");
+    }
+
     public function post_checkin_user() {
         $input = Request::all();
         //Start some validation
