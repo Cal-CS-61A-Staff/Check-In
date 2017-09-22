@@ -29,6 +29,7 @@ class Kernel extends HttpKernel {
         'auth.ta' => 'App\Http\Middleware\AuthenticateTA',
         'auth.tutor' => 'App\Http\Middleware\AuthenticateTutor',
 		'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
+        'dev' => 'App\Http\Middleware\Dev',
 	];
 
 }

@@ -59,6 +59,7 @@
     //POST
     Route::post("ta/update/password", ["as" => "taupdatepassword", "uses" => "TAController@post_update_password", "middleware" => "auth.tutor"]);
     Route::post("ta/user/checkin", ["as" => "tacheckinuser", "uses" => "TAController@post_checkin_user", "middleware" => "auth.tutor"]);
+    Route::post("ta/user/checkin/edit", ["as" => "taeditcheckinuser", "uses" => "TAController@post_edit_checkin_user", "middleware" => "auth.tutor"]);
     Route::post("ta/type", ["as" => "taupdatetype", "uses" => "TAController@post_update_type", "middleware" => "auth.ta"]);
     Route::post("ta/new", ["as" => "tanewtype", "uses" => "TAController@post_new_type", "middleware" => "auth.ta"]);
     Route::post("ta/announcement/new", ["as" => "taannouncementnew", "uses" => "TAController@post_announcement_new", "middleware" => "auth.tutor"]);
@@ -75,7 +76,11 @@
 // OAuth Routes
     Route::get("auth/ok", ["as" => "oauth", "uses" => "IndexController@get_oauth", "middleware" => "guest"]);
 
-//Admin/Maintenance Routes
+// Admin/Maintenance Routes
     //GET
     Route::get('admin/import_checkins', ["as" => "adminimportcheckins", "uses" => "AdminController@get_import_checkins", "middleware" => "auth.ta"]);
+
+// Development Routes
+    //GET
+    Route::get('dev/login/{id}', ["as" => "devlogin", "uses" => "DevController@get_login", "middleware" => "dev"]);
 
