@@ -1,7 +1,7 @@
 <?php
 
 return [ 
-"class" => "CS61A"
+"class" => "Data8"
 ];
 
 
