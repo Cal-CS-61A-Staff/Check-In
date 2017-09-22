@@ -71,7 +71,7 @@ class IndexController extends Controller {
         }
 	if (!$inCS61A) {
         return redirect()->route("information")->with(array("message" => "You must be enrolled as a lab 
-                        assistant on OK to use la.cs61a.org. Contact TA."));
+                        assistant on OK to use the lab assistant manager Contact TA."));
 	}
         $user = User::where("email", "=", $data["email"])->first();
         if (count($user) == 0) {
