@@ -1,8 +1,5 @@
-
 Lab Assistant Manager
 ============
-
-[Slides](https://docs.google.com/presentation/d/1bfLYmrTUiCouQw9p6L_XQeCNvOzy4I1T4zn13K8o4PU "Slides")
 
 ## Overview
 
@@ -11,9 +8,34 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
 
 ## Installation
 
-1. Set up Homestead
+1. Set up VirtualBox, Vagrant & Homestead
 
-    Homestead installation instructions
+    Download and install virtual box:
+    https://www.virtualbox.org/wiki/Downloads
+ 
+    Download and install vagrant:
+    https://www.vagrantup.com/downloads.html
+
+    Install the Homestead Vagrant Box:
+    `vagrant box add laravel/homestead`
+    
+    Install Homstead
+    
+    
+    cd ~
+    git clone https://github.com/laravel/homestead.git Homestead
+    git checkout git checkout v6.1.0
+    // Clone the desired release...
+    git checkout v6.1.0
+    
+    
+    // If on Mac / Linux...
+    bash init.sh
+
+    // If on Windows...
+    init.bat
+    
+    
 
 2. Use composer to install dependencies
 
@@ -57,3 +79,5 @@ Tip:  add `alias dokku="ssh -t dokku@app.cs61a.org"` to your aliases file (e.g. 
     dokku config:set app-name APP_KEY=<SECRET> APP_ENV=prod OK_COURSE_OFFERING="cal/cs61a/fa17" APP_OAUTH_KEY=<SECRET>
     dokku letsencrypt app-name
     # Change OK OAuth to support the domain
+
+
