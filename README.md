@@ -46,6 +46,7 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     sites:
         - map: la.app
         to: /home/vagrant/Code/Check-In/public
+        php: "5.6"
     ```
     
 2. The Hosts File
