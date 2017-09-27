@@ -26,7 +26,7 @@ return [
 	|
 	*/
 
-	'default' => 'mysql',
+	'default' => env('DB_PROFILE', 'mysql-prod'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -52,7 +52,21 @@ return [
 			'prefix'   => '',
 		],
 
-		'mysql' => [
+		'mysql-dev' => [
+            'driver' => 'mysql',
+            'host'     => env('DB_HOST', 'localhost'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
+		'mysql-prod' => [
             'driver' => 'mysql',
             'host' => parse_url(getenv("DATABASE_URL"))["host"],
             'database' => substr(parse_url(getenv("DATABASE_URL"))["path"], 1),
