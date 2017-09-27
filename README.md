@@ -58,15 +58,21 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     Make sure the IP address listed is the one set in your Homestead.yaml file. Once you have added the domain to your hosts file and launched the Vagrant box you will be able to access the site via your web browser:
 
     http://la.app
-3. Use composer to install dependencies
+3. SSH Into Vagrant Box
+    ```
+    vagrant ssh`
+    // Set working directory to be project location
+    cd Code/Check-In
+    ```
+3. Via SSH install dependencies through the PHP package manager `composer`. 
 
     `composer install`
 
-4. Run the migrations
+4. Via SSH run the database migrations
 
     `php artisan migrate`
 
-5. Seed the database with the proper first few values
+5. Via SSH Seed the database with the proper first few values
 
     `php artisan db:seed --class DefaultSettingsSeeder`
 
