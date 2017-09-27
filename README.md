@@ -21,7 +21,7 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     
     Install Homstead
     
-    
+    ```
     cd ~
     git clone https://github.com/laravel/homestead.git Homestead
     git checkout git checkout v6.1.0
@@ -34,20 +34,20 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
 
     // If on Windows...
     init.bat
-    
+    ```
     
 
 2. Use composer to install dependencies
 
-    composer install
+    `composer install`
 
 3. Run the migrations
 
-    php artisan migrate
+    `php artisan migrate`
 
 4. Seed the database with the proper first few values
 
-    php artisan db:seed --class DefaultSettingsSeeder
+    `php artisan db:seed --class DefaultSettingsSeeder`
     
 5. Point your browser to http://localhost:5000.  (This might take a while.)
 
