@@ -19,7 +19,7 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     Install the Homestead Vagrant Box:
     `vagrant box add laravel/homestead`
     
-    Install Homstead
+    Install Homestead
     
     ```
     cd ~
@@ -60,7 +60,7 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     http://la.app
 3. SSH Into Vagrant Box
     ```
-    vagrant ssh`
+    vagrant ssh
     // Set working directory to be project location
     cd Code/Check-In
     ```
@@ -98,6 +98,7 @@ To deploy from master:
 Deploy from another branch:
 
     git push dokku my_branch:master
+    
 
 ### First Time Deployment
 
@@ -113,5 +114,9 @@ Tip:  add `alias dokku="ssh -t dokku@app.cs61a.org"` to your aliases file (e.g. 
     dokku config:set app-name APP_KEY=<SECRET> APP_ENV=prod OK_COURSE_OFFERING="cal/cs61a/fa17" APP_OAUTH_KEY=<SECRET>
     dokku letsencrypt app-name
     # Change OK OAuth to support the domain
+    
+    # Run migrations after following steps in Deployment
+    dokku enter <app_name> web run php artisan migrate
+    dokku enter <app_name> web run php artisan:seed --class=DefaultSettingsSeeder --force
 
 
