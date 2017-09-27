@@ -36,6 +36,18 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     init.bat
     ```
     
+    Update homestead.yaml to point to where you are cloning this repo. E.g:
+    
+    ```
+    folders:
+    - map: ~/Code
+      to: ~/Projects
+
+    sites:
+    - map: la.app
+      to: ~/Projects/Check-In/public
+    ```
+    
 
 2. Use composer to install dependencies
 
