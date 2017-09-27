@@ -41,7 +41,7 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     ```
     folders:
         - map: ~/Projects/Check-In
-        to: /home/vagrant/Code
+        to: /home/vagrant/Code/Check-In
 
     sites:
         - map: la.app
