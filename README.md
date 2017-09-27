@@ -40,12 +40,12 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     
     ```
     folders:
-    - map: ~/Code
-      to: ~/Projects
+        - map: ~/Projects/Check-In
+        to: /home/vagrant/Code
 
     sites:
-    - map: la.app
-      to: ~/Projects/Check-In/public
+        - map: la.app
+        to: /home/vagrant/Code/Check-In/public
     ```
     
 
@@ -60,8 +60,15 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
 4. Seed the database with the proper first few values
 
     `php artisan db:seed --class DefaultSettingsSeeder`
+
+5. Launch Vagrant:
+    `vagrant up`
     
-5. Point your browser to http://localhost:5000.  (This might take a while.)
+    If you change the sites or maps inside of `Homestead.yaml` you will need to run the following to update Vagrant:
+    `vagrant reload --provision`
+    
+    
+6. Point your browser to http://localhost:5000.  (This might take a while.)
 
 ## Deployment
 
