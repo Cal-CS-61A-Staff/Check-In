@@ -48,20 +48,28 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
         to: /home/vagrant/Code/Check-In/public
     ```
     
+2. The Hosts File
 
-2. Use composer to install dependencies
+You must add the "domains" for your Nginx sites to the hosts file on your machine. The hosts file will redirect requests for your Homestead sites into your Homestead machine. On Mac and Linux, this file is located at /etc/hosts. On Windows, it is located at C:\Windows\System32\drivers\etc\hosts. The lines you add to this file will look like the following:
+```
+192.168.10.10  homestead.app
+```
+Make sure the IP address listed is the one set in your Homestead.yaml file. Once you have added the domain to your hosts file and launched the Vagrant box you will be able to access the site via your web browser:
+
+http://homestead.app
+3. Use composer to install dependencies
 
     `composer install`
 
-3. Run the migrations
+4. Run the migrations
 
     `php artisan migrate`
 
-4. Seed the database with the proper first few values
+5. Seed the database with the proper first few values
 
     `php artisan db:seed --class DefaultSettingsSeeder`
 
-5. Launch Vagrant:
+6. Launch Vagrant:
     `vagrant up`
     
     If you change the sites or maps inside of `Homestead.yaml` you will need to run the following to update Vagrant:
