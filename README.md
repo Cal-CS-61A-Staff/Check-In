@@ -19,7 +19,7 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     Install the Homestead Vagrant Box:
     `vagrant box add laravel/homestead`
     
-    Install Homstead
+    Install Homestead
     
     ```
     cd ~
@@ -41,11 +41,12 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     ```
     folders:
         - map: ~/Projects/Check-In
-        to: /home/vagrant/Code
+        to: /home/vagrant/Code/Check-In
 
     sites:
         - map: la.app
         to: /home/vagrant/Code/Check-In/public
+        php: "5.6"
     ```
     
 2. The Hosts File
@@ -57,15 +58,21 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     Make sure the IP address listed is the one set in your Homestead.yaml file. Once you have added the domain to your hosts file and launched the Vagrant box you will be able to access the site via your web browser:
 
     http://la.app
-3. Use composer to install dependencies
+3. SSH Into Vagrant Box
+    ```
+    vagrant ssh
+    // Set working directory to be project location
+    cd Code/Check-In
+    ```
+3. Via SSH install dependencies through the PHP package manager `composer`. 
 
     `composer install`
 
-4. Run the migrations
+4. Via SSH run the database migrations
 
     `php artisan migrate`
 
-5. Seed the database with the proper first few values
+5. Via SSH Seed the database with the proper first few values
 
     `php artisan db:seed --class DefaultSettingsSeeder`
 
@@ -91,6 +98,7 @@ To deploy from master:
 Deploy from another branch:
 
     git push dokku my_branch:master
+    
 
 ### First Time Deployment
 
@@ -106,5 +114,9 @@ Tip:  add `alias dokku="ssh -t dokku@app.cs61a.org"` to your aliases file (e.g. 
     dokku config:set app-name APP_KEY=<SECRET> APP_ENV=prod OK_COURSE_OFFERING="cal/cs61a/fa17" APP_OAUTH_KEY=<SECRET> FORCE_HTTPS=true
     dokku letsencrypt app-name
     # Change OK OAuth to support the domain
+    
+    # Run migrations after following steps in Deployment
+    dokku enter <app_name> web run php artisan migrate
+    dokku enter <app_name> web run php artisan:seed --class=DefaultSettingsSeeder --force
 
 
