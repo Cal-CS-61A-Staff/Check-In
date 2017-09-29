@@ -28,7 +28,7 @@ return [
 	|
 	*/
 
-	'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+	'host' => env('MAIL_HOST', 'https://smtp.mailgun.org'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return [
 	|
 	*/
 
-	'from' => ['address' => "cs61a@checkin.colinschoen.me", 'name' => "CS61A Lab Assistant Manager"],
+	'from' => ['address' => "cs61a@la.cs61a.org", 'name' => "CS61A Lab Assistant Manager"],
 
 	/*
 	|--------------------------------------------------------------------------
