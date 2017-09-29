@@ -111,7 +111,8 @@ Tip:  add `alias dokku="ssh -t dokku@app.cs61a.org"` to your aliases file (e.g. 
     # Set DNS record
     dokku domains:add app-name name.cs61a.org
 
-    dokku config:set app-name APP_KEY=<SECRET> APP_ENV=prod OK_COURSE_OFFERING="cal/cs61a/fa17" APP_OAUTH_KEY=<SECRET> FORCE_HTTPS=true
+    dokku config:set app-name APP_KEY=<SECRET> APP_ENV=prod OK_COURSE_OFFERING="cal/cs61a/fa17" APP_OAUTH_KEY=<SECRET> FORCE_HTTPS=true MAIL_DRIVER=mailgun MAIL_GUN_DOMAIN=<MAIL_GUN_DOMAIN> MAIL_GUN_SECRET=<MAIL_GUN_SECRET>
+    MAIL_HOST=<MAIL_HOST> MAIL_PORT=<MAIL_PORT> MAIL_USERNAME=<MAIL_USERNAME> MAIL_PASSWORD=<MAIL_SECRET> MAIL_ENCRYPTION=null
     dokku letsencrypt app-name
     # Change OK OAuth to support the domain
     
