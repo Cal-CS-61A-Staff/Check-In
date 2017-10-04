@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Data8 - Lab Assistant Check In</title>
+    <title>CS61A - Lab Assistant Check In</title>
     <style>
         /* -------------------------------------
                 GLOBAL
@@ -166,7 +166,7 @@
                 <table>
                     <tr>
                         <td>
-                            <h1>Data8</h1>
+                            <h1>CS61A</h1>
                             <h3>Lab Assistant Check In</h3>
                             <p>Hello {{{ $name }}},</p>
                             <p>Your lab assistant check in for {{{ $date }}} at {{{ $time }}} was successfully received and accepted. If you have any questions, please use Piazza.</p>
