@@ -118,6 +118,6 @@ Tip:  add `alias dokku="ssh -t dokku@app.cs61a.org"` to your aliases file (e.g. 
     
     # Run migrations after following steps in Deployment
     dokku enter <app_name> web php artisan migrate --force
-    dokku enter <app_name> web php artisan:seed --class=DefaultSettingsSeeder --force
+    dokku enter <app_name> web php artisan db:seed --class=DefaultSettingsSeeder --force
 
 
