@@ -117,7 +117,7 @@ Tip:  add `alias dokku="ssh -t dokku@app.cs61a.org"` to your aliases file (e.g. 
     # Change OK OAuth to support the domain
     
     # Run migrations after following steps in Deployment
-    dokku enter <app_name> web run php artisan migrate
-    dokku enter <app_name> web run php artisan:seed --class=DefaultSettingsSeeder --force
+    dokku enter <app_name> web php artisan migrate --force
+    dokku enter <app_name> web php artisan:seed --class=DefaultSettingsSeeder --force
 
 
