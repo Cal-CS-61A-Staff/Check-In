@@ -153,6 +153,18 @@ class TAController extends Controller {
         ]);
     }
 
+    public function get_module_stats() {
+        $checkins = Checkin::with("ta")->with("user")->get();
+        $checkins_per_week = Checkin::perWeek($checkins);
+        $checkins_unique_per_week = Checkin::uniquePerWeek($checkins);
+        $checkins_per_staff = Checkin::perStaff($checkins);
+        return view("ta.modules.stats")->with([
+            "checkins_per_week" => $checkins_per_week,
+            "checkins_unique_per_week" => $checkins_unique_per_week,
+            "checkins_per_staff" => $checkins_per_staff,
+        ]);
+    }
+
     public function post_update_password() {
         $password = Request::input("inputPassword");
         if ($password == "") {
