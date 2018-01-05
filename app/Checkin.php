@@ -81,9 +81,10 @@ class Checkin extends Model {
     }
 
 
-    public static function userHours($checkins) {
+    public static function userHours($checkins, $users=false) {
         $user_hours = array();
-        $users = User::all();
+        if ($users === false)
+            $users = User::all();
         foreach ($users as $user) {
             $user_hours[$user->id] = 0;
         }
