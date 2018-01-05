@@ -56,7 +56,18 @@
     Route::get("ta/announcement/visibility/{id}", ["as" => "taannouncementvisibility", "uses" => "TAController@get_announcement_visibility", "middleware" => "auth.tutor"]);
     Route::get("ta/section/delete/{sid}", ["as" => "tasectiondelete", "uses" => "TAController@get_section_delete", "middleware" => "auth.ta"]);
     Route::get("ta/checkin/remove/{id}", ["as" => "tacheckinremove", "uses" => "TAController@post_checkin_remove", "middleware" => "auth.tutor"]);
-    //POST
+        //SubModules
+        Route::get('ta/module/users', ["as" => "tamoduleusers", "uses" => "TAController@get_module_users", "middleware" => "auth.tutor"]);
+        Route::get('ta/module/checkins', ["as" => "tamodulecheckins", "uses" => "TAController@get_module_checkins", "middleware" => "auth.tutor"]);
+        Route::get('ta/module/secretword', ["as" => "tamodulesecretword", "uses" => "TAController@get_module_secretword", "middleware" => "auth.tutor"]);
+        Route::get('ta/module/announcements', ["as" => "tamoduleannouncements", "uses" => "TAController@get_module_announcements", "middleware" => "auth.tutor"]);
+        Route::get('ta/module/export', ["as" => "tamoduleexport", "uses" => "TAController@get_module_export", "middleware" => "auth.tutor"]);
+        Route::get('ta/module/sections', ["as" => "tamodulesections", "uses" => "TAController@get_module_sections", "middleware" => "auth.tutor"]);
+        Route::get('ta/module/stats', ["as" => "tamodulestats", "uses" => "TAController@get_module_stats", "middleware" => "auth.tutor"]);
+        Route::get('ta/module/eventtypes', ["as" => "tamoduleeventtypes", "uses" => "TAController@get_module_eventtypes", "middleware" => "auth.ta"]);
+        Route::get('ta/module/auditlog', ["as" => "tamoduleauditlog", "uses" => "TAController@get_module_auditlog", "middleware" => "auth.ta"]);
+        Route::get('ta/module/settings', ["as" => "tamodulesettings", "uses" => "TAController@get_module_settings", "middleware" => "auth.ta"]);
+//POST
     Route::post("ta/update/password", ["as" => "taupdatepassword", "uses" => "TAController@post_update_password", "middleware" => "auth.tutor"]);
     Route::post("ta/user/checkin", ["as" => "tacheckinuser", "uses" => "TAController@post_checkin_user", "middleware" => "auth.tutor"]);
     Route::post("ta/user/checkin/edit", ["as" => "taeditcheckinuser", "uses" => "TAController@post_edit_checkin_user", "middleware" => "auth.tutor"]);
