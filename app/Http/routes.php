@@ -60,8 +60,10 @@
         Route::get('ta/module/users', ["as" => "tamoduleusers", "uses" => "TAController@get_module_users", "middleware" => "auth.tutor"]);
         Route::get('ta/module/checkins', ["as" => "tamodulecheckins", "uses" => "TAController@get_module_checkins", "middleware" => "auth.tutor"]);
         Route::get('ta/module/secretword', ["as" => "tamodulesecretword", "uses" => "TAController@get_module_secretword", "middleware" => "auth.tutor"]);
-        Route::get('ta/module/announcements', ["as" => "tamoduleannouncements", "uses" => "TAController@get_module_announcements", "middleware" => "auth.ta"]);
-    //POST
+        Route::get('ta/module/announcements', ["as" => "tamoduleannouncements", "uses" => "TAController@get_module_announcements", "middleware" => "auth.tutor"]);
+        Route::get('ta/module/export', ["as" => "tamoduleexport", "uses" => "TAController@get_module_export", "middleware" => "auth.tutor"]);
+        Route::get('ta/module/sections', ["as" => "tamodulesections", "uses" => "TAController@get_module_sections", "middleware" => "auth.tutor"]);
+//POST
     Route::post("ta/update/password", ["as" => "taupdatepassword", "uses" => "TAController@post_update_password", "middleware" => "auth.tutor"]);
     Route::post("ta/user/checkin", ["as" => "tacheckinuser", "uses" => "TAController@post_checkin_user", "middleware" => "auth.tutor"]);
     Route::post("ta/user/checkin/edit", ["as" => "taeditcheckinuser", "uses" => "TAController@post_edit_checkin_user", "middleware" => "auth.tutor"]);

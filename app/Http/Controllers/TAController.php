@@ -78,6 +78,11 @@ class TAController extends Controller {
             return $user->is_staff();
         });
         $user_hours = Checkin::userHours($checkins, $users);
+        $assigned_hours = User::get_assignedHours($users);
+        //Get under hours
+        $under_hours = User::get_underHours($users, $assigned_hours);
+        //Get over hours
+        $over_hours = User::get_overHours($users, $assigned_hours);
 
         return view("ta.modules.users")->with([
             "users" => $users,
@@ -99,6 +104,53 @@ class TAController extends Controller {
     public function get_module_announcements() {
         $announcements = Announcement::with("user")->orderBy("hidden", "DESC")->orderBy("created_at", "DESC")->get();
         return view("ta.modules.announcements")->with(["announcements" => $announcements]);
+    }
+
+    public function get_module_export() {
+        return view("ta.modules.export");
+    }
+
+    public function get_module_sections() {
+        $sections = Section::with("assigned.user")->with("ta")->with("ta2")->with("category")->orderBy("type", "ASC")->get();
+        //Get GSis lab assistants
+        $yourLabAssistants = Section::with("assigned.user")->where("gsi", "=", Auth::user()->id)->orWhere("second_gsi", "=", Auth::user()->id)->get();
+        $yourLabAssistantsEmails =  array();
+        $yourLabAssistantsNames =  array();
+        foreach ($yourLabAssistants as $ylas) {
+            foreach($ylas->assigned as $ylas) {
+                if (!in_array($ylas->user->email, $yourLabAssistantsEmails)) {
+                    $yourLabAssistantsEmails[] = $ylas->user->email;
+                    $yourLabAssistantsNames[] = $ylas->user->name;
+                }
+            }
+        }
+
+        $users = User::orderBy("name", "ASC")->get();
+        $staff = $users->filter(function ($user) {
+            return $user->is_staff();
+        });
+        $assigned_hours = User::get_assignedHours($users);
+        $assignments = Assignment::with("sec")->with("user")->get();
+        $double_booked = User::get_doubleBooked($assignments);
+        //Get under hours
+        $under_hours = User::get_underHours($users, $assigned_hours);
+        //Get over hours
+        $over_hours = User::get_overHours($users, $assigned_hours);
+        $types = Type::all();
+
+        User::where('access', '>', 0)->orderBy("name", "ASC")->get();
+        return view("ta.modules.sections")->with([
+            "yourLabAssistantsEmails" => $yourLabAssistantsEmails,
+            "yourLabAssistantsNames" => $yourLabAssistantsNames,
+            "double_booked" => $double_booked,
+            "over_hours" => $over_hours,
+            "under_hours" => $under_hours,
+            "assigned_hours" => $assigned_hours,
+            "sections" => $sections,
+            "doubled_booked" => $double_booked,
+            "types" => $types,
+            "staff" => $staff
+        ]);
     }
 
     public function post_update_password() {
