@@ -70,6 +70,22 @@ class TAController extends Controller {
         return view("ta.console")->with(["informationContent" => $informationContent, "allowSectionSignups" => $allowSectionSignups, "yourLabAssistantsEmails" => $yourLabAssistantsEmails, "yourLabAssistantsNames" => $yourLabAssistantsNames, "double_booked" => $double_booked, "over_hours" => $over_hours, "under_hours" => $under_hours, "assigned_hours" => $assigned_hours,"sections" => $sections, "user_hours" => $user_hours, "checkins_unique_per_week" => $checkins_unique_per_week, "checkins_per_staff" => $checkins_per_staff,"checkins_per_week" => $checkins_per_week, "audits" => $audits, "announcements_ta" => $announcements, "gsis" => $gsis, "types" => $types, "checkins" => $checkins, "users" => $users, "password" => $password]);
     }
 
+    public function get_module_users() {
+        $users = User::orderBy("name", "ASC")->get();
+        $checkins = Checkin::with("type")->get();
+        $types = Type::all();
+        $staff = $users->filter(function ($user) {
+            return $user->is_staff();
+        });
+        $user_hours = Checkin::userHours($checkins, $users);
+
+        return view("ta.modules.users")->with([
+            "users" => $users,
+            "staff" => $staff,
+            "user_hours" => $user_hours,
+            "types" => $types]);
+    }
+
     public function post_update_password() {
         $password = Request::input("inputPassword");
         if ($password == "") {

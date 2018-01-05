@@ -11,10 +11,10 @@
         <div class="table-responsive">
             <table id="userTable" class="table table-hover table-striped">
                 <thead>
-                    <tr><th>Name</th><th>Email</th><th># of Hours</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
+                <tr><th>Name</th><th>Email</th><th># of Hours</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
                 </thead>
                 <tfoot>
-                    <tr><th>Name</th><th>Email</th><th># of Hours</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
+                <tr><th>Name</th><th>Email</th><th># of Hours</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
                 </tfoot>
                 @foreach ($users as $user)
                     <tr>
@@ -23,7 +23,17 @@
                         <td><span class="badge">{{{ ($user_hours[$user->id]) }}}</span></td>
                         <td>{{{ count($user->checkins) }}}</td>
                         <td>{{{ $user->created_at }}}</td>
-                        <td>@if (Auth::user()->is_gsi()) <span class="userActionsSpan"><a href="#">View Actions</a></span><span id="actions" style="display: none;">@if ($user->is_tutor()) <a href="{{ route("tauserpromote", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make TA</button></a>  @endif @if ($user->access == 0) <a href="{{ route("tauserpromotetutor", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make Tutor</button></a> <a href="{{ route("tauserpromote", $user->id) }}"><button class="btn btn-warning"><i class="fa fa-bookmark fa-fw"></i> Make TA</button></a> @else <a href="{{ route("tauserdemote", $user->id) }}"><button class="btn btn-danger"><i class="fa fa-arrow-down fa-fw"></i> Demote</button></a> @endif @endif <button data-toggle="tooltip" data-placement="top" title="Check In User" data-uid="{{{ $user->id }}}" data-name="{{{ $user->name }}}" class="btn btn-info checkInUserBtn"><i class="fa fa-check-circle-o fa-fw"></i></button></span></td>
+                        <td>
+                            <span class="userActionsSpan"><span id="actions">
+                                <button data-toggle="tooltip" data-placement="top" title="Add internal only feedback" data-uid="{{{ $user->id }}}" class="btn btn-info addLAFeedbackBtn">
+                                                    <i class="fa fa-comment fa-fw"></i>
+                                </button>
+                                <button data-toggle="tooltip" data-placement="top" title="Check In User" data-uid="{{{ $user->id }}}" data-name="{{{ $user->name }}}" class="btn btn-info checkInUserBtn">
+                                    <i class="fa fa-check-circle-o fa-fw"></i>
+                                </button>
+                                </span>
+                            </span>
+                        </td>
                     </tr>
                 @endforeach
             </table>
@@ -60,8 +70,8 @@
                         <div class="form-group">
                             <label for="inputGSI">GSI: </label>
                             <select class="form-control" name="inputGSI">
-                                @foreach ($gsis as $gsi)
-                                    <option value="{{{ $gsi->id }}}">{{{ $gsi->name }}}</option>
+                                @foreach ($staff as $staffer)
+                                    <option value="{{{ $staffer->id }}}">{{{ $staffer->name }}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -81,3 +91,25 @@
         </div>
     </div>
 </div>
+<script>
+    $('.addLAFeedbackBtn').on('click', function() {
+        var uid = $(this).attr("data-uid");
+        $('#addFeedbackInputLA').val(uid);
+        $('#addLAFeedbackModal').modal('show');
+    });
+    $('.checkInUserBtn').on('click', function() {
+        $('#checkInModalForm').attr('action', '{{{ route("tacheckinuser") }}}');
+        $('#checkInUserName').html($(this).attr("data-name"));
+        $('#inputUID').val($(this).attr("data-uid"));
+        $('#checkInInputID').val("");
+        $('#checkInInputLocation')[0].selectedIndex = 0
+        $('#checkInInputDate').val($(this).attr("data-date"));
+        $('#checkInInputTime').val($(this).attr("data-time"));
+        $('#checkInInputGSI')[0].selectedIndex = 0
+        $('#checkInInputMakeup')[0].selectedIndex = 0
+        $('#checkInSubmitBtn').val("Check In");
+        $('#checkInUserModal').modal('show');
+    });
+    $('#inputDate, .inputDate').pickadate();
+    $('#inputTime, .inputTime').pickatime();
+</script>

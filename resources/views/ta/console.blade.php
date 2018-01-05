@@ -27,47 +27,8 @@
             </ul>
         </div>
         <div class="tab-content">
-            <div id="laSearchPanel" class="col-lg-10 tab-pane fade in active">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h5><i class="fa fa-users fa-fw"></i> Users</h5>
-                    </div>
-                    <div class="panel-body">
-                        <div class="well">
-                            <label>Hours Filtering: </label><br />
-                            <input type="text" id="min" placeholder="Minimum total hours" />
-                            <input type="text" id="max" placeholder="Maximum total hours" />
-                        </div>
-                        <div class="table-responsive">
-                            <table id="userTable" class="table table-hover table-striped">
-                                <thead>
-                                    <tr><th>Name</th><th>Email</th><th># of Hours</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
-                                </thead>
-                                <tfoot>
-                                    <tr><th>Name</th><th>Email</th><th># of Hours</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
-                                </tfoot>
-                                @foreach ($users as $user)
-                                    <tr>
-                                        <td>{{{ $user->name }}} @if ($user->is_gsi()) <strong>(GSI)</strong> @elseif ($user->is_tutor()) <strong>(Tutor)</strong> @endif</td>
-                                        <td>{{{ $user->email }}}</td>
-                                        <td><span class="badge">{{{ ($user_hours[$user->id]) }}}</span></td>
-                                        <td>{{{ count($user->checkins) }}}</td>
-                                        <td>{{{ $user->created_at }}}</td>
-                                        <td><span class="userActionsSpan"><span id="actions">
-                                                <button data-toggle="tooltip" data-placement="top" title="Add internal only feedback" data-uid="{{{ $user->id }}}" class="btn btn-info addLAFeedbackBtn">
-                                                    <i class="fa fa-comment fa-fw"></i>
-                                                </button>
-                                                <button data-toggle="tooltip" data-placement="top" title="Check In User" data-uid="{{{ $user->id }}}" data-name="{{{ $user->name }}}" class="btn btn-info checkInUserBtn">
-                                                    <i class="fa fa-check-circle-o fa-fw"></i>
-                                                </button>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </table>
-                        </div>
-                    </div>
-                </div>
+            <div id="laSearchPanel" class="col-lg-10 tab-pane fade in active" data-target="{{ route("tamoduleusers") }}">
+                <small>Loading...</small>
             </div>
             <div id="laCheckInsPanel" class="col-lg-10 tab-pane fade">
                 <div class="panel panel-default">
@@ -774,10 +735,24 @@
     </div>
 </div>
 @section('js')
+    function show_tab(tab) {
+        if (tab.attr('data-loaded') != 'true') {
+            tab.load(tab.attr('data-target'));
+            tab.attr('loaded', 'true');
+        }
+    }
+
+    function init_tabs() {
+        show_tab($('.tab-pane.active'));
+        $('a[data-toggle="tab"]').on('show', function(e) {
+            tab = $('#' + $(e.target).attr('href').substr(1));
+            show_tab(tab);
+        });
+    }
+
     $('#loading').hide();
     $('.console-container').fadeIn();
-    $('#inputDate, .inputDate').pickadate();
-    $('#inputTime, .inputTime').pickatime();
+    init_tabs()
     $('#editSectionInputStartTime').pickatime();
     $('#editSectionInputEndTime').pickatime();
 
@@ -834,24 +809,6 @@
         $('#checkInInputMakeup').val($(this).attr("data-makeup"));
         $('#checkInSubmitBtn').val("Edit Check In");
         $('#checkInUserModal').modal('show');
-    });
-    $('.checkInUserBtn').on('click', function() {
-        $('#checkInModalForm').attr('action', '{{{ route("tacheckinuser") }}}');
-        $('#checkInUserName').html($(this).attr("data-name"));
-        $('#inputUID').val($(this).attr("data-uid"));
-        $('#checkInInputID').val("");
-        $('#checkInInputLocation')[0].selectedIndex = 0
-        $('#checkInInputDate').val($(this).attr("data-date"));
-        $('#checkInInputTime').val($(this).attr("data-time"));
-        $('#checkInInputGSI')[0].selectedIndex = 0
-        $('#checkInInputMakeup')[0].selectedIndex = 0
-        $('#checkInSubmitBtn').val("Check In");
-        $('#checkInUserModal').modal('show');
-    });
-    $('.addLAFeedbackBtn').on('click', function() {
-        var uid = $(this).attr("data-uid");
-        $('#addFeedbackInputLA').val(uid);
-        $('#addLAFeedbackModal').modal('show');
     });
     $('#consoleCheckInTable tfoot th').each( function () {
     var title = $('#consoleCheckInTable thead th').eq( $(this).index() ).text();
@@ -1083,6 +1040,7 @@ $('.unassignLabAssistantLink').on('click', function(e) {
     $('#viewYourLabAssistantsBtn').on('click', function() {
         $('#viewYourLabAssistantsDiv').slideToggle();
     });
+
 
 @endsection
 @include('core.footer')
