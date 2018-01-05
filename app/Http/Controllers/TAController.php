@@ -165,6 +165,13 @@ class TAController extends Controller {
         ]);
     }
 
+    public function get_module_eventtypes() {
+        $types = Type::all();
+        return view("ta.modules.eventtypes")->with([
+            "types" => $types
+        ]);
+    }
+
     public function post_update_password() {
         $password = Request::input("inputPassword");
         if ($password == "") {
