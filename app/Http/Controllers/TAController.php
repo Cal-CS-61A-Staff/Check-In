@@ -96,6 +96,11 @@ class TAController extends Controller {
         return view("ta.modules.secretword")->with(["password" => $password]);
     }
 
+    public function get_module_announcements() {
+        $announcements = Announcement::with("user")->orderBy("hidden", "DESC")->orderBy("created_at", "DESC")->get();
+        return view("ta.modules.announcements")->with(["announcements" => $announcements]);
+    }
+
     public function post_update_password() {
         $password = Request::input("inputPassword");
         if ($password == "") {
