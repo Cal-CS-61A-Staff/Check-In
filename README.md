@@ -83,7 +83,7 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     `vagrant reload --provision`
     
     
-6. Point your browser to http://localhost:5000.  (This might take a while.)
+6. Point your browser to http://la.app. 
 
 ## Deployment
 
