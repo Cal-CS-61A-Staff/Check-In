@@ -355,6 +355,9 @@
 </div>
 
 <script>
+    $('#editSectionInputStartTime').pickatime();
+    $('#editSectionInputEndTime').pickatime();
+
     $('#createSectionBtn').on('click', function() {
         $('#createSectionForm').slideToggle();
     });
