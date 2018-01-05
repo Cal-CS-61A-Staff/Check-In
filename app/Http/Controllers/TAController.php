@@ -91,6 +91,11 @@ class TAController extends Controller {
         return view("ta.modules.checkins")->with(["checkins" => $checkins]);
     }
 
+    public function get_module_secretword() {
+        $password = Password::where("gsi", "=", Auth::user()->id)->first()->password;
+        return view("ta.modules.secretword")->with(["password" => $password]);
+    }
+
     public function post_update_password() {
         $password = Request::input("inputPassword");
         if ($password == "") {
