@@ -50,54 +50,11 @@
             <div id="eventTypesPanel" class="col-lg-10 tab-pane fade" data-target="{{ route("tamoduleeventtypes") }}">
                 @include('ta.core.loading')
             </div>
-            <div id="auditLogPanel" class="col-lg-10 tab-pane fade">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h5><i class="fa fa-history fa-fw"></i> Audit Log</h5>
-                    </div>
-                    <div class="panel-body">
-                      <div class="table-responsive">
-                            <table id="auditLogTable" class="table table-hover table-striped">
-                                <thead><tr><th>Name</th><th>Type</th><th>IP</th><th>Logged At</th></thead>
-                                <tbody>
-                                    @foreach ($audits as $audit)
-                                        <tr>
-                                            <td>{{{ $audit->user->name }}}</td>
-                                            <td>{{{ $audit->action }}}</td>
-                                            <td>{{{ $audit->ip }}}</td>
-                                            <td>{{{ $audit->created_at }}}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+            <div id="auditLogPanel" class="col-lg-10 tab-pane fade" data-target="{{ route("tamoduleauditlog") }}">
+                @include('ta.core.loading')
             </div>
-            <div id="settingsPanel" class="col-lg-10 tab-pane fade">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h5><i class="fa fa-cogs fa-fw"></i> Settings</h5>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <form action="{{ route("tasavesettings") }}" method="POST">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                                    <div class="form-group">
-                                        <label>Allow Section Signups:</label>
-                                        <input type="checkbox" name="inputAllowSectionSignups" value="1" @if ($allowSectionSignups == 1) checked="checked" @endif />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Information Content:</label>
-                                        <textarea name="inputInformationContent" id="informationContentTextArea" rows="10">{!! $informationContent !!}</textarea>
-                                    </div>
-                                    <input type="submit" value="Save" class="btn btn-success" />
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div id="settingsPanel" class="col-lg-10 tab-pane fade" data-target="{{ route("tamodulesettings") }}">
+                @include('ta.core.loading')
             </div>
             @endif
         </div>
@@ -125,11 +82,6 @@
     $('.console-container').fadeIn();
     init_tabs()
 
-
-    $('#auditLogTable').DataTable();
-    @if (Auth::user()->is_gsi())
-    CKEDITOR.replace('informationContentTextArea');
-    @endif
 
 
 

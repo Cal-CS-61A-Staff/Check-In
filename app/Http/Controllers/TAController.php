@@ -172,6 +172,22 @@ class TAController extends Controller {
         ]);
     }
 
+    public function get_module_auditlog() {
+        $audits = Audit::with("user")->orderBy('created_at', 'DESC')->get();
+        return view("ta.modules.auditlog")->with([
+            "audits" => $audits
+        ]);
+    }
+
+    public function get_module_settings() {
+        $allowSectionSignups = Setting::getValue("allow_section_signups");
+        $informationContent = Setting::getValue("information_content");
+        return view("ta.modules.settings")->with([
+            "allowSectionSignups" => $allowSectionSignups,
+            "informationContent" => $informationContent
+        ]);
+    }
+
     public function post_update_password() {
         $password = Request::input("inputPassword");
         if ($password == "") {

@@ -65,6 +65,8 @@
         Route::get('ta/module/sections', ["as" => "tamodulesections", "uses" => "TAController@get_module_sections", "middleware" => "auth.tutor"]);
         Route::get('ta/module/stats', ["as" => "tamodulestats", "uses" => "TAController@get_module_stats", "middleware" => "auth.tutor"]);
         Route::get('ta/module/eventtypes', ["as" => "tamoduleeventtypes", "uses" => "TAController@get_module_eventtypes", "middleware" => "auth.ta"]);
+        Route::get('ta/module/auditlog', ["as" => "tamoduleauditlog", "uses" => "TAController@get_module_auditlog", "middleware" => "auth.ta"]);
+        Route::get('ta/module/settings', ["as" => "tamodulesettings", "uses" => "TAController@get_module_settings", "middleware" => "auth.ta"]);
 //POST
     Route::post("ta/update/password", ["as" => "taupdatepassword", "uses" => "TAController@post_update_password", "middleware" => "auth.tutor"]);
     Route::post("ta/user/checkin", ["as" => "tacheckinuser", "uses" => "TAController@post_checkin_user", "middleware" => "auth.tutor"]);
