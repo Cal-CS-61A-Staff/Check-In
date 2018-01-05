@@ -91,6 +91,82 @@
         </div>
     </div>
 </div>
+<div id="checkInUserModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Check In <strong><span id="checkInUserName"></span></strong></h4>
+            </div>
+            <form id="checkInModalForm" class="form" method="POST" action="{{ route("tacheckinuser") }}">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                <input type="hidden" id="inputUID" name="inputUID" value="" />
+                <input type="hidden" id="checkInInputID" name="inputID" value="" />
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="checkInInputLocation">Type</label>
+                        <select class="form-control" name="inputLocation" id="checkInInputLocation">
+                            @foreach ($types as $type)
+                                <option value="{{{ $type->id }}}">{{{ $type->name }}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkInInputDate">Section Date</label>
+                        <input class="inputDate" type="text" readonly name="inputDate" id="checkInInputDate" placeholder="Date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="checkInInputTime">Section <strong>Start</strong> Time</label>
+                        <input class="inputTime" type="text" readonly name="inputTime" id="checkInInputTime" placeholder="Start Time" />
+                    </div>
+                    <div class="form-group">
+                        <label for="checkInInputGSI">GSI: </label>
+                        <select class="form-control" id="checkInInputGSI" name="inputGSI">
+                            @foreach ($staff as $staffer)
+                                <option value="{{{ $staffer->id }}}">{{{ $staffer->name }}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkInInputMakeup">Makeup: </label>
+                        <select class="form-control" id="checkInInputMakeup" name="inputMakeup">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-info" id="checkInSubmitBtn" value="Check In" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="addLAFeedbackModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Add Internal Only Feedback</h4>
+            </div>
+            <form action="{{ route("tafeedbackadd") }}" method="POST">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                <input type="hidden" id="addFeedbackInputLA" name="inputLA" value="" />
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputFeedback">Feedback:</label>
+                        <textarea rows="8" name="inputFeedback" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-success" value="Save Feedback" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
     $('.addLAFeedbackBtn').on('click', function() {
         var uid = $(this).attr("data-uid");
@@ -112,4 +188,42 @@
     });
     $('#inputDate, .inputDate').pickadate();
     $('#inputTime, .inputTime').pickatime();
+
+    $('#userTable tfoot th').each( function () {
+        var title = $('#userTable thead th').eq( $(this).index() ).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+
+    var table2 = $('#userTable').DataTable();
+
+    // Apply the search
+    table2.columns().every( function () {
+        var that = this;
+
+        $( 'input', this.footer() ).on( 'keyup change', function () {
+            that
+                .search( this.value )
+                .draw();
+        } );
+    } );
+
+    $('#min, #max').on("keyup", function() {
+        table2.draw();
+    });
+    $.fn.dataTable.ext.search.push(
+        function( settings, data, dataIndex ) {
+            var min = parseInt( $('#min').val(), 10 );
+            var max = parseInt( $('#max').val(), 10 );
+            var checkins = parseFloat( data[2] ) || 0;
+
+            if ( ( isNaN( min ) && isNaN( max ) ) ||
+                ( isNaN( min ) && checkins <= max ) ||
+                ( min <= checkins   && isNaN( max ) ) ||
+                ( min <= checkins   && age <= checkins ) )
+            {
+                return true;
+            }
+            return false;
+        }
+    );
 </script>

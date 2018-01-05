@@ -86,6 +86,11 @@ class TAController extends Controller {
             "types" => $types]);
     }
 
+    public function get_module_checkins() {
+        $checkins = Checkin::with("ta")->with("type")->with("user")->orderBy("created_at", "ASC")->get();
+        return view("ta.modules.checkins")->with(["checkins" => $checkins]);
+    }
+
     public function post_update_password() {
         $password = Request::input("inputPassword");
         if ($password == "") {
