@@ -112,5 +112,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return false;
     }
 
+    public function is_staff() {
+        if ($this->access > 0)
+            return true;
+        return false;
+    }
+
 
 }
