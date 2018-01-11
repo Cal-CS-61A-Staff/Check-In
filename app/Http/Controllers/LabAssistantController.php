@@ -272,10 +272,10 @@ class LabAssistantController extends Controller {
     }
 
     public function get_queue() {
-        return Redirect::to("http://oh.cs61a.org");
+        return Redirect::to("https://oh.cs61a.org");
     }
 
     public function get_solutions() {
-        return Redirect::to("http://staging.cs61a.org");
+        return Redirect::to("https://staging.cs61a.org");
     }
 }
