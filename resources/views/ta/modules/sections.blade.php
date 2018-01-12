@@ -7,6 +7,7 @@
             <div class="col-lg-12">
                 <button id="createSectionBtn" class="btn btn-info">Create Section <i class="fa fa-plus fa-fw"></i></button>
                 <button id="uploadSectionsCSVBtn" class="btn btn-info">Upload Sections CSV <i class="fa fa-file fa-fw"></i></button>
+                <button id="deleteAllSectionsBtn" class="btn btn-danger">Delete All Sections <i class="fa fa-trash fa-fw"></i></button>
                 <button id="viewYourLabAssistantsBtn" class="btn btn-default">View Your Lab Assistants <i class="fa fa-eye fa-fw"></i></button>
             </div>
         </div>
@@ -29,6 +30,7 @@
                                 <th>GSI Email</th>
                                 <th>Second GSI Email</th>
                                 <th>Max Lab Assistants</th>
+                                <th>Lab Assistant Emails</th>
                                 <th>Start Time</th>
                                 <th>End Time</th>
                                 <th>Monday</th>
@@ -46,10 +48,16 @@
                     <ul>
                         <li><strong>Type</strong> values need to be spelled exactly as they were entered here on the site</li>
                         <li><strong>GSI Email</strong> user must already exist with email specified</li>
+                        <li><strong>Lab Assistant Emails</strong> comma-delimited lab assistant emails (their accounts don't have to exist yet)</li>
                         <li><strong>Second GSI Email</strong> optional field if left blank</li>
                         <li><strong>Max Lab Assistants</strong> set as -1 for unlimited</li>
                         <li><strong>Monday - Saturday</strong> set as 1 if section occurs on that day and 0 if not</li>
                     </ul>
+                    <hr />
+                    If you want to make bulk changes to already created sections please use the destructive
+                        <strong>delete all sections</strong> action above prior to reuploading section data.
+
+                    <hr />
                     <form method="POST" enctype="multipart/form-data" action="{{ route("tasectionimport") }}">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                         <div class="form-group">
@@ -352,6 +360,30 @@
         </div>
     </div>
 </div>
+
+<div id="deleteAllSectionsModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Edit Section</h4>
+            </div>
+            <form class="form" method="POST" action="{{ route("tasectiondeleteall") }}">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                <div class="modal-body">
+                    Are you sure you want to permanently delete all sections?
+                    <div class="form-actions">
+                        <input type="submit" class="btn btn-danger" value="Permanently Delete All Sections" />
+                        <input type="reset" class="btn btn-defaut" value="Cancel" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-success" value="Permanently Delete All Sections" />
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -444,5 +476,10 @@
     });
     $('#viewYourLabAssistantsBtn').on('click', function() {
         $('#viewYourLabAssistantsDiv').slideToggle();
+    });
+
+    $('#deleteAllSectionsBtn').on('click', function() {
+        console.log('triggered');
+        ('#deleteAllSectionsModal').modal('show');
     });
 </script>

@@ -78,6 +78,7 @@
     Route::post("ta/section/import", ["as" => "tasectionimport", "uses" => "TAController@post_section_import", "middleware" => "auth.ta"]);
     Route::post("ta/section/edit", ["as" => "tasectionedit", "uses" => "TAController@post_section_edit", "middleware" => "auth.ta"]);
     Route::post("ta/section/assign", ["as" => "tasectionassign", "uses" => "TAController@post_section_assign", "middleware" => "auth.ta"]);
+    Route::post("ta/section/deleteall", ["as" => "tasectiondeleteall", "uses" => "TAController@post_section_deleteall", "middleware" => "auth.ta"]);
     Route::post("ta/feedback/add", ["as" => "tafeedbackadd", "uses" => "TAController@post_feedback_add", "middleware" => "auth.tutor"]);
 //    Route::post("ta/section/unassign", ["as" => "tasectionunassign", "uses" => "TAController@post_section_unassign", "middleware" => "auth.ta"]);
     Route::post("ta/section/addla", ["as" => "tasectionaddla", "uses" => "TAController@post_section_addla", "middleware" => "auth.ta"]);
