@@ -110,3 +110,9 @@ div.container {
     left: 45%;
     z-index: 100
 }
+
+.solutions-container {
+    background: url('/images/console-loader.gif') center no-repeat;
+}
+
+}

@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>CS61A - LAM Password Reset</title>
+    <title>{{ trans('global.class') }} - LAM Password Reset</title>
     <style>
         /* -------------------------------------
                 GLOBAL
@@ -166,10 +166,10 @@
                 <table>
                     <tr>
                         <td>
-                            <h1>CS61A</h1>
+                            <h1>{{ trans('global.class') }}</h1>
                             <h3>Lab Assistant Password Reset</h3>
                             <p>Hello {{{ $name }}},</p>
-                            <p>Please use this one time login token to sign into the la.cs61a.org website. Once you have signed in, to update this password select {{{ $name }}} at the top right and choose update info.</p>
+                            <p>Please use this one time login token to sign into the {{ route('index') }} website. Once you have signed in, to update this password select {{{ $name }}} at the top right and choose update info.</p>
                             <p><a href="{{{ $url }}}">**AUTO SIGN IN**</a></p>
                         </td>
                     </tr>

@@ -14,9 +14,10 @@
 
 <div class="row" style="margin-top: 20px;">
    <div class="col-lg-12" >
-       <button id="submitAvailabilityBtn" class="btn btn-info"><i class="fa fa-plus fa-fw"></i> Submit Availability</button>
+       <button id="submitAvailabilityBtn" class="btn btn-info" @if ($allowSectionSignups == 0) disabled="disabled" @endif><i class="fa fa-plus fa-fw"></i> Choose Sections</button> @if ($allowSectionSignups == 0) <span class="label label-default">(disabled)</span> @endif
    </div>
 </div>
+@if ($allowSectionSignups == 1)
 <div id="submitAvailabilityDiv" class="row" style="display: none; margin-top: 20px;">
     <div class="col-lg-12" >
         <form action="{{{ route("doassignments") }}}" method="POST">
@@ -24,28 +25,31 @@
             <div class="well">
                 <div class="form-group">
                     <label for="inputHours">
-                        Hours Per Week:
+                        Hours Per Week <small>(multiples of 2.5 per unit. E.g 1 unit = 2.5 hours)</small>:
                     </label>
-                    <input class="form-control" type="number" id="inputHours" name="inputHours" value="{{{ Auth::user()->hours }}}" placeholder="Ex: 3" />
+                    <input class="form-control" type="text" id="inputHours" name="inputHours" value="{{{ Auth::user()->hours }}}" placeholder="Ex: 3" />
                 </div>
                 <div class="form-group">
                     <label for="inputUnits">Units <small>(Enter 0 if you are not lab assisting for units)</small></label>
                     <input class="form-control" type="number" id="inputUnits" name="inputUnits" value="{{{ Auth::user()->units }}}" placeholder="Ex: 1" />
                 </div>
                 <hr />
-                <p>Select all sections you are available for:</p>
+                <p>Select the available section or sections you will attend.</p>
                 <div class="table-responsive">
                    <table id="sectionPreferencesSelectionTable" class="table table-hover table-bordered table-striped">
                        <thead>
                            <tr>
-                               <th>Available</th><th>Type</th><th>Location</th><th>GSI</th><th>Days</th><th>Start Time</th><th>End Time</th>
+                               <th>Choose</th><th>Lab Assistants</th><th>Type</th><th>Location</th><th>GSI</th><th>Days</th><th>Start Time</th><th>End Time</th>
                            </tr>
                        </thead>
                        <tbody>
                             @foreach ($sections as $section)
                                 <tr>
                                     <td>
-                                        <input name="inputSections[]" value="{{{ $section->id }}}" type="checkbox" @if (in_array($section->id, $preferenceSids)) checked="checked" @endif />
+                                        <input name="inputSections[]" value="{{{ $section->id }}}" type="checkbox" @if (in_array($section->id, $assignmentSids)) checked="checked" @elseif($section->max_las != -1 && count($section->assigned) >= $section->max_las) disabled="disabled" @endif />
+                                    </td>
+                                    <td>
+                                        <strong>{{{ count($section->assigned) }}}/@if ($section->max_las == -1)&infin;@else{{{ $section->max_las }}}  @if (count($section->assigned) >= $section->max_las) <span class="label label-warning">Full</span> @endif @endif</strong>
                                     </td>
                                     <td>
                                         {{{ $section->category->name }}}
@@ -74,11 +78,12 @@
                    </table>
                 </div>
                 <hr />
-                <input type="submit" class="btn btn-success" value="Save Availability" />
+                <input type="submit" class="btn btn-success" value="Save Sections" />
             </form>
         </div>
     </div>
 </div>
+@endif
 <div class="row" style="margin-top: 20px;">
     <div class="col-lg-12">
         <h4>Your Assignments: </h4>
@@ -126,59 +131,6 @@
                         </td>
                     </tr>
                 @endforeach
-                @endif
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<div class="row" style="margin-top: 20px">
-    <div class="col-lg-12">
-        <h4>Your Requested Sections: </h4>
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped">
-                <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Location</th>
-                    <th>GSI</th>
-                    <th>Days</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                </tr>
-                </thead>
-                <tbody>
-                @if (count($preferences) == 0)
-                    <tr>
-                        <td colspan="6" style="text-align: center;">No Requested Sections Found</td>
-                    </tr>
-                @else
-                    @foreach ($preferences as $preference)
-                        <tr>
-                            <td>
-                                {{{ $preference->sec->category->name }}}
-                            </td>
-                            <td>
-                                {{{ $preference->sec->location }}}
-                            </td>
-                            <td>
-                                <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $preference->sec->ta->name }}}</span>
-                                @if ($preference->sec->second_gsi != -1)
-                                    <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $preference->sec->ta2->name }}}</span>
-                                @endif
-                            </td>
-                            <td>
-                                {{{ App\Section::daysToString($preference->sec) }}}
-                            </td>
-                            <td>
-                                {{{ $preference->sec->start_time }}}
-                            </td>
-                            <td>
-                                {{{ $preference->sec->end_time }}}
-                            </td>
-                        </tr>
-                    @endforeach
                 @endif
                 </tbody>
             </table>

@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-check-circle-o fa-fw"></i> Check In</h3>
+        <h3><i class="fa fa-check-circle-o fa-fw"></i> Check In <small>{{{ Auth::user()->name }}}</small></h3>
     </div>
 </div>
 

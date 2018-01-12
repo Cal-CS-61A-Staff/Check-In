@@ -1,9 +1,11 @@
 <?php namespace App\Http\Controllers;
 
-use Auth, Request, Validator, Hash, Mail, View;
+use Auth, Config, Request, Validator, Hash, Mail, View, Redirect;
 use App\User;
 use App\Audit;
+use App\Password;
 use App\Announcement;
+use App\Setting;
 use Illuminate\Routing\Controller;
 
 class IndexController extends Controller {
@@ -20,13 +22,120 @@ class IndexController extends Controller {
             return redirect()->route('lacheckin');
         }
         //They are not, let's redirect to the login page
-        return redirect()->route('login');
+        return redirect()->route('information');
     }
 
+    public function get_oauth() {
+        $client = new \OAuth2\Client('la-manager', env('APP_OAUTH_KEY', 'SomeRandomKey'), \OAuth2\Client::AUTH_TYPE_AUTHORIZATION_BASIC);
+        $client->setClientAuthType(\OAuth2\Client::AUTH_TYPE_URI);
+        $client->setCurlOption(CURLOPT_USERAGENT, "CheckIn/1.1");
+
+        $error = Request::input('error');
+        if (!empty($error)) {
+            return redirect()->route("information")->with("message", "Try logging in again and granting permission.");
+        }
+
+        // Fetch our data from the request
+        $code = Request::input('code');
+
+        $params = array("code" => $code, "redirect_uri" => route("oauth"));
+        $response = $client->getAccessToken("https://okpy.org/oauth/token", "authorization_code", $params);
+        $accessToken = $response["result"]["access_token"];
+        $client->setAccessToken($accessToken);
+        $client->setAccessTokenType($client::ACCESS_TOKEN_BEARER);
+
+        $response = $client->fetch("https://okpy.org/api/v3/user/?access_token=" . $accessToken);
+        $data = $response["result"]["data"];
+        //Check if we need to give elevated permissions
+        $staff = False;
+        $tutor = False;
+        $inCS61A = False;
+        foreach ($data["participations"] as $key => $val) {
+            if ($val["course"]["offering"] == env("OK_COURSE_OFFERING", "cal/cs61a/fa16")) {
+		$inCS61A = True;
+                if ($val["role"] == "staff") {
+                    //Give this user TA permissions
+                    $staff = True;
+
+                }
+                else if ($val["role"] == "grader") {
+                    //Give this user tutor permissions
+                    $tutor = True;
+                }
+                else if ($val["role"] != "lab assistant") {
+                    //This is a student and shouldn't have access to console
+                    return redirect()->route("information")->with(array("message" => "You must be enrolled as a lab 
+                        assistant on OK to use the lab assistant manager. Contact TA."));
+                }
+            }
+        }
+	if (!$inCS61A) {
+        return redirect()->route("information")->with(array("message" => "You must be enrolled as a lab 
+                        assistant on OK to use the lab assistant manager Contact TA."));
+	}
+        $user = User::where("email", "=", $data["email"])->first();
+        if (count($user) == 0) {
+            $user = new User;
+	    if (empty($data["name"])) {
+	        $data["name"] = "";
+	    }
+            $user->name = $data["name"];
+            $user->email = $data["email"];
+            $user->save();
+            // Are we staff?
+            if ($staff || $tutor) {
+                // Create check in password
+                $password = new Password;
+                $password->gsi = $user->id;
+                $password->password = "recursion";
+                $password->save();
+
+                $user->access = ($staff ? 1 : 0.5);
+                $user->save();
+            }
+
+        }
+        else if ($user->access > 0 && !$staff && !$tutor) {
+            //We need to demote this user
+            $user->access = 0;
+            $user->save();
+            $password = Password::where("gsi", "=", $user->id)->first();
+            $password->delete();
+        }
+        else if ($user->access == 0 && ($staff || $tutor)) {
+            //We need to promote this user
+            $user->access = ($staff ? 1 : 0.5);
+            $user->save();
+            // Create check in password
+            $password = new Password;
+            $password->gsi = $user->id;
+            $password->password = "recursion";
+            $password->save();
+        }
+        //Manually log in this user
+        Auth::login($user, true);
+
+        //Log the sign-in as an audit
+        Audit::log("Logged in");
+
+        if ($user->is_gsi()) {
+            return redirect()->route("taconsole");
+        }
+        return redirect()->route("lacheckin");
+    }
     public function get_login()
     {
-        //Return our login view
-        return view('login');
+
+        $client = new \OAuth2\Client('la-manager', env('APP_OAUTH_KEY', 'SomeRandomKey'), \OAuth2\Client::AUTH_TYPE_AUTHORIZATION_BASIC);
+        $client->setCurlOption(CURLOPT_USERAGENT, "CheckIn/1.1");
+        $client->setClientAuthType(\OAuth2\Client::AUTH_TYPE_URI);
+
+
+
+        $authUrl = $client->getAuthenticationUrl("https://okpy.org/oauth/authorize",
+            route("oauth"), array("scope" => "email", "state" => csrf_token()));
+        return Redirect::to($authUrl);
+
     }
 
     public function get_reset()
@@ -120,7 +229,7 @@ class IndexController extends Controller {
         //Log the user out
         Auth::logout();
         //Redirect back to the index with a message
-        return redirect()->route("login")->with("message", "You have been successfully logged out.");
+        return redirect()->route("information")->with("message", "You have been successfully logged out.");
     }
 
     public function get_registration()
@@ -176,7 +285,8 @@ class IndexController extends Controller {
     }
 
     public function get_information() {
-        return view("information");
+        $informationContent = Setting::getValue("information_content");
+        return view("information")->with(array("informationContent" => $informationContent));
     }
 
 }
