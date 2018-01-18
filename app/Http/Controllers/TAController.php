@@ -20,8 +20,9 @@ class TAController extends Controller {
         $announcements = Announcement::where("hidden", "!=", 0)->orderBy("created_at", "DESC")->get();
         View::share('announcements', $announcements);
     }
-    public function get_console() {
-        return view("ta.console");
+
+    public function get_console($module = "users") {
+        return view("ta.console")->with(["module" => $module]);
     }
 
     public function get_module_users() {
@@ -152,7 +153,7 @@ class TAController extends Controller {
         $p = Password::where('gsi', '=', Auth::user()->id)->first();
         $p->password = $password;
         $p->save();
-        return redirect()->route("taconsole")->with("message", "You have successfully updated your secret word");
+        return redirect()->route("taconsole", "secretWord")->with("message", "You have successfully updated your secret word");
     }
 
     public function post_edit_checkin_user() {
@@ -200,7 +201,7 @@ class TAController extends Controller {
         $checkin->save();
         //Make an audit log entry for this checkin
         Audit::log("GSI " . Auth::user()->name . " edited existing checked in for " . $checkin->user->name);
-        return redirect()->route("taconsole")->with("message", "Editing check in for " . $checkin->user->name . " was successful.");
+        return redirect()->route("taconsole", "checkins")->with("message", "Editing check in for " . $checkin->user->name . " was successful.");
     }
 
     public function post_checkin_user() {
@@ -247,7 +248,7 @@ class TAController extends Controller {
         $checkin->save();
         //Make an audit log entry for this checkin
         Audit::log("GSI " . Auth::user()->name . " manually checked in " . $user->name);
-        return redirect()->route("taconsole")->with("message", "Manual check in for " . $user->name . " was successful.");
+        return redirect()->route("taconsole", "users")->with("message", "Manual check in for " . $user->name . " was successful.");
     }
 
     public function post_checkin_remove($id) {
@@ -258,7 +259,7 @@ class TAController extends Controller {
         //Make an audit notation
         Audit::log(Auth::user()->name . " manually removed check in for " . $checkin->user->name);
         //Return our redirect
-        return redirect()->route("taconsole")->with("message", "Check in for " . $checkin->user->name . " successfully manually removed.");
+        return redirect()->route("taconsole", "checkins")->with("message", "Check in for " . $checkin->user->name . " successfully manually removed.");
     }
 
     public function get_user_promote_tutor($id) {
@@ -276,7 +277,7 @@ class TAController extends Controller {
         $password->password = "recursion";
         $password->save();
         //Let them know all is ok
-        return redirect()->route("taconsole")->with("message", $user->name . " successfully promoted from Lab Assistant to Tutor.");
+        return redirect()->route("taconsole", "users")->with("message", $user->name . " successfully promoted from Lab Assistant to Tutor.");
     }
 
     public function get_user_promote($id) {
@@ -294,7 +295,7 @@ class TAController extends Controller {
         $password->password = "recursion";
         $password->save();
         //Let them know all is ok
-        return redirect()->route("taconsole")->with("message", $user->name . " successfully promoted to GSI.");
+        return redirect()->route("taconsole", "users")->with("message", $user->name . " successfully promoted to GSI.");
     }
 
     public function get_user_demote($id) {
@@ -310,7 +311,7 @@ class TAController extends Controller {
         $password = Password::where("gsi", "=", $user->id)->first();
         $password->delete();
         //Let them know all is ok
-        return redirect()->route("taconsole")->with("message", $user->name . " successfully demoted to Lab Assistant.");
+        return redirect()->route("taconsole", "users")->with("message", $user->name . " successfully demoted to Lab Assistant.");
     }
 
     public function post_update_type() {
@@ -329,9 +330,9 @@ class TAController extends Controller {
         //Ensure that the member set a name for the new event type and that it does not match another type
         $otherType = Type::where("name", "=", $name)->count();
         if ($otherType > 1 || $name == "")
-            return redirect()->route("taconsole")->with("message", "Either your type was empty or you entered an existing type.");
+            return redirect()->route("taconsole", "eventTypes")->with("message", "Either your type was empty or you entered an existing type.");
         if (!is_numeric($hours)) {
-            return redirect()->route("taconsole")->with("message", "Ensure you are entering a numeric value for hours in your event type.");
+            return redirect()->route("taconsole", "eventTypes")->with("message", "Ensure you are entering a numeric value for hours in your event type.");
         }
         //Alright all good let's update the model
         $type->name = $name;
@@ -340,7 +341,7 @@ class TAController extends Controller {
         //And finally the DB
         $type->save();
         //Let the user know things are well :)
-        return redirect()->route("taconsole")->with("message", "The " . $name . " type was updated successfully");
+        return redirect()->route("taconsole", "eventTypes")->with("message", "The " . $name . " type was updated successfully");
     }
 
 
@@ -353,9 +354,9 @@ class TAController extends Controller {
             $hidden = 0;
         $otherTypes = Type::where("name", "=", $name)->count();
         if ($otherTypes > 0 ||$name == "")
-            return redirect()->route("taconsole")->with("message", "Either your new event type is empty or an existing event type exists with the same name.");
+            return redirect()->route("taconsole", "eventTypes")->with("message", "Either your new event type is empty or an existing event type exists with the same name.");
         if (!is_numeric($hours)) {
-            return redirect()->route("taconsole")->with("message", "Ensure you are entering a numeric value for hours in your new event type.");
+            return redirect()->route("taconsole", "eventTypes")->with("message", "Ensure you are entering a numeric value for hours in your new event type.");
         }
         //Create our model
         $type = new Type;
@@ -365,7 +366,7 @@ class TAController extends Controller {
         //Push the model to the DB
         $type->save();
         //Alert the user
-        return redirect()->route("taconsole")->with("message", "Your new event type was created successfully.");
+        return redirect()->route("taconsole", "eventTypes")->with("message", "Your new event type was created successfully.");
     }
 
     public function get_download_checkins() {
@@ -424,7 +425,7 @@ class TAController extends Controller {
         $announcement->hidden = 0;
         $announcement->save();
         //Redirect back to the ta console
-        return redirect()->route('taconsole')->with("message", "Your announcement was created. To make it public please change its visibility status.");
+        return redirect()->route('taconsole', "announcments")->with("message", "Your announcement was created. To make it public please change its visibility status.");
     }
 
     public function get_announcement_visibility($id) {
@@ -435,14 +436,14 @@ class TAController extends Controller {
             $announcement->hidden = 0;
         //Save our announcement
         $announcement->save();
-        return redirect()->route('taconsole')->with("message", "The announcement visibility was updated successfully");
+        return redirect()->route('taconsole', "announcements")->with("message", "The announcement visibility was updated successfully");
     }
 
     public function get_announcement_delete($id) {
         $announcement = Announcement::findOrFail($id);
         //Delete it
         $announcement->delete();
-        return redirect()->route('taconsole')->with("message", "The announcement was deleted successfully");
+        return redirect()->route('taconsole', "announcements")->with("message", "The announcement was deleted successfully");
     }
 
     public function post_section_import() {
@@ -632,7 +633,7 @@ class TAController extends Controller {
             $section->save();
         }
 
-        return redirect()->route("taconsole")->with("message", "Imported " . $count . " sections.");
+        return redirect()->route("taconsole", "sections")->with("message", "Imported " . $count . " sections.");
 
     }
     
@@ -787,7 +788,7 @@ class TAController extends Controller {
         //Push to the DB
         $section->save();
         //Return a redirect Response
-        return redirect()->route("taconsole")->with("message", "The new section was successfully created.");
+        return redirect()->route("taconsole", "sections")->with("message", "The new section was successfully created.");
     }
 
     public function get_section_delete($sid) {
@@ -796,7 +797,7 @@ class TAController extends Controller {
         $preferences = Preference::where('section', '=', $sid)->delete();
         //Delete the section
         $section->delete();
-        return redirect()->route("taconsole")->with("message", "The section was successfully deleted.");
+        return redirect()->route("taconsole", "sections")->with("message", "The section was successfully deleted.");
     }
     public function post_section_addla() {
         $section = Section::findOrFail(Request::input('inputSection'));
@@ -808,7 +809,7 @@ class TAController extends Controller {
         $assignment->save();
         //Log this
         Audit::log("Assigned " . $user->name . " to section id " . $section->id);
-        return redirect()->route("taconsole")->with("message", $user->name . " successfully added to section.");
+        return redirect()->route("taconsole", "sections")->with("message", $user->name . " successfully added to section.");
     }
     public function post_section_edit() {
         //Get all of our data
@@ -924,7 +925,7 @@ class TAController extends Controller {
         }
         //Route our validator
         if ($validator->fails()) {
-            return redirect()->route('taconsole')->withErrors($validator);
+            return redirect()->route('taconsole', "sections")->withErrors($validator);
         }
         //Create a new instance of our Section model
         $section = Section::findOrFail($sid);
@@ -970,7 +971,7 @@ class TAController extends Controller {
         //Push to the DB
         $section->save();
         //Return a redirect Response
-        return redirect()->route("taconsole")->with("message", "The section was edited successfully.");
+        return redirect()->route("taconsole", "sections")->with("message", "The section was edited successfully.");
     }
     
 
@@ -1008,7 +1009,7 @@ class TAController extends Controller {
         }
         $informationContent = Request::input('inputInformationContent');
         Setting::change("information_content", $informationContent);
-        return redirect()->route("taconsole")->with("message", "The settings were saved successfully.");
+        return redirect()->route("taconsole", "settings")->with("message", "The settings were saved successfully.");
     }
 
     public function post_feedback_add() {
@@ -1021,7 +1022,7 @@ class TAController extends Controller {
         $feedback->gsi = Auth::user()->id;
         $feedback->comment = $comment;
         $feedback->save();
-        return redirect()->route("taconsole")->with("message", "Feedback successfully saved.");
+        return redirect()->route("taconsole", "users")->with("message", "Feedback successfully saved.");
     }
 
 }
