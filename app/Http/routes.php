@@ -46,7 +46,7 @@
 
 //TA/Tutor Routes
     //GET
-    Route::get('ta/console', ["as" => "taconsole", "uses" => "TAController@get_console", "middleware" => "auth.tutor"]);
+    Route::get('ta/console/{module?}', ["as" => "taconsole", "uses" => "TAController@get_console", "middleware" => "auth.tutor"]);
     Route::get('ta/download/checkins', ["as" => "tadownloadcheckins", "uses" => "TAController@get_download_checkins", "middleware" => "auth.tutor"]);
     Route::get('ta/download/roster', ["as" => "tadownloadroster", "uses" => "TAController@get_download_roster", "middleware" => "auth.tutor"]);
     Route::get('ta/user/promote/{id}', ["as" => "tauserpromote", "uses" => "TAController@get_user_promote", "middleware" => "auth.ta"]);
