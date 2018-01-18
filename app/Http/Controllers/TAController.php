@@ -21,7 +21,10 @@ class TAController extends Controller {
         View::share('announcements', $announcements);
     }
 
-    public function get_console($module = "users") {
+    public function get_console($module = null) {
+        if (empty($module)) {
+            return redirect()->route("taconsole", "users");
+        }
         return view("ta.console")->with(["module" => $module]);
     }
 
