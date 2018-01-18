@@ -20,7 +20,10 @@ class TAController extends Controller {
         $announcements = Announcement::where("hidden", "!=", 0)->orderBy("created_at", "DESC")->get();
         View::share('announcements', $announcements);
     }
-    public function get_console($module = "users") {
+    public function get_console($module = null) {
+        if (empty($module)) {
+            return redirect()->route("taconsole", "users");
+        }
         return view("ta.console")->with(["module" => $module]);
     }
 
