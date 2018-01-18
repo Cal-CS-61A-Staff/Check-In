@@ -68,12 +68,9 @@
             tab.load(tab.attr('data-target'));
             tab.attr('loaded', 'true');
         }
-    }
-
-    function init_tabs() {
-        show_tab($('.tab-pane.active'));
         history.pushState(null, '', tab.attr('id').slice(0, -6));
     }
+
 
     function init_tabs() {
         var activeTab = $('.tab-pane#{{{ $module }}}Module');
