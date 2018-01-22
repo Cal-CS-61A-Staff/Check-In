@@ -13,7 +13,7 @@
         </li>
     </ul>
 </div>
-<div class="panel-body">g
+<div class="panel-body">
     <div class="well tab-content">
         <div id="userInfoSubModule" class="tab-pane fade active in">
             <form class="form" method="POST">
@@ -43,7 +43,18 @@
             Assignments
         </div>
         <div id="userFeedbackSubModule" class="tab-pane fade">
-            User Feedback
+            <span class="label label-default">Note:</span>
+            <small>This feedback while not anonymous will only be accessible by course instructors and may be used in future
+                hiring decisions.</small>
+            <hr />
+            <form class="form">
+                <div class="form-group">
+                    <textarea class="form-control" rows="8" placeholder="Feedback..."></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-success" value="Add Feedback" />
+                </div>
+            </form>
         </div>
         </form>
     </div>
