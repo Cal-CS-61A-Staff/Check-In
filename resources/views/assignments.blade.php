@@ -25,7 +25,7 @@
             <div class="well">
                 <div class="form-group">
                     <label for="inputHours">
-                        Hours Per Week <small>(multiples of 2.5 per unit. E.g 1 unit = 2.5 hours)</small>:
+                        Hours Per Week <small>(multiples of 3 per unit. E.g 1 unit = 3 hours)</small>:
                     </label>
                     <input class="form-control" type="text" id="inputHours" name="inputHours" value="{{{ Auth::user()->hours }}}" placeholder="Ex: 3" />
                 </div>
