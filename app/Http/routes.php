@@ -58,6 +58,8 @@
     Route::get("ta/checkin/remove/{id}", ["as" => "tacheckinremove", "uses" => "TAController@post_checkin_remove", "middleware" => "auth.tutor"]);
         //SubModules
         Route::get('ta/module/users', ["as" => "tamoduleusers", "uses" => "TAController@get_module_users", "middleware" => "auth.tutor"]);
+            //UsersModules
+            Route::get('ta/module/users/{id}', ["as" => "tamoduleuser", "uses" => "TAController@get_module_user", "middleware" => "auth.tutor"]);
         Route::get('ta/module/checkins', ["as" => "tamodulecheckins", "uses" => "TAController@get_module_checkins", "middleware" => "auth.tutor"]);
         Route::get('ta/module/secretword', ["as" => "tamodulesecretword", "uses" => "TAController@get_module_secretword", "middleware" => "auth.tutor"]);
         Route::get('ta/module/announcements', ["as" => "tamoduleannouncements", "uses" => "TAController@get_module_announcements", "middleware" => "auth.tutor"]);

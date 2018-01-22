@@ -48,6 +48,12 @@ class TAController extends Controller {
             "types" => $types]);
     }
 
+    public function get_module_user($id) {
+        $user = User::with('assignments.sec.ta')->with("checkins.type")->findOrFail($id);
+        return view('ta.modules.users.user')->with(["user" => $user]);
+    }
+
+
     public function get_module_checkins() {
         $checkins = Checkin::with("ta")->with("type")->with("user")->orderBy("created_at", "ASC")->get();
         return view("ta.modules.checkins")->with(["checkins" => $checkins]);
@@ -1026,5 +1032,6 @@ class TAController extends Controller {
         $feedback->save();
         return redirect()->route("taconsole", "users")->with("message", "Feedback successfully saved.");
     }
+
 
 }
