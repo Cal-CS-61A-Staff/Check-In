@@ -428,7 +428,7 @@ class TAController extends Controller {
         $announcement->hidden = 0;
         $announcement->save();
         //Redirect back to the ta console
-        return redirect()->route('taconsole', "announcments")->with("message", "Your announcement was created. To make it public please change its visibility status.");
+        return redirect()->route('taconsole', "announcements")->with("message", "Your announcement was created. To make it public please change its visibility status.");
     }
 
     public function get_announcement_visibility($id) {
