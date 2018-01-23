@@ -49,6 +49,29 @@ class TAController extends Controller {
             "types" => $types]);
     }
 
+    public function get_module_user($id) {
+        $user = User::with('assignments.sec.ta', 'assignments.sec.ta2', 'assignments.sec.category')->with("checkins.type")->findOrFail($id);
+        $assignments = Assignment::with(
+                ['sec' => function($query) {
+                    $query->orderBy('mon', 'DESC')
+                        ->orderBy('tue', 'DESC')
+                        ->orderBy('wed', 'DESC')
+                        ->orderBy('thu', 'DESC')
+                        ->orderBy('fri', 'DESC')
+                        ->orderBy('sat', 'DESC')
+                        ->orderBy('sun', 'DESC')
+                        ->orderBy('start_time', 'ASC')
+                        ->orderBy('type', 'ASC');
+                }],
+                'sec.ta',
+                'sec.ta2',
+                'sec.category',
+                'user')
+            ->get();
+        return view('ta.modules.users.user')->with(["user" => $user, "assignments" => $assignments]);
+    }
+
+
     public function get_module_checkins() {
         $checkins = Checkin::with("ta")->with("type")->with("user")->orderBy("created_at", "ASC")->get();
         $types = Type::all();
@@ -996,12 +1019,11 @@ class TAController extends Controller {
     }
 
     public function post_section_unassign() {
-        $uid = Request::input('inputUID');
-        $section = Request::input('inputSID');
-        $assignment = Assignment::where("uid", "=", $uid)->where("section", "=", $section)->first();
+        $aid = Request::input('inputAID');
+        $assignment = Assignment::with("user")->findOrFail($aid);
         $assignment->delete();
-        Audit::log("Removed " . $uid . " from section id " . $section);
-        return "1";
+        Audit::log("Removed " . $assignment->user->name . " from section id " . $aid);
+        return redirect()->route("taconsole", "users")->with("message", "Removed " . $assignment->user->name . " from section.");
     }
 
     public function post_settings_save() {
@@ -1020,14 +1042,48 @@ class TAController extends Controller {
     public function post_feedback_add() {
         $uid = Request::input('inputLA');
         // Ensure the user exists
-        User::findOrFail($uid);
+        $user = User::findOrFail($uid);
         $comment = Request::input('inputFeedback');
         $feedback = new Feedback;
         $feedback->uid = $uid;
         $feedback->gsi = Auth::user()->id;
         $feedback->comment = $comment;
         $feedback->save();
+        Audit::log("Added feedback for " . $user->name);
         return redirect()->route("taconsole", "users")->with("message", "Feedback successfully saved.");
     }
+
+    public function post_update_user() {
+        $uid = Request::input('inputUID');
+        $user = User::findOrFail($uid);
+        $user->units = Request::input('inputUnits');
+        $user->hours = Request::input('inputHours');
+        $user->name = Request::input('inputName');
+        $user->email = Request::input('inputEmail');
+        $user->save();
+        Audit::log("Updated profile for " . $user->email . ". (User ID = " . $uid . ")");
+        return redirect()->route("taconsole", "users")->with("message", "User " . $user->name . " profile updated successfully.");
+    }
+
+    public function post_section_swap() {
+        $aid1 = Request::input('inputAID1');
+        $aid2 = Request::input('inputAID2');
+        $assignment1 = Assignment::findOrFail($aid1);
+        $assignment2 = Assignment::findOrFail($aid2);
+        $tmpUID1 = $assignment1->uid;
+        $assignment1->uid = $assignment2->uid;
+        $assignment2->uid = $tmpUID1;
+        $assignment1->save();
+        $assignment2->save();
+        $user1 = User::findOrFail($assignment1->uid);
+        $user2 = User::findOrFail($assignment2->uid);
+        Audit::log("Swapped sections for " . $user1->name . " (" . $user1->id . ")"  . " and " . $user2->name .
+            "(" . $user2->id . "). Section IDs: " . $assignment1->section . ", " . $assignment2->section);
+        return redirect()->route("taconsole", "users")->with("message",
+            "Swap sections for users " . $user1->name . " and " . $user2->name . " was successful.");
+
+    }
+
+
 
 }

@@ -1,42 +1,47 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h5><i class="fa fa-users fa-fw"></i> Users</h5>
-    </div>
-    <div class="panel-body">
-        <div class="well">
-            <label>Hours Filtering: </label><br />
-            <input type="text" id="min" placeholder="Minimum total hours" />
-            <input type="text" id="max" placeholder="Maximum total hours" />
+<div id="usersModule" class="panel panel-default">
+    <div id="userSubModule" style="display: none;"></div>
+    <div id="usersSubModule">
+        <div class="panel-heading">
+            <h5><i class="fa fa-users fa-fw"></i> Users</h5>
         </div>
-        <div class="table-responsive">
-            <table id="userTable" class="table table-hover table-striped">
-                <thead>
-                <tr><th>Name</th><th>Email</th><th># of Hours</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
-                </thead>
-                <tfoot>
-                <tr><th>Name</th><th>Email</th><th># of Hours</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
-                </tfoot>
-                @foreach ($users as $user)
-                    <tr>
-                        <td>{{{ $user->name }}} @if ($user->is_gsi()) <strong>(GSI)</strong> @elseif ($user->is_tutor()) <strong>(Tutor)</strong> @endif</td>
-                        <td>{{{ $user->email }}}</td>
-                        <td><span class="badge">{{{ ($user_hours[$user->id]) }}}</span></td>
-                        <td>{{{ count($user->checkins) }}}</td>
-                        <td>{{{ $user->created_at }}}</td>
-                        <td>
-                            <span class="userActionsSpan"><span id="actions">
-                                <button data-toggle="tooltip" data-placement="top" title="Add internal only feedback" data-uid="{{{ $user->id }}}" class="btn btn-info addLAFeedbackBtn">
-                                                    <i class="fa fa-comment fa-fw"></i>
-                                </button>
-                                <button data-toggle="tooltip" data-placement="top" title="Check In User" data-uid="{{{ $user->id }}}" data-name="{{{ $user->name }}}" class="btn btn-info checkInUserBtn">
-                                    <i class="fa fa-check-circle-o fa-fw"></i>
-                                </button>
+        <div class="panel-body">
+            <div class="well">
+                <label>Hours Filtering: </label><br />
+                <input type="text" id="min" placeholder="Minimum total hours" />
+                <input type="text" id="max" placeholder="Maximum total hours" />
+            </div>
+            <div class="table-responsive">
+                <table id="userTable" class="table table-hover table-striped">
+                    <thead>
+                    <tr><th>Name</th><th>Email</th><th># of Hours</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
+                    <small><span class="label label-warning">New:</span> Clicking on a user will display more actions.</small>
+                    <hr />
+                    </thead>
+                    <tfoot>
+                    <tr><th>Name</th><th>Email</th><th># of Hours</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
+                    </tfoot>
+                    @foreach ($users as $user)
+                        <tr data-target="{{{ route("tamoduleuser", $user->id) }}}">
+                            <td>{{{ $user->name }}} @if ($user->is_gsi()) <strong>(GSI)</strong> @elseif ($user->is_tutor()) <strong>(Tutor)</strong> @endif</td>
+                            <td>{{{ $user->email }}}</td>
+                            <td><span class="badge">{{{ ($user_hours[$user->id]) }}}</span></td>
+                            <td>{{{ count($user->checkins) }}}</td>
+                            <td>{{{ $user->created_at }}}</td>
+                            <td>
+                                <span class="userActionsSpan"><span id="actions">
+                                    <button data-toggle="tooltip" data-placement="top" title="View User Details" class="btn btn-info btn-tiny">
+                                                        <i class="fa fa-eye fa-fw"></i>
+                                    </button>
+                                    <button data-toggle="tooltip" data-placement="top" title="Check In User" data-uid="{{{ $user->id }}}" data-name="{{{ $user->name }}}" class="btn btn-info checkInUserBtn btn-tiny">
+                                        <i class="fa fa-check-circle-o fa-fw"></i>
+                                    </button>
+                                    </span>
                                 </span>
-                            </span>
-                        </td>
-                    </tr>
-                @endforeach
-            </table>
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -92,36 +97,7 @@
         </div>
     </div>
 </div>
-<div id="addLAFeedbackModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Add Internal Only Feedback</h4>
-            </div>
-            <form action="{{ route("tafeedbackadd") }}" method="POST">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                <input type="hidden" id="addFeedbackInputLA" name="inputLA" value="" />
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="inputFeedback">Feedback:</label>
-                        <textarea rows="8" name="inputFeedback" class="form-control"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <input type="submit" class="btn btn-success" value="Save Feedback" />
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 <script>
-    $('.addLAFeedbackBtn').on('click', function() {
-        var uid = $(this).attr("data-uid");
-        $('#addFeedbackInputLA').val(uid);
-        $('#addLAFeedbackModal').modal('show');
-    });
     $('.checkInUserBtn').on('click', function() {
         $('#checkInModalForm').attr('action', '{{{ route("tacheckinuser") }}}');
         $('#checkInUserName').html($(this).attr("data-name"));
@@ -175,4 +151,16 @@
             return false;
         }
     );
+
+    table2.on('click', 'tbody tr', function() {
+        var userUrl = $(table2.row(this).node()).attr("data-target");
+        var userSubModule = $('#userSubModule');
+        userSubModule.load(userUrl);
+        $('#usersSubModule').hide();
+        userSubModule.fadeIn();
+
+    });
+
+    $('[data-toggle="tooltip"]').tooltip();
+
 </script>
