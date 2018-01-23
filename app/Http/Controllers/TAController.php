@@ -51,7 +51,9 @@ class TAController extends Controller {
 
     public function get_module_checkins() {
         $checkins = Checkin::with("ta")->with("type")->with("user")->orderBy("created_at", "ASC")->get();
-        return view("ta.modules.checkins")->with(["checkins" => $checkins]);
+        $types = Type::all();
+        $staff = User::where("access", ">", "0")->orderBy("name")->get();
+        return view("ta.modules.checkins")->with(["checkins" => $checkins, "staff" => $staff, "types" => $types]);
     }
 
     public function get_module_secretword() {
@@ -428,7 +430,7 @@ class TAController extends Controller {
         $announcement->hidden = 0;
         $announcement->save();
         //Redirect back to the ta console
-        return redirect()->route('taconsole', "announcments")->with("message", "Your announcement was created. To make it public please change its visibility status.");
+        return redirect()->route('taconsole', "announcements")->with("message", "Your announcement was created. To make it public please change its visibility status.");
     }
 
     public function get_announcement_visibility($id) {
