@@ -144,7 +144,8 @@
             </div>
             <form action="{{ route("tasectionswap") }}" method="POST">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                <input type="hidden" id="swapAssignmentInputAid" name="inputAID1" value="" />
+                <input type="hidden" id="swapAssignmentInputAid1" name="inputAID1" value="" />
+                <input type="hidden" id="swapAssignmentInputAid2" name="inputAID2" value="" />
                 <div class="modal-body">
                     Swapping lab assistant <strong>{{{ $user->name }}}'s</strong> section assignment:
                     <table style="margin-top: 20px;" class="table table-bordered">
@@ -165,15 +166,14 @@
                     </table>
                     <div style="margin-bottom: 25px;">Choose another lab assistant's section assignment to swap with:</div>
                     <div class="table-responsive">
-                        <table id="assignmentSwapAssignmentsTable" class="table table-hover table-striped">
+                        <table id="assignmentSwapAssignmentsTable" class="table table-hover">
                             <thead>
-                                <tr><th>Select</th><th>User</th><th>Type</th><th>Start Time</th><th>End Time</th><th>Days</th><th>GSI</th></tr>
+                                <tr><th>User</th><th>Type</th><th>Start Time</th><th>End Time</th><th>Days</th><th>GSI</th></tr>
                             </thead>
                             <tfoot></tfoot>
                             <tbody>
                             @foreach ($assignments as $assignment)
-                                <tr>
-                                    <td><input name="inputAID2" type="radio" value="{{{ $assignment->id }}}" /></td>
+                                <tr data-aid="{{{ $assignment->id }}}">
                                     <td>{{{ $assignment->user->name }}}</td>
                                     <td>{{{ $assignment->sec->category->name }}}</td>
                                     <td>{{{ $assignment->sec->start_time }}}</td>
@@ -197,7 +197,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <input type="submit" class="btn btn-warning" value="Swap" />
+                    <input id="swapSectionsSubmitBtn" disabled="disabled" type="submit" class="btn btn-warning" value="Swap (select a section)" />
                 </div>
             </form>
         </div>
@@ -223,17 +223,11 @@
         $('#dropLAFromSectionModal').modal('show');
     });
 
-    $('.assignmentSwapBtn').on('click', function() {
-        var aid = $(this).attr("data-aid");
-        var time = $(this).attr("data-time");
-        var type = $(this).attr("data-type");
-        var days = $(this).attr("data-days");
-        $('#swapAssignmentInputAid1').val(aid);
-        $('#swapLabAssistantSectionType').html(type);
-        $('#swapLabAssistantSectionTime').html(time);
-        $('#swapLabAssistantSectionDays').html(days);
-        $('#swapLAFromSectionModal').modal('show');
-    });
+
+    $('#assignmentSwapAssignmentsTable tfoot th').each( function () {
+        var title = $('#assignmentSwapAssignmentsTable thead th').eq( $(this).index() ).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
 
     var assignmentsTable = $('#assignmentSwapAssignmentsTable').DataTable();
     // Apply the search
@@ -247,10 +241,29 @@
         } );
     } );
     assignmentsTable.on('click', 'tbody tr', function() {
-        var row = $(assignmentsTable.row(this).node());
-        var radio = row.find('input[type=radio]');
-        radio.prop('checked', true);
-        radio.click()
+        assignmentsTable.$('tr.chosen').removeClass('chosen');
+        $(this).addClass('chosen');
+        var submitBtn = $('#swapSectionsSubmitBtn');
+        if (submitBtn.prop("disabled")) {
+            submitBtn.val("Swap").prop("disabled", false);
 
+        }
+        var aid2 = $(assignmentsTable.row(this).node()).attr("data-aid");
+        $('#swapAssignmentInputAid2').val(aid2);
+
+    });
+
+    $('.assignmentSwapBtn').on('click', function() {
+        var aid = $(this).attr("data-aid");
+        var time = $(this).attr("data-time");
+        var type = $(this).attr("data-type");
+        var days = $(this).attr("data-days");
+        $('#swapAssignmentInputAid1').val(aid);
+        $('#swapLabAssistantSectionType').html(type);
+        $('#swapLabAssistantSectionTime').html(time);
+        $('#swapLabAssistantSectionDays').html(days);
+        $('#swapSectionsSubmitBtn').prop("disabled", true).val("Swap (select a section)");
+        assignmentsTable.$('tr.chosen').removeClass('chosen');
+        $('#swapLAFromSectionModal').modal('show');
     });
 </script>

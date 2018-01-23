@@ -1070,6 +1070,8 @@ class TAController extends Controller {
         $tmpUID1 = $assignment1->uid;
         $assignment1->uid = $assignment2->uid;
         $assignment2->uid = $tmpUID1;
+        $assignment1->save();
+        $assignment2->save();
         $user1 = User::findOrFail($assignment1->uid);
         $user2 = User::findOrFail($assignment2->uid);
         Audit::log("Swapped sections for " . $user1->name . " (" . $user1->id . ")"  . "and " . $user2->name .

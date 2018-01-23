@@ -123,3 +123,7 @@ button.btn.btn-tiny {
 #userTable, #assignmentSwapAssignmentsTable tbody tr {
     cursor: pointer;
 }
+
+#assignmentSwapAssignmentsTable .chosen {
+    background-color: #e99002;
+}
