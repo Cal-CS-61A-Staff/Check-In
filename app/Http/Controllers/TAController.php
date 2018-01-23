@@ -1074,7 +1074,7 @@ class TAController extends Controller {
         $assignment2->save();
         $user1 = User::findOrFail($assignment1->uid);
         $user2 = User::findOrFail($assignment2->uid);
-        Audit::log("Swapped sections for " . $user1->name . " (" . $user1->id . ")"  . "and " . $user2->name .
+        Audit::log("Swapped sections for " . $user1->name . " (" . $user1->id . ")"  . " and " . $user2->name .
             "(" . $user2->id . "). Section IDs: " . $assignment1->section . ", " . $assignment2->section);
         return redirect()->route("taconsole", "users")->with("message",
             "Swap sections for users " . $user1->name . " and " . $user2->name . " was successful.");
