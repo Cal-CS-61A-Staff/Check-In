@@ -223,23 +223,8 @@
         $('#dropLAFromSectionModal').modal('show');
     });
 
-
-    $('#assignmentSwapAssignmentsTable tfoot th').each( function () {
-        var title = $('#assignmentSwapAssignmentsTable thead th').eq( $(this).index() ).text();
-        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-    } );
-
     var assignmentsTable = $('#assignmentSwapAssignmentsTable').DataTable();
-    // Apply the search
-    assignmentsTable.columns().every( function () {
-        var that = this;
 
-        $( 'input', this.footer() ).on( 'keyup change', function () {
-            that
-                .search( this.value )
-                .draw();
-        } );
-    } );
     assignmentsTable.on('click', 'tbody tr', function() {
         assignmentsTable.$('tr.chosen').removeClass('chosen');
         $(this).addClass('chosen');
