@@ -30,7 +30,7 @@
                 <div class="row form-row">
                     <div class="form-group col-md-2">
                         <label for="inputUnits">Units: </label>
-                        <input name="inputUnits" type="text" class="form-control" value="{{{ $user->units }}}" />
+                        <input name="inputUnits" type="text" class="form-control input-sm" value="{{{ $user->units }}}" />
                     </div>
                     <div class="form-group col-md-2">
                         <label for="inputHours">Hours: </label>
