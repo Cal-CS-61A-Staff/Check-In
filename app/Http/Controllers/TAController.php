@@ -1022,14 +1022,27 @@ class TAController extends Controller {
     public function post_feedback_add() {
         $uid = Request::input('inputLA');
         // Ensure the user exists
-        User::findOrFail($uid);
+        $user = User::findOrFail($uid);
         $comment = Request::input('inputFeedback');
         $feedback = new Feedback;
         $feedback->uid = $uid;
         $feedback->gsi = Auth::user()->id;
         $feedback->comment = $comment;
         $feedback->save();
+        Audit::log("Added feedback for " . $user->name);
         return redirect()->route("taconsole", "users")->with("message", "Feedback successfully saved.");
+    }
+
+    public function post_update_user() {
+        $uid = Request::input('inputUID');
+        $user = User::findOrFail($uid);
+        $user->units = Request::input('inputUnits');
+        $user->hours = Request::input('inputHours');
+        $user->name = Request::input('inputName');
+        $user->email = Request::input('inputEmail');
+        $user->save();
+        Audit::log("Updated profile for " . $user->email . ". (User ID = " . $uid . ")");
+        return redirect()->route("taconsole", "users")->with("message", "User " . $user->name . " profile updated successfully.");
     }
 
 

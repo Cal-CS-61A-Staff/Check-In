@@ -16,7 +16,9 @@
 <div class="panel-body">
     <div class="well tab-content">
         <div id="userInfoSubModule" class="tab-pane fade active in">
-            <form class="form" method="POST">
+            <form class="form" method="POST" action="{{{ route("taupdateuser") }}}">
+                <input type="hidden" value="{{ csrf_token() }}" name="_token" />
+                <input type="hidden" value="{{{ $user->id }}}" name="inputUID" />
                 <div class="form-group">
                     <label for="inputName">Name: </label>
                     <input name="inputName" type="text" class="form-control" value="{{{ $user->name }}}" />
@@ -38,6 +40,7 @@
                 <div class="form-group">
                     <input type="submit" class="btn btn-success" value="Save" />
                 </div>
+            </form>
         </div>
         <div id="userAssignmentsSubModule" class="tab-pane fade">
             <table class="table table-striped table-bordered">
@@ -86,7 +89,7 @@
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                 <input type="hidden" name="inputLA" value="{{{ $user->id }}}" />
                 <div class="form-group">
-                    <textarea class="form-control" rows="8" placeholder="Feedback..."></textarea>
+                    <textarea class="form-control" name="inputFeedback" rows="8" placeholder="Feedback..."></textarea>
                 </div>
                 <div class="form-group">
                     <input type="submit" class="btn btn-success" value="Add Feedback" />
