@@ -40,7 +40,36 @@
                 </div>
         </div>
         <div id="userAssignmentsSubModule" class="tab-pane fade">
-            Assignments
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Type</th><th>Location</th><th>Days</th><th>Start Time</th><th>End Time</th><th>GSI</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($user->assignments as $assignment)
+                        <tr>
+                            <td>{{{ $assignment->sec->category->name }}}</td>
+                            <td>{{{ $assignment->sec->location }}}</td>
+                            <td>{{{ App\Section::daysToString($assignment->sec) }}}</td>
+                            <td>{{{ $assignment->sec->start_time }}}</td>
+                            <td>{{{ $assignment->sec->end_time }}}</td>
+                            <td>
+                                <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $assignment->sec->ta->name }}}</span>
+                                @if (!empty($assignment->sec->ta2))
+                                <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $assignment->sec->ta2->name }}}</span>
+                                @endif
+                            </td>
+                            <td><a href="#">
+                                    <button data-toggle="tooltip" data-placement="top" data-title="Drop lab assistant from section" class="btn btn-danger btn-tiny">
+                                        <i class="fa fa-times fa-fw"></i>
+                                    </button>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
         <div id="userFeedbackSubModule" class="tab-pane fade">
             <span class="label label-default">Note:</span>
@@ -64,4 +93,5 @@
         $('#userSubModule').hide();
         $('#usersSubModule').fadeIn();
     });
+    $('[data-toggle="tooltip"]').tooltip();
 </script>

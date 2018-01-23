@@ -49,7 +49,7 @@ class TAController extends Controller {
     }
 
     public function get_module_user($id) {
-        $user = User::with('assignments.sec.ta')->with("checkins.type")->findOrFail($id);
+        $user = User::with('assignments.sec.ta', 'assignments.sec.ta2', 'assignments.sec.category')->with("checkins.type")->findOrFail($id);
         return view('ta.modules.users.user')->with(["user" => $user]);
     }
 
