@@ -14,6 +14,8 @@
                 <table id="userTable" class="table table-hover table-striped">
                     <thead>
                     <tr><th>Name</th><th>Email</th><th># of Hours</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
+                    <small><span class="label label-warning">New:</span> Clicking on a user will display more actions.</small>
+                    <hr />
                     </thead>
                     <tfoot>
                     <tr><th>Name</th><th>Email</th><th># of Hours</th><th># of Check Ins</th><th>Created At</th><th>Actions</th></tr>
