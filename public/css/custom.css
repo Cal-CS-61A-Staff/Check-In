@@ -115,4 +115,15 @@ div.container {
     background: url('/images/console-loader.gif') center no-repeat;
 }
 
+
+button.btn.btn-tiny {
+    padding: 0px 2px;
+}
+
+#userTable, #assignmentSwapAssignmentsTable tbody tr {
+    cursor: pointer;
+}
+
+#assignmentSwapAssignmentsTable .chosen {
+    background-color: #e99002;
 }

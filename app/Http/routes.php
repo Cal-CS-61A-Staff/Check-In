@@ -58,6 +58,8 @@
     Route::get("ta/checkin/remove/{id}", ["as" => "tacheckinremove", "uses" => "TAController@post_checkin_remove", "middleware" => "auth.tutor"]);
         //SubModules
         Route::get('ta/module/users', ["as" => "tamoduleusers", "uses" => "TAController@get_module_users", "middleware" => "auth.tutor"]);
+            //UsersModules
+            Route::get('ta/module/users/{id}', ["as" => "tamoduleuser", "uses" => "TAController@get_module_user", "middleware" => "auth.tutor"]);
         Route::get('ta/module/checkins', ["as" => "tamodulecheckins", "uses" => "TAController@get_module_checkins", "middleware" => "auth.tutor"]);
         Route::get('ta/module/secretword', ["as" => "tamodulesecretword", "uses" => "TAController@get_module_secretword", "middleware" => "auth.tutor"]);
         Route::get('ta/module/announcements', ["as" => "tamoduleannouncements", "uses" => "TAController@get_module_announcements", "middleware" => "auth.tutor"]);
@@ -71,6 +73,7 @@
     Route::post("ta/update/password", ["as" => "taupdatepassword", "uses" => "TAController@post_update_password", "middleware" => "auth.tutor"]);
     Route::post("ta/user/checkin", ["as" => "tacheckinuser", "uses" => "TAController@post_checkin_user", "middleware" => "auth.tutor"]);
     Route::post("ta/user/checkin/edit", ["as" => "taeditcheckinuser", "uses" => "TAController@post_edit_checkin_user", "middleware" => "auth.tutor"]);
+    Route::post("ta/user/update", ["as" => "taupdateuser", "uses" => "TAController@post_update_user", "middleware" => "auth.tutor"]);
     Route::post("ta/type", ["as" => "taupdatetype", "uses" => "TAController@post_update_type", "middleware" => "auth.ta"]);
     Route::post("ta/new", ["as" => "tanewtype", "uses" => "TAController@post_new_type", "middleware" => "auth.ta"]);
     Route::post("ta/announcement/new", ["as" => "taannouncementnew", "uses" => "TAController@post_announcement_new", "middleware" => "auth.tutor"]);
@@ -79,8 +82,9 @@
     Route::post("ta/section/edit", ["as" => "tasectionedit", "uses" => "TAController@post_section_edit", "middleware" => "auth.ta"]);
     Route::post("ta/section/assign", ["as" => "tasectionassign", "uses" => "TAController@post_section_assign", "middleware" => "auth.ta"]);
     Route::post("ta/feedback/add", ["as" => "tafeedbackadd", "uses" => "TAController@post_feedback_add", "middleware" => "auth.tutor"]);
-//    Route::post("ta/section/unassign", ["as" => "tasectionunassign", "uses" => "TAController@post_section_unassign", "middleware" => "auth.ta"]);
+    Route::post("ta/section/unassign", ["as" => "tasectionunassign", "uses" => "TAController@post_section_unassign", "middleware" => "auth.ta"]);
     Route::post("ta/section/addla", ["as" => "tasectionaddla", "uses" => "TAController@post_section_addla", "middleware" => "auth.ta"]);
+    Route::post("ta/section/swap", ["as" => "tasectionswap", "uses" => "TAController@post_section_swap", "middleware" => "auth.tutor"]);
     Route::post("ta/section/unassign", ["as" => "tasectionunassign", "uses" => "TAController@post_section_unassign", "middleware" => "auth.ta"]);
     Route::post("ta/settings/save", ["as" => "tasavesettings", "uses" => "TAController@post_settings_save", "middleware" => "auth.ta"]);
 
