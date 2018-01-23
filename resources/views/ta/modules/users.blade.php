@@ -47,57 +47,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">Check In <strong><span id="checkInUserName"></span></strong></h4>
             </div>
-            <form class="form" method="POST" action="{{ route("tacheckinuser") }}">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                <input type="hidden" id="inputUID" name="inputUID" value="" />
-                <div class="modal-body">
-                        <div class="form-group">
-                            <label for="inputLocation">Type</label>
-                            <select class="form-control" name="inputLocation" id="inputLocation">
-                                @foreach ($types as $type)
-                                    <option value="{{{ $type->id }}}">{{{ $type->name }}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputDate">Section Date</label>
-                            <input type="text" readonly name="inputDate" id="inputDate" placeholder="Date" />
-                        </div>
-                        <div class="form-group">
-                            <label for="inputTime">Section <strong>Start</strong> Time</label>
-                            <input type="text" readonly name="inputTime" id="inputTime" placeholder="Start Time" />
-                        </div>
-                        <div class="form-group">
-                            <label for="inputGSI">GSI: </label>
-                            <select class="form-control" name="inputGSI">
-                                @foreach ($staff as $staffer)
-                                    <option value="{{{ $staffer->id }}}">{{{ $staffer->name }}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputMakeup">Makeup: </label>
-                            <select class="form-control" name="inputMakeup">
-                                <option value="0">No</option>
-                                <option value="1">Yes</option>
-                            </select>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-info" value="Check In" />
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<div id="checkInUserModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Check In <strong><span id="checkInUserName"></span></strong></h4>
-            </div>
             <form id="checkInModalForm" class="form" method="POST" action="{{ route("tacheckinuser") }}">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                 <input type="hidden" id="inputUID" name="inputUID" value="" />
