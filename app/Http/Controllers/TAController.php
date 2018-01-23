@@ -999,12 +999,11 @@ class TAController extends Controller {
     }
 
     public function post_section_unassign() {
-        $uid = Request::input('inputUID');
-        $section = Request::input('inputSID');
-        $assignment = Assignment::where("uid", "=", $uid)->where("section", "=", $section)->first();
+        $aid = Request::input('inputAID');
+        $assignment = Assignment::with("user")->findOrFail($aid);
         $assignment->delete();
-        Audit::log("Removed " . $uid . " from section id " . $section);
-        return "1";
+        Audit::log("Removed " . $assignment->user->name . " from section id " . $aid);
+        return redirect()->route("taconsole", "users")->with("message", "Removed " . $assignment->user->name . " from section.");
     }
 
     public function post_settings_save() {

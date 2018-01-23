@@ -60,7 +60,13 @@
                                 <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $assignment->sec->ta2->name }}}</span>
                                 @endif
                             </td>
-                            <td><a href="#">
+                            <td>
+                                <a class="assignmentSwapBtn" data-aid="{{{ $assignment->id }}}" href="#">
+                                    <button data-toggle="tooltip" data-placement="top" data-title="Swap section assignment with another lab assistant" class="btn btn-warning btn-tiny">
+                                        <i class="fa fa-arrows-h fa-fw"></i>
+                                    </button>
+                                </a>
+                                <a class="assignmentDropBtn" data-days="{{{ App\Section::daysToString($assignment->sec) }}}" data-type="{{{ $assignment->sec->category->name }}}" data-time="{{{ $assignment->sec->start_time }}}" data-aid="{{{ $assignment->id }}}" href="#">
                                     <button data-toggle="tooltip" data-placement="top" data-title="Drop lab assistant from section" class="btn btn-danger btn-tiny">
                                         <i class="fa fa-times fa-fw"></i>
                                     </button>
@@ -88,10 +94,60 @@
         </form>
     </div>
 </div>
+<div id="dropLAFromSectionModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Confirm dropping {{{ $user->name }}}</h4>
+            </div>
+            <form action="{{ route("tasectionunassign") }}" method="POST">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                <input type="hidden" id="dropAssignmentInputAid" name="inputAID" value="" />
+                <div class="modal-body">
+                    Are you sure you want to drop <strong>{{{ $user->name }}}</strong> from the following section?
+                    <table style="margin-top: 20px;" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Start Time</th>
+                                <th>Days</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="dropLabAssistantSectionType"></td>
+                                <td id="dropLabAssistantSectionTime"></td>
+                                <td id="dropLabAssistantSectionDays"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-danger" value="Drop" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
     $('#userSubModuleBackBtn').on('click', function() {
         $('#userSubModule').hide();
         $('#usersSubModule').fadeIn();
     });
+
     $('[data-toggle="tooltip"]').tooltip();
+
+    $('.assignmentDropBtn').on('click', function() {
+        var aid = $(this).attr("data-aid");
+        var time = $(this).attr("data-time");
+        var type = $(this).attr("data-type");
+        var days = $(this).attr("data-days");
+        $('#dropAssignmentInputAid').val(aid);
+        $('#dropLabAssistantSectionType').html(type);
+        $('#dropLabAssistantSectionTime').html(time);
+        $('#dropLabAssistantSectionDays').html(days);
+        $('#dropLAFromSectionModal').modal('show');
+    });
 </script>
