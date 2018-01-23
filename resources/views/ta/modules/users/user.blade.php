@@ -82,7 +82,9 @@
             <small>This feedback while not anonymous will only be accessible by course instructors and may be used in future
                 hiring decisions.</small>
             <hr />
-            <form class="form">
+            <form class="form" method="POST" action="{{{ route("tafeedbackadd") }}}">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                <input type="hidden" name="inputLA" value="{{{ $user->id }}}" />
                 <div class="form-group">
                     <textarea class="form-control" rows="8" placeholder="Feedback..."></textarea>
                 </div>
@@ -91,7 +93,6 @@
                 </div>
             </form>
         </div>
-        </form>
     </div>
 </div>
 <div id="dropLAFromSectionModal" class="modal fade">

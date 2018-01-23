@@ -29,10 +29,10 @@
                             <td>{{{ $user->created_at }}}</td>
                             <td>
                                 <span class="userActionsSpan"><span id="actions">
-                                    <button data-toggle="tooltip" data-placement="top" title="Add internal only feedback" data-uid="{{{ $user->id }}}" class="btn btn-info addLAFeedbackBtn">
-                                                        <i class="fa fa-comment fa-fw"></i>
+                                    <button data-toggle="tooltip" data-placement="top" title="View User Details" class="btn btn-info btn-tiny">
+                                                        <i class="fa fa-eye fa-fw"></i>
                                     </button>
-                                    <button data-toggle="tooltip" data-placement="top" title="Check In User" data-uid="{{{ $user->id }}}" data-name="{{{ $user->name }}}" class="btn btn-info checkInUserBtn">
+                                    <button data-toggle="tooltip" data-placement="top" title="Check In User" data-uid="{{{ $user->id }}}" data-name="{{{ $user->name }}}" class="btn btn-info checkInUserBtn btn-tiny">
                                         <i class="fa fa-check-circle-o fa-fw"></i>
                                     </button>
                                     </span>
@@ -148,36 +148,7 @@
         </div>
     </div>
 </div>
-<div id="addLAFeedbackModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Add Internal Only Feedback</h4>
-            </div>
-            <form action="{{ route("tafeedbackadd") }}" method="POST">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                <input type="hidden" id="addFeedbackInputLA" name="inputLA" value="" />
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="inputFeedback">Feedback:</label>
-                        <textarea rows="8" name="inputFeedback" class="form-control"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <input type="submit" class="btn btn-success" value="Save Feedback" />
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 <script>
-    $('.addLAFeedbackBtn').on('click', function() {
-        var uid = $(this).attr("data-uid");
-        $('#addFeedbackInputLA').val(uid);
-        $('#addLAFeedbackModal').modal('show');
-    });
     $('.checkInUserBtn').on('click', function() {
         $('#checkInModalForm').attr('action', '{{{ route("tacheckinuser") }}}');
         $('#checkInUserName').html($(this).attr("data-name"));
@@ -240,5 +211,7 @@
         userSubModule.fadeIn();
 
     });
+
+    $('[data-toggle="tooltip"]').tooltip();
 
 </script>
