@@ -84,6 +84,7 @@
     Route::post("ta/feedback/add", ["as" => "tafeedbackadd", "uses" => "TAController@post_feedback_add", "middleware" => "auth.tutor"]);
     Route::post("ta/section/unassign", ["as" => "tasectionunassign", "uses" => "TAController@post_section_unassign", "middleware" => "auth.ta"]);
     Route::post("ta/section/addla", ["as" => "tasectionaddla", "uses" => "TAController@post_section_addla", "middleware" => "auth.ta"]);
+    Route::post("ta/section/swap", ["as" => "tasectionswap", "uses" => "TAController@post_section_swap", "middleware" => "auth.tutor"]);
     Route::post("ta/section/unassign", ["as" => "tasectionunassign", "uses" => "TAController@post_section_unassign", "middleware" => "auth.ta"]);
     Route::post("ta/settings/save", ["as" => "tasavesettings", "uses" => "TAController@post_settings_save", "middleware" => "auth.ta"]);
 

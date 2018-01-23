@@ -64,7 +64,7 @@
                                 @endif
                             </td>
                             <td>
-                                <a class="assignmentSwapBtn" data-aid="{{{ $assignment->id }}}" href="#">
+                                <a class="assignmentSwapBtn" data-days="{{{ App\Section::daysToString($assignment->sec) }}}" data-type="{{{ $assignment->sec->category->name }}}" data-time="{{{ $assignment->sec->start_time }}}" data-aid="{{{ $assignment->id }}}" href="#">
                                     <button data-toggle="tooltip" data-placement="top" data-title="Swap section assignment with another lab assistant" class="btn btn-warning btn-tiny">
                                         <i class="fa fa-arrows-h fa-fw"></i>
                                     </button>
@@ -135,6 +135,74 @@
         </div>
     </div>
 </div>
+<div id="swapLAFromSectionModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Swap {{{ $user->name }}}'s Section Assignment</h4>
+            </div>
+            <form action="{{ route("tasectionswap") }}" method="POST">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                <input type="hidden" id="swapAssignmentInputAid" name="inputAID1" value="" />
+                <div class="modal-body">
+                    Swapping lab assistant <strong>{{{ $user->name }}}'s</strong> section assignment:
+                    <table style="margin-top: 20px;" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Start Time</th>
+                            <th>Days</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td id="swapLabAssistantSectionType"></td>
+                            <td id="swapLabAssistantSectionTime"></td>
+                            <td id="swapLabAssistantSectionDays"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-bottom: 25px;">Choose another lab assistant's section assignment to swap with:</div>
+                    <div class="table-responsive">
+                        <table id="assignmentSwapAssignmentsTable" class="table table-hover table-striped">
+                            <thead>
+                                <tr><th>Select</th><th>User</th><th>Type</th><th>Start Time</th><th>End Time</th><th>Days</th><th>GSI</th></tr>
+                            </thead>
+                            <tfoot></tfoot>
+                            <tbody>
+                            @foreach ($assignments as $assignment)
+                                <tr>
+                                    <td><input name="inputAID2" type="radio" value="{{{ $assignment->id }}}" /></td>
+                                    <td>{{{ $assignment->user->name }}}</td>
+                                    <td>{{{ $assignment->sec->category->name }}}</td>
+                                    <td>{{{ $assignment->sec->start_time }}}</td>
+                                    <td>{{{ $assignment->sec->end_time }}}</td>
+                                    <td>{{{ App\Section::daysToString($assignment->sec) }}}</td>
+                                    <td>
+                                        <span class="label label-danger">
+                                            <i class="fa fa-bookmark fa-fw"></i> {{{ $assignment->sec->ta->name }}}
+                                        </span>
+                                        @if ($assignment->sec->ta2 !== null)
+                                        <span class="label label-danger">
+                                            <i class="fa fa-bookmark fa-fw"></i> {{{ $assignment->sec->ta2->name }}}
+                                        </span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-warning" value="Swap" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
     $('#userSubModuleBackBtn').on('click', function() {
         $('#userSubModule').hide();
@@ -153,5 +221,36 @@
         $('#dropLabAssistantSectionTime').html(time);
         $('#dropLabAssistantSectionDays').html(days);
         $('#dropLAFromSectionModal').modal('show');
+    });
+
+    $('.assignmentSwapBtn').on('click', function() {
+        var aid = $(this).attr("data-aid");
+        var time = $(this).attr("data-time");
+        var type = $(this).attr("data-type");
+        var days = $(this).attr("data-days");
+        $('#swapAssignmentInputAid1').val(aid);
+        $('#swapLabAssistantSectionType').html(type);
+        $('#swapLabAssistantSectionTime').html(time);
+        $('#swapLabAssistantSectionDays').html(days);
+        $('#swapLAFromSectionModal').modal('show');
+    });
+
+    var assignmentsTable = $('#assignmentSwapAssignmentsTable').DataTable();
+    // Apply the search
+    assignmentsTable.columns().every( function () {
+        var that = this;
+
+        $( 'input', this.footer() ).on( 'keyup change', function () {
+            that
+                .search( this.value )
+                .draw();
+        } );
+    } );
+    assignmentsTable.on('click', 'tbody tr', function() {
+        var row = $(assignmentsTable.row(this).node());
+        var radio = row.find('input[type=radio]');
+        radio.prop('checked', true);
+        radio.click()
+
     });
 </script>

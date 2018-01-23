@@ -120,6 +120,6 @@ button.btn.btn-tiny {
     padding: 0px 2px;
 }
 
-#userTable tbody tr {
+#userTable, #assignmentSwapAssignmentsTable tbody tr {
     cursor: pointer;
 }
