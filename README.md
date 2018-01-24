@@ -116,16 +116,21 @@ Deploy from another branch:
 
 ### First Time Deployment
 
+Note: These are deployment instructions to the CS61A managed Dokku platform. They should be generic enough to follow to deploy to your own Dokku instance however.
+
 Tip:  add `alias dokku="ssh -t dokku@app.cs61a.org"` to your aliases file (e.g. `~/.bashrc`).
 
     dokku apps:create app-name
-    git remote add online dokku@app.cs61a.org:la
+    git remote add online dokku@app.cs61a.org:<app_name>
     dokku mysql:create db-name
     dokku mysql:link db-name app-name
     # Set DNS record
     dokku domains:add app-name name.cs61a.org
 
-    dokku config:set app-name APP_KEY=<SECRET> APP_ENV=prod OK_COURSE_OFFERING="cal/cs61a/fa17" APP_OAUTH_KEY=<SECRET> FORCE_HTTPS=true MAIL_DRIVER=mailgun MAIL_GUN_DOMAIN=<MAIL_GUN_DOMAIN> MAIL_GUN_SECRET=<MAIL_GUN_SECRET>
+    # Get the APP KEY
+    dokku enter <app_name> web php artisan key:generate
+
+    dokku config:set app-name APP_KEY=<KEY COPIED FROM key:generate command> APP_ENV=prod OK_COURSE_OFFERING="cal/cs61a/fa17" APP_OAUTH_KEY=<SECRET> FORCE_HTTPS=true MAIL_DRIVER=mailgun MAIL_GUN_DOMAIN=<MAIL_GUN_DOMAIN> MAIL_GUN_SECRET=<MAIL_GUN_SECRET>
     MAIL_HOST=<MAIL_HOST> MAIL_PORT=<MAIL_PORT> MAIL_USERNAME=<MAIL_USERNAME> MAIL_PASSWORD=<MAIL_SECRET> MAIL_ENCRYPTION=null
     dokku letsencrypt app-name
     # Change OK OAuth to support the domain
@@ -133,6 +138,8 @@ Tip:  add `alias dokku="ssh -t dokku@app.cs61a.org"` to your aliases file (e.g. 
     # Run migrations after following steps in Deployment
     dokku enter <app_name> web php artisan migrate --force
     dokku enter <app_name> web php artisan db:seed --class=DefaultSettingsSeeder --force
+
+    
 
 
 
