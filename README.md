@@ -6,6 +6,18 @@ Lab Assistant Manager
 Provides a web-based interface for managing lab assistants. Allows TAs to configure seections for lab assistants to sign up for along with facilitating the check in process. 
 
 
+## Branches Organization:
+* ***master*** - is the main branch, storing the current code all non-course specific features should be branched from.
+* ***cs61a*** - is the master branch for the CS61A course lab assistant manager instance.
+* ***cs61b*** - is the master branch for the CS61B course lab assistant manager instance.
+* ***data8*** - is the master branch for the DATA8 course lab assistant manager instance.
+
+## How to contribute:
+* Fork the repository. If you are not used to github have a look at [fork a repository](https://help.github.com/fork-a-repo)
+* Create a branch either from master (or a specific course branch if this is a 1 course only feature).
+* Add your features and commit your desired changes.
+* Create a pull request detailing your changes [creating pull requests](https://help.github.com/articles/about-pull-requests/).
+
 ## Installation
 
 1. Set up VirtualBox, Vagrant & Homestead
