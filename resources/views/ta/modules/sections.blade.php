@@ -163,11 +163,24 @@
                 <div class="table-responsive">
                     <table id="sectionTable" class="table table-bordered table-hover table-striped">
                         <thead>
-                        <tr><th>Type</th><th>Location</th><th>Days</th><th>Start Time</th><th>End Time</th><th>GSI</th><th>Max Lab Assistants</th><th>Assigned</th><th>Actions</th></tr>
+                        <tr><th>Actions</th><th>Type</th><th>Location</th><th>Days</th><th>Start Time</th><th>End Time</th><th>GSI</th><th>Max Lab Assistants</th><th>Assigned</th></tr>
                         </thead>
                         <tbody>
                         @foreach ($sections as $s)
                             <tr data-sid="{{{ $s->id }}}" data-type="{{{ $s->type }}}" data-location="{{{ $s->location }}}" data-max_las="{{{ $s->max_las}}}" data-mon="{{{ $s->mon }}}" data-tue="{{{ $s->tue }}}" data-wed="{{{ $s->wed }}}" data-thu="{{{ $s->thu }}}" data-fri="{{{ $s->fri }}}" data-sat="{{{ $s->sat }}}" data-sun="{{{ $s->sun }}}" data-gsi="{{{ $s->gsi }}}" data-second_gsi="{{{ $s->second_gsi }}}" data-start_time="{{{ $s->start_time }}}" data-end_time="{{{ $s->end_time }}}">
+                                <td style="width: 83px;"><a class="sectionViewActionsLink" href="#">View Actions</a>
+                                    <p class="sectionActions" style="display: none;">
+                                        <button data-toggle="tooltip" data-placement="right" data-title="Assign Lab Assistant" class="btn btn-info btn-tiny sectionAddLABtn">
+                                            <i class="fa fa-user fa-fw"></i>
+                                        </button>
+                                        <button data-toggle="tooltip" data-placement="right" data-title="Edit Section" class="btn btn-warning btn-tiny sectionEditBtn">
+                                            <i class="fa fa-edit fa-fw"></i>
+                                        </button>
+                                        <button data-toggle="tooltip" data-placement="right" data-title="Delete Section" class="btn btn-danger btn-tiny sectionDeleteBtn">
+                                            <i class="fa fa-times fa-fw"></i>
+                                        </button>
+                                    </p>
+                                </td>
                                 <td>{{{ $s->category->name }}}</td>
                                 <td>{{{ $s->location }}}</td>
                                 <td>{{{ App\Section::daysToString($s) }}}</td>
@@ -183,19 +196,6 @@
                                         @if (array_key_exists($assigned->uid, $double_booked)) <span style="background-color: red;">{{{ $assigned->user->name }}}</span> @else @if (array_key_exists($assigned->uid, $over_hours) && $assigned->user->hours > 0)
                                             <span style="background-color: yellow;">{{{ $assigned->user->name }}}</span>
                                         @else {{{ $assigned->user->name }}}@endif @endif, @endforeach
-                                </td>
-                                <td><a class="sectionViewActionsLink" href="#">View Actions</a>
-                                    <p class="sectionActions" style="display: none;">
-                                        <button data-toggle="tooltip" data-placement="top" data-title="Assign Lab Assistant" class="btn btn-info sectionAddLABtn">
-                                            <i class="fa fa-user fa-fw"></i>
-                                        </button>
-                                        <button data-toggle="tooltip" data-placement="top" data-title="Edit Section" class="btn btn-warning sectionEditBtn">
-                                            <i class="fa fa-edit fa-fw"></i>
-                                        </button>
-                                        <button data-toggle="tooltip" data-placement="top" data-title="Delete Section" class="btn btn-danger sectionDeleteBtn">
-                                            <i class="fa fa-times fa-fw"></i>
-                                        </button>
-                                    </p>
                                 </td>
                             </tr>
                         @endforeach
