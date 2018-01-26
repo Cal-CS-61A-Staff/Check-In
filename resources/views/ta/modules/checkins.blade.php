@@ -5,19 +5,11 @@
     <div class="panel-body">
         <div class="table-responsive">
             <table id="consoleCheckInTable" class="table table-hover table-striped">
-                <thead><tr><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th><th>Actions</th></tr></thead>
-                <tfoot><tr><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th><th>Actions</th></tr></tfoot>
+                <thead><tr><th>Actions</th><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></thead>
+                <tfoot><tr><th>Actions</th><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></tfoot>
                 <tbody>
                 @foreach ($checkins as $checkin)
                     <tr>
-                        <td>{{{ $checkin->user->name }}}</td>
-                        <td>{{{ $checkin->type->name }}}</td>
-                        <td><span class="badge">{{{ $checkin->type->hours }}}</span></td>
-                        <td>{{{ $checkin->date }}}</td>
-                        <td>{{{ $checkin->time }}}</td>
-                        <td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $checkin->ta->name }}}</span></td>
-                        <td>@if ($checkin->makeup == 1) Yes @else No @endif</td>
-                        <td>{{{ $checkin->created_at }}}</td>
                         <td><span class="checkInActionsContainer" style="display: none;">
                                                         <a data-name="{{{ $checkin->user->name }}}"
                                                            data-id="{{{ $checkin->id }}}"
@@ -26,7 +18,27 @@
                                                            data-date="{{{ $checkin->date }}}"
                                                            data-time="{{{ $checkin->time }}}"
                                                            data-makeup="{{{ $checkin->makeup }}}"
-                                                           class="btn btn-info editCheckInBtn"><i class="fa fa-edit fa-fw"></i></a><a data-id="{{{ $checkin->id }}}" class="btn btn-warning removeCheckInBtn"><i class="fa fa-times fa-fw"></i></a></span><a class="checkInActionsBtn" href="#">View Actions</a></td>
+                                                           data-toggle="tooltip"
+                                                           data-placement="right"
+                                                           data-title="Edit lab assistant check in."
+                                                           class="btn btn-info btn-tiny editCheckInBtn"><i class="fa fa-edit fa-fw"></i></a>
+                                                        <a data-id="{{{ $checkin->id }}}"
+                                                           data-toggle="tooltip"
+                                                           data-placement="right"
+                                                           data-title="Remove lab assistant check in."
+                                                           class="btn btn-warning btn-tiny removeCheckInBtn">
+                                                            <i class="fa fa-times fa-fw"></i>
+                                                        </a>
+                            </span><a class="checkInActionsBtn" href="#">View Actions</a>
+                        </td>
+                        <td>{{{ $checkin->user->name }}}</td>
+                        <td>{{{ $checkin->type->name }}}</td>
+                        <td><span class="badge">{{{ $checkin->type->hours }}}</span></td>
+                        <td>{{{ $checkin->date }}}</td>
+                        <td>{{{ $checkin->time }}}</td>
+                        <td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ $checkin->ta->name }}}</span></td>
+                        <td>@if ($checkin->makeup == 1) Yes @else No @endif</td>
+                        <td>{{{ $checkin->created_at }}}</td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -147,5 +159,7 @@
                 .draw();
         } );
     } );
+
+    $('[data-toggle="tooltip"]').tooltip();
 
 </script>
