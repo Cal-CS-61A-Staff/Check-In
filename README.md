@@ -6,6 +6,18 @@ Lab Assistant Manager
 Provides a web-based interface for managing lab assistants. Allows TAs to configure seections for lab assistants to sign up for along with facilitating the check in process. 
 
 
+## Branches Organization:
+* ***master*** - is the main branch, storing the current code all non-course specific features should be branched from.
+* ***cs61a*** - is the master branch for the CS61A course lab assistant manager instance.
+* ***cs61b*** - is the master branch for the CS61B course lab assistant manager instance.
+* ***data8*** - is the master branch for the DATA8 course lab assistant manager instance.
+
+## How to contribute:
+* Fork the repository. If you are not used to github have a look at [fork a repository](https://help.github.com/fork-a-repo)
+* Create a branch either from master (or a specific course branch if this is a 1 course only feature).
+* Add your features and commit your desired changes.
+* Create a pull request detailing your changes [creating pull requests](https://help.github.com/articles/about-pull-requests/).
+
 ## Installation
 
 1. Set up VirtualBox, Vagrant & Homestead
@@ -102,16 +114,21 @@ Deploy from another branch:
 
 ### First Time Deployment
 
+Note: These are deployment instructions to the CS61A managed Dokku platform. They should be generic enough to follow to deploy to your own Dokku instance however.
+
 Tip:  add `alias dokku="ssh -t dokku@app.cs61a.org"` to your aliases file (e.g. `~/.bashrc`).
 
     dokku apps:create app-name
-    git remote add online dokku@app.cs61a.org:la
+    git remote add online dokku@app.cs61a.org:<app_name>
     dokku mysql:create db-name
     dokku mysql:link db-name app-name
     # Set DNS record
     dokku domains:add app-name name.cs61a.org
 
-    dokku config:set app-name APP_KEY=<SECRET> APP_ENV=prod OK_COURSE_OFFERING="cal/cs61a/fa17" APP_OAUTH_KEY=<SECRET> FORCE_HTTPS=true MAIL_DRIVER=mailgun MAIL_GUN_DOMAIN=<MAIL_GUN_DOMAIN> MAIL_GUN_SECRET=<MAIL_GUN_SECRET>
+    # Get the APP KEY
+    dokku enter <app_name> web php artisan key:generate
+
+    dokku config:set app-name APP_KEY=<KEY COPIED FROM key:generate command> APP_ENV=prod OK_COURSE_OFFERING="cal/cs61a/fa17" APP_OAUTH_KEY=<SECRET> FORCE_HTTPS=true MAIL_DRIVER=mailgun MAIL_GUN_DOMAIN=<MAIL_GUN_DOMAIN> MAIL_GUN_SECRET=<MAIL_GUN_SECRET>
     MAIL_HOST=<MAIL_HOST> MAIL_PORT=<MAIL_PORT> MAIL_USERNAME=<MAIL_USERNAME> MAIL_PASSWORD=<MAIL_SECRET> MAIL_ENCRYPTION=null
     dokku letsencrypt app-name
     # Change OK OAuth to support the domain
@@ -119,6 +136,8 @@ Tip:  add `alias dokku="ssh -t dokku@app.cs61a.org"` to your aliases file (e.g. 
     # Run migrations after following steps in Deployment
     dokku enter <app_name> web php artisan migrate --force
     dokku enter <app_name> web php artisan db:seed --class=DefaultSettingsSeeder --force
+
+    
 
 
 
