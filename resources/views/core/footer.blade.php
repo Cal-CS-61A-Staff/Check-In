@@ -14,6 +14,7 @@
     <script src="/packages/pickadate/picker.date.js"></script>
     <script src="/packages/pickadate/picker.time.js"></script>
     <script src="/packages/ckeditor/ckeditor.js"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script>
         $(function() {
             @yield('js')
