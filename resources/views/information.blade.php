@@ -14,8 +14,9 @@
                 {!! $informationContent !!}
             </div>
             <hr />
-            <iframe src="https://ghbtns.com/github-btn.html?user=colinschoen&repo=Check-In&type=fork&count=true&size=large" frameborder="0" scrolling="0" width="158px" height="30px"></iframe>
-            <p><small>Developed by Colin Schoen</small></p>
+            <!-- Place this tag where you want the button to render. -->
+            <a class="github-button" href="https://github.com/Cal-CS-61A-Staff/check-in/fork" data-icon="octicon-repo-forked" data-size="large" data-show-count="true" aria-label="Fork Cal-CS-61A-Staff/check-in on GitHub">Fork</a>
+            <p><small><a target="_blank" href="https://github.com/Cal-CS-61A-Staff/Check-In/graphs/contributors">Code Contributors</a></small></p>
         </div>
     </div>
 </div>
