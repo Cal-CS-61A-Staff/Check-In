@@ -14,6 +14,7 @@
     <link media="all" type="text/css" rel="stylesheet" href="/packages/pickadate/themes/classic.date.css">
     <link media="all" type="text/css" rel="stylesheet" href="/packages/pickadate/themes/classic.time.css">
     <link media="all" type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.8/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
     <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
