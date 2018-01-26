@@ -35,7 +35,6 @@
             <div class="col-lg-12">
                 <h3><small>GSI</small></h3>
                 <select class="selectpicker form-control" name="inputGSI" id="inputGSI" data-show-subtext="true" data-live-search="true">
-                {{--<select class="form-control" name="inputGSI" id="inputGSI">--}}
                     @foreach ($tas as $ta)
                         <option value="{{{ $ta->id }}}">{{{ $ta->name }}}</option>
                     @endforeach
