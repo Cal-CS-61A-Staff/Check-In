@@ -14,6 +14,7 @@
     <script src="/packages/pickadate/picker.date.js"></script>
     <script src="/packages/pickadate/picker.time.js"></script>
     <script src="/packages/ckeditor/ckeditor.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script>
         $(function() {
