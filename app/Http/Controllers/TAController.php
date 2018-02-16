@@ -421,13 +421,13 @@ class TAController extends Controller {
         $user_hours = Checkin::userHours($checkins);
         $file = storage_path() . "/app/roster.csv";
         $handle = fopen($file, 'w+');
-        fputcsv($handle, array('Name', 'Email', 'GSI', 'Total # of Hours', 'Total # of Check Ins', 'Created At'));
+        fputcsv($handle, array('Name', 'Email', 'GSI', 'Requested Hours', 'Requested Units', 'Total # of Hours', 'Total # of Check Ins', 'Created At'));
         foreach($users as $user) {
             if ($user->access > 0)
                 $gsi = "YES";
             else
                 $gsi = "No";
-            fputcsv($handle, array($user->name, $user->email, $gsi, $user_hours[$user->id], count($user->checkins), $user->created_at));
+            fputcsv($handle, array($user->name, $user->email, $gsi, $user->hours, $user->units, $user_hours[$user->id], count($user->checkins), $user->created_at));
         }
         fclose($handle);
         $headers = array(
