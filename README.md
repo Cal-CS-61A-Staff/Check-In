@@ -36,10 +36,8 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     ```
     cd ~
     git clone https://github.com/laravel/homestead.git Homestead
-    git checkout git checkout v6.1.0
     // Clone the desired release...
     git checkout v6.1.0
-    
     
     // If on Mac / Linux...
     bash init.sh
@@ -70,37 +68,48 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     Make sure the IP address listed is the one set in your Homestead.yaml file. Once you have added the domain to your hosts file and launched the Vagrant box you will be able to access the site via your web browser:
 
     http://la.app
-3. SSH Into Vagrant Box
+3. Bring up Vagrant
+    `vagrant up`
+4. SSH Into Vagrant Box
     ```
     vagrant ssh
     // Set working directory to be project location
     cd Code/Check-In
     ```
-3. Via SSH install dependencies through the PHP package manager `composer`. 
+5. Via SSH install dependencies through the PHP package manager `composer`. 
 
     `composer install`
 
-4. Via SSH run the database migrations
+6. Via SSH run the database migrations
 
     `php artisan migrate`
 
-5. Via SSH Seed the database with the proper first few values
+7. Via SSH Seed the database with the proper first few values
 
     `php artisan db:seed --class DefaultSettingsSeeder`
 
-6. Launch Vagrant:
+8. Set up environment variables
+    ```
+    // Copy the example environment variable file to .env
+    cp env.example .env
+    ```
+9. Via SSH generate an application key
+
+    `php artisan key:generate`
+
+10. Launch Vagrant:
     `vagrant up`
     
     If you change the sites or maps inside of `Homestead.yaml` you will need to run the following to update Vagrant:
     `vagrant reload --provision`
     
     
-6. Point your browser to http://la.app. 
+11. Point your browser to http://la.app. 
 
 ## Deployment
 
-First point a git remote to the Dokku server:
-
+First point a git remote to the Dokku server (the example below is CS61A specific):
+    
     git remote add dokku dokku@app.cs61a.org:la
 
 To deploy from master:
