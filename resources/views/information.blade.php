@@ -9,7 +9,7 @@
 <div class="row" style="margin-top: 20px">
     <div class="col-lg-12">
         <div class="well">
-            <div class="alert alert-info">Welcome to the {{ trans("global.class") }} Lab Assistant Management Platform.</div>
+            <div class="alert alert-info">Welcome to the {{ trans("global.class") }} Academic Intern Management Platform.</div>
             <div>
                 {!! $informationContent !!}
             </div>

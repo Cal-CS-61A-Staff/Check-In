@@ -52,9 +52,6 @@ class LabAssistantController extends Controller {
         if (!is_numeric($hours) || !is_numeric($units)) {
             return redirect()->route("laassignments")->with("message", "Hours and Units must be numeric.");
         }
-        if ($hours > 2.5 || $units > 1 || $hours < 0 || $units < 0) {
-            return redirect()->route("laassignments")->with("message", "You must sign up for no more than 1 unit and 2.5 hours.");
-        }
 
         $u = User::findOrFail(Auth::user()->id);
         $u->hours = $hours;
@@ -275,10 +272,10 @@ class LabAssistantController extends Controller {
     }
 
     public function get_queue() {
-        return Redirect::to("http://oh.cs61a.org");
+        return Redirect::to("https://oh.cs61a.org");
     }
 
     public function get_solutions() {
-        return Redirect::to("http://staging.cs61a.org");
+        return Redirect::to("https://staging.cs61a.org");
     }
 }

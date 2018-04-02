@@ -38,7 +38,7 @@
     Route::get('attendance', ["as" => "laattendance", "uses" => "LabAssistantController@get_attendance", "middleware" => "auth"]);
     Route::get('checkin', ["as" => "lacheckin", "uses" => "LabAssistantController@get_checkin", "middleware" => "auth"]);
 //    Route::get('queue', ["as" => "laqueue", "uses" => "LabAssistantController@get_queue", "middleware" => "auth"]);
-//    Route::get('solutions', ["as" => "lasolutions", "uses" => "LabAssistantController@get_solutions", "middleware" => "auth"]);
+    Route::get('solutions', ["as" => "lasolutions", "uses" => "LabAssistantController@get_solutions", "middleware" => "auth"]);
     //POST
     Route::post('docheckin', ["as" => "dolacheckin", "uses" => "LabAssistantController@post_checkin", "middleware" => "auth"]);
     Route::post('account', ["as" => "doaccount", "uses" => "LabAssistantController@post_account", "middleware" => "auth"]);
@@ -80,6 +80,7 @@
     Route::post("ta/section/new", ["as" => "tasectionnew", "uses" => "TAController@post_section_new", "middleware" => "auth.ta"]);
     Route::post("ta/section/import", ["as" => "tasectionimport", "uses" => "TAController@post_section_import", "middleware" => "auth.ta"]);
     Route::post("ta/section/edit", ["as" => "tasectionedit", "uses" => "TAController@post_section_edit", "middleware" => "auth.ta"]);
+    Route::post("ta/section/bulkcheckin", ["as" => "tasectionbulkcheckin", "uses" => "TAController@post_bulk_checkin_users", "middleware" => "auth.ta"]);
     Route::post("ta/section/assign", ["as" => "tasectionassign", "uses" => "TAController@post_section_assign", "middleware" => "auth.ta"]);
     Route::post("ta/feedback/add", ["as" => "tafeedbackadd", "uses" => "TAController@post_feedback_add", "middleware" => "auth.tutor"]);
     Route::post("ta/section/unassign", ["as" => "tasectionunassign", "uses" => "TAController@post_section_unassign", "middleware" => "auth.ta"]);

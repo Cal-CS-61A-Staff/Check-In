@@ -71,6 +71,7 @@
         history.pushState(null, '', tab.attr('id').slice(0, -6));
     }
 
+
     function init_tabs() {
         var activeTab = $('.tab-pane#{{{ $module }}}Module');
         show_tab(activeTab);
@@ -85,17 +86,6 @@
     $('#core-console-loader').hide();
     $('.console-container').fadeIn();
     init_tabs()
-
-
-
-
-
-
-
-
-
-
-
 
 @endsection
 @include('core.footer')

@@ -109,9 +109,7 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     `vagrant reload --provision`
     
     
-
 11. Point your browser to http://la.app. 
-
 
 ## Deployment
 
