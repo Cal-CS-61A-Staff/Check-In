@@ -20,7 +20,6 @@ class TAController extends Controller {
         $announcements = Announcement::where("hidden", "!=", 0)->orderBy("created_at", "DESC")->get();
         View::share('announcements', $announcements);
     }
-
     public function get_console($module = null) {
         if (empty($module)) {
             return redirect()->route("taconsole", "users");
@@ -277,6 +276,39 @@ class TAController extends Controller {
         //Make an audit log entry for this checkin
         Audit::log("GSI " . Auth::user()->name . " manually checked in " . $user->name);
         return redirect()->route("taconsole", "users")->with("message", "Manual check in for " . $user->name . " was successful.");
+    }
+
+    //takes in a lab/OH section and checks in all assigned TAs
+    public function post_bulk_checkin_users() {
+        $input = Request::all();
+        //Start some validation
+        $validator = Validator::make([
+            "date" => $input["inputDate"],
+        ], [
+            "date" => "required",
+        ], [
+            "date.required" => "Please choose a date for your bulk check in.",
+        ]);
+        //Run our validator
+        if ($validator->fails())
+        {
+            return redirect()->route('taconsole')->with("message", "Your form submission had errors. Please ensure you have filled out all of the fields.");
+        }
+        $section = Section::findOrFail($input['inputSID']);
+        $checkins = array();
+        foreach ($section->assigned as $assigned){
+            array_push($checkins, array(
+                'uid' => $assigned->uid,
+                'location' => $section->type,
+                'date' => $input['inputDate'],
+                'time' => $section->start_time,
+                'gsi' => Auth::user()->id,
+                'makeup' => 0
+            ));
+        }
+        CheckIn::insert($checkins);
+        $count = count($checkins);
+        return redirect()->route("taconsole", "users")->with("message", count($checkins) . " AIs successfully checked in.");
     }
 
     public function post_checkin_remove($id) {
