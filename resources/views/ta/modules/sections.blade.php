@@ -387,10 +387,6 @@
     </div>
 </div> 
 
-<script src="/packages/pickadate/picker.js"></script>
-<script src="/packages/pickadate/picker.date.js"></script>
-<script src="/packages/pickadate/picker.time.js"></script>
-
 <script>
     $('#editSectionInputStartTime').pickatime();
     $('#editSectionInputEndTime').pickatime();
