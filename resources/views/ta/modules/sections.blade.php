@@ -179,6 +179,9 @@
                                         <button data-toggle="tooltip" data-placement="right" data-title="Delete Section" class="btn btn-danger btn-tiny sectionDeleteBtn">
                                             <i class="fa fa-times fa-fw"></i>
                                         </button>
+                                        <button data-toggle="tooltip" data-placement="right" data-title="Bulk Checkin" style="margin-top:5px" class="btn btn-success btn-tiny sectionBulkCheckinBtn">
+                                            <i class="fa fa-check fa-fw"></i>
+                                        </button>
                                     </p>
                                 </td>
                                 <td>{{{ $s->category->name }}}</td>
@@ -352,7 +355,37 @@
         </div>
     </div>
 </div>
+
 </div>
+
+<div id="bulkCheckinModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Bulk Checkin</h4>
+            </div>
+            <form class="form" method="POST" action="{{ route("tasectionbulkcheckin") }}">
+
+                <input id="bulkCheckinInputHidden" type="hidden" name="_token" value="{{ csrf_token() }}" />
+                <input type="hidden" id="bulkCheckinInputSID" name="inputSID" value="" />
+
+                <div id="pickDateContainer"></div>
+                <div class="modal-body">
+                    <p>This checks in all academic interns assigned to the section. </p>
+                    <div class="form-group">
+                        <label>Date: </label>
+                        <input type="text" class="form-control" name="inputDate" id="inputDate" placeholder="Date" readonly />
+                    </div>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-success" value="Bulk Checkin" />
+            </div>
+            </form>
+        </div>
+    </div>
+</div> 
 
 <script>
     $('#editSectionInputStartTime').pickatime();
@@ -416,6 +449,11 @@
         $('#deleteSectionFinalLink').attr("href", "{{{ URL::to('ta/section/delete') }}}/" + $(this).closest('tr').attr('data-sid'));
         $('#deleteSectionModal').modal('show');
     });
+    $('.sectionBulkCheckinBtn').on('click', function(){
+        var tr = $(this).closest('tr');
+        $('#bulkCheckinInputSID').val(tr.attr('data-sid'));
+        $('#bulkCheckinModal').modal('show');
+    });
     $('[data-toggle="tooltip"]').tooltip();
     $('.sectionTableViewRequests').on('click', function(e) {
         e.preventDefault();
@@ -444,5 +482,8 @@
     });
     $('#viewYourLabAssistantsBtn').on('click', function() {
         $('#viewYourLabAssistantsDiv').slideToggle();
+    });
+    $('#inputDate').pickadate({
+        "container": "#pickDateContainer",
     });
 </script>
