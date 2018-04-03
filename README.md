@@ -68,8 +68,13 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     Make sure the IP address listed is the one set in your Homestead.yaml file. Once you have added the domain to your hosts file and launched the Vagrant box you will be able to access the site via your web browser:
 
     http://la.app
-3. Bring up Vagrant
-    `vagrant up`
+3. Go to your Homestead directory. Bring up Vagrant
+
+    ```
+    cd ~/Homestead
+    vagrant up
+    ```
+    
 4. SSH Into Vagrant Box
     ```
     vagrant ssh
