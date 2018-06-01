@@ -52,8 +52,8 @@ class IndexController extends Controller {
         $inCS61A = False;
         foreach ($data["participations"] as $key => $val) {
             if ($val["course"]["offering"] == env("OK_COURSE_OFFERING", "cal/cs61a/fa16")) {
-		$inCS61A = True;
-                if ($val["role"] == "staff") {
+                $inCS61A = True;
+                if ($val["role"] == "staff" || $val["role"] == "instructor") {
                     //Give this user TA permissions
                     $staff = True;
 
