@@ -11,6 +11,7 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
 * ***cs61a*** - is the master branch for the CS61A course lab assistant manager instance.
 * ***cs61b*** - is the master branch for the CS61B course lab assistant manager instance.
 * ***data8*** - is the master branch for the DATA8 course lab assistant manager instance.
+* ***cs170*** - is the master branch for the CS170 course lab assistant manager instance.
 
 ## How to contribute:
 * Fork the repository. If you are not used to github have a look at [fork a repository](https://help.github.com/fork-a-repo)

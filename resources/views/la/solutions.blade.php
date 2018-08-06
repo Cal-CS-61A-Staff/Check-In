@@ -13,7 +13,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="solutions-container">
-            <iframe width="100%" height="800px" src="http://staging.cs61a.org" allowfullscreen="" frameborder="0"></iframe>
+            <iframe width="100%" height="800px" src="http://staging.cs170.org" allowfullscreen="" frameborder="0"></iframe>
         </div>
     </div>
 </div>
