@@ -26,7 +26,7 @@ return [
 	|
 	*/
 
-	'url' => 'https://data8.checkin.colinschoen.me',
+	'url' => 'https://la.data100.org',
 
 	/*
 	|--------------------------------------------------------------------------

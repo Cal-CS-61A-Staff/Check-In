@@ -1,7 +1,7 @@
 <?php
 
-return [ 
-"class" => "Data8"
+return [
+"class" => "Data100"
 ];
 
 
