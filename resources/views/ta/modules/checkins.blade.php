@@ -5,13 +5,14 @@
     <div class="panel-body">
         <div class="table-responsive">
             <table id="consoleCheckInTable" class="table table-hover table-striped">
-                <thead><tr><th>Actions</th><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></thead>
-                <tfoot><tr><th>Actions</th><th>Name</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></tfoot>
+                <thead><tr><th>Actions</th><th>Name</th><th>Email</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></thead>
+                <tfoot><tr><th>Actions</th><th>Name</th><th>Email</th><th>Type</th><th>Hours</th><th>Date</th><th>Start Time</th><th>GSI</th><th>Makeup</th><th>Logged at</th></tr></tfoot>
                 <tbody>
                 @foreach ($checkins as $checkin)
                     <tr>
                         <td><span class="checkInActionsContainer" style="display: none;">
                                                         <a data-name="{{{ $checkin->user->name }}}"
+                                                           data-email="{{{ $checkin->user->email }}}"
                                                            data-id="{{{ $checkin->id }}}"
                                                            data-type="{{{ $checkin->type->id }}}"
                                                            data-gsi="{{{ $checkin->ta->id }}}"
@@ -32,6 +33,7 @@
                             </span><a class="checkInActionsBtn" href="#">View Actions</a>
                         </td>
                         <td>{{{ $checkin->user->name }}}</td>
+                        <td>{{{ $checkin->user->email }}}</td>
                         <td>{{{ $checkin->type->name }}}</td>
                         <td><span class="badge">{{{ $checkin->type->hours }}}</span></td>
                         <td>{{{ $checkin->date }}}</td>
