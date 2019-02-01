@@ -176,7 +176,7 @@ class LabAssistantController extends Controller {
         if (Auth::user()->email_notifications == 1)
         {
             Mail::send('emails.checkin', $data, function ($message) use ($data) {
-                $message->to($data["email"], $data["name"])->subject('CS61A - Lab Assistant Check In');
+                $message->to($data["email"], $data["name"])->subject('Data 8 - Lab Assistant Check In');
             });
         }
         return 1;
