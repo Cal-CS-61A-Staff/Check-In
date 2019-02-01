@@ -861,14 +861,19 @@ class TAController extends Controller {
     }
     public function post_section_addla() {
         $section = Section::findOrFail(Request::input('inputSection'));
-        $email= Request::input('inputEmail');
-        $user = User::where("email", "=", $email)->firstOrFail();
-        $assignment = new Assignment;
-        $assignment->section = $section->id;
-        $assignment->uid= $user->id;
-        $assignment->save();
+        $emails= explode(", ", Request::input('inputEmail'));
+        $users = ""
+        foreach ($emails as $email){
+            $user = User::where("email", "=", $email)->firstOrFail();
+            $users .= $user . ", "
+            $assignment = new Assignment;
+            $assignment->section = $section->id;
+            $assignment->uid= $user->id;
+            $assignment->save();
+        }
+        
         //Log this
-        Audit::log("Assigned " . $user->name . " to section id " . $section->id);
+        Audit::log("Assigned " . $users->name . " to section id " . $section->id);
         return redirect()->route("taconsole", "sections")->with("message", $user->name . " successfully added to section.");
     }
     public function post_section_edit() {
