@@ -82,14 +82,17 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
 2. Set up your hosts file
 
     You must add the "domains" for your Nginx sites to the hosts file on your machine. The hosts file will redirect requests for your Homestead sites into your Homestead machine. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
+
     ```
     192.168.10.10  la.app
     ```
+
     Make sure the IP address listed is the one set in your Homestead.yaml file. Once you have added the domain to your hosts file and launched the Vagrant box you will be able to access the site via your web browser:
 
     http://la.app
 
 3. Set up environment variables
+
     ```
     cd ~/Projects/Check-In
     # Copy the example environment variable file to .env
@@ -106,6 +109,7 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     ```
 
 5. SSH into the Vagrant instance
+
     ```
     vagrant ssh
     # Set working directory to project location
@@ -114,19 +118,27 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
 
 6. In SSH: Install dependencies using `composer` (PHP package manager)
 
-    `composer install`
+    ```
+    composer install
+    ```
 
 7. In SSH: Run the database migrations
 
-    `php artisan migrate`
+    ```
+    php artisan migrate
+    ```
 
 8. In SSH: Seed the database with initial values
 
-    `php artisan db:seed --class DefaultSettingsSeeder`
+    ```
+    php artisan db:seed --class DefaultSettingsSeeder
+    ```
 
 9. In SSH: Generate an application key
 
-    `php artisan key:generate`
+    ```
+    php artisan key:generate
+    ```
 
 10. Write the codestuffs
 
@@ -136,7 +148,9 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
 
 11. Stop the VM when you're done working
 
-    `vagrant halt`
+    ```
+    vagrant halt
+    ```
 
 ## Post-Installation
 
