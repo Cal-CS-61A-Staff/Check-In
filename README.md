@@ -53,7 +53,7 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
         to: /home/vagrant/Code/Check-In
 
     sites:
-        - map: la.app
+        - map: la.local
         to: /home/vagrant/Code/Check-In/public
         php: "5.6"
     ```
@@ -84,12 +84,12 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     You must add the "domains" for your Nginx sites to the hosts file on your machine. The hosts file will redirect requests for your Homestead sites into your Homestead machine. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
 
     ```
-    192.168.10.10  la.app
+    192.168.10.10  la.local
     ```
 
     Make sure the IP address listed is the one set in your Homestead.yaml file. Once you have added the domain to your hosts file and launched the Vagrant box you will be able to access the site via your web browser:
 
-    http://la.app
+    http://la.local
 
 3. Set up environment variables
 
@@ -142,7 +142,7 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
 
 10. Write the codestuffs
 
-    Point your browser to http://la.app.
+    Point your browser to http://la.local.
 
     Edit files in `~/Projects/Check-In` as necessary
 
