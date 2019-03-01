@@ -140,16 +140,22 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
 
 ## Post-Installation
 
-    The next time you want to start working again, simply start the Vagrant instance again
+The next time you want to start working again, simply start the Vagrant instance again
 
-    `vagrant up`
+```
+vagrant up
+```
 
-    And stop it when you're done
+And stop it when you're done
 
-    `vagrant halt`
+```
+vagrant halt
+```
 
-    If you change the sites or maps inside of `Homestead.yaml` you will need to run the following to update Vagrant:
-    `vagrant reload --provision`
+If you change the sites or maps inside of `Homestead.yaml` you will need to run the following to update Vagrant:
+```
+vagrant reload --provision
+```
 
 ## Deployment
 
