@@ -50,12 +50,12 @@ Provides a web-based interface for managing lab assistants. Allows TAs to config
     ```
     folders:
         - map: ~/Projects/Check-In
-        to: /home/vagrant/Code/Check-In
+          to: /home/vagrant/Code/Check-In
 
     sites:
         - map: la.local
-        to: /home/vagrant/Code/Check-In/public
-        php: "5.6"
+          to: /home/vagrant/Code/Check-In/public
+          php: "5.6"
     ```
 
     Append the following lines to `after.sh`:
