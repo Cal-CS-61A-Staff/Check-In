@@ -210,3 +210,5 @@ Tip:  add `alias dokku="ssh -t dokku@app.cs61a.org"` to your aliases file (e.g. 
     # Run migrations after following steps in Deployment
     dokku enter <app_name> web php artisan migrate --force
     dokku enter <app_name> web php artisan db:seed --class=DefaultSettingsSeeder --force
+
+Note: when setting course offering, make sure it is exact. "cal/cs61a/fa17" is not the same as "cal/cs61a/fa17/"!
