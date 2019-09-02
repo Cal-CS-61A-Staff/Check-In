@@ -30,7 +30,7 @@
                     <input class="form-control" type="text" id="inputHours" name="inputHours" value="{{{ Auth::user()->hours }}}" placeholder="Ex: 3" />
                 </div>
                 <div class="form-group">
-                    <label for="inputUnits">Units <small>(Enter 0 if you are not lab assisting for units)</small></label>
+                    <label for="inputUnits">Units</label>
                     <input class="form-control" type="number" id="inputUnits" name="inputUnits" value="{{{ Auth::user()->units }}}" placeholder="Ex: 1" />
                 </div>
                 <hr />
