@@ -68,7 +68,7 @@
             var name = opt.text();
             $('#modifyEventTypeTID').val($(this).val());
             if (opt.attr('data-hidden') == 1)
-                $('#modifyEventTypeHidgden').prop("checked", true);
+                $('#modifyEventTypeHidden').prop("checked", true);
             else
                 $('#modifyEventTypeHidden').prop("checked", false);
             $('#inputExistingEventTypeName').val(opt.attr("data-name"));
