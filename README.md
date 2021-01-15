@@ -192,23 +192,26 @@ Note: These are deployment instructions to the CS61A managed Dokku platform. The
 
 Tip:  add `alias dokku="ssh -t dokku@app.cs61a.org"` to your aliases file (e.g. `~/.bashrc`).
 
-    dokku apps:create app-name
-    git remote add online dokku@app.cs61a.org:<app_name>
-    dokku mysql:create db-name
-    dokku mysql:link db-name app-name
-    # Set DNS record
-    dokku domains:add app-name name.cs61a.org
+    dokku apps:create <app_name>
+    dokku checks:disable <app_name>
+    git remote add <app_name> dokku@hostedapps.cs61a.org:<app_name>
+    dokku mysql:create <db_name>
+    dokku mysql:link <db_name> <app_name>
 
-    # Get the APP KEY
-    dokku enter <app_name> web php artisan key:generate
+    dokku config:set --no-restart <app_name> APP_ENV=prod APP_OAUTH_KEY=<oauth secret> COURSE_NAME=CS61A OK_COURSE_OFFERING="cal/cs61a/fa17"
+    git push <app_name> HEAD:master
 
-    dokku config:set app-name APP_KEY=<KEY COPIED FROM key:generate command> APP_ENV=prod OK_COURSE_OFFERING="cal/cs61a/fa17" APP_OAUTH_KEY=<SECRET> APP_URL="https://mydomain.com" FORCE_HTTPS=true MAIL_DRIVER=mailgun MAIL_GUN_DOMAIN=<MAIL_GUN_DOMAIN> MAIL_GUN_SECRET=<MAIL_GUN_SECRET>
-    MAIL_HOST=<MAIL_HOST> MAIL_PORT=<MAIL_PORT> MAIL_USERNAME=<MAIL_USERNAME> MAIL_PASSWORD=<MAIL_SECRET> MAIL_ENCRYPTION=null
-    dokku letsencrypt app-name
-    # Change OK OAuth to support the domain
+    dokku enter <app_name> web php artisan key:generate --no-interaction --no-ansi --show
+    dokku config:set --no-restart <app_name> APP_KEY=<key copied from key:generate command>
 
-    # Run migrations after following steps in Deployment
     dokku enter <app_name> web php artisan migrate --force
     dokku enter <app_name> web php artisan db:seed --class=DefaultSettingsSeeder --force
+
+    dokku checks:enable <app_name>
+    dokku ps:restart <app_name>
+
+    dokku domains:add <app_name> domain.cs61a.org
+    dokku letsencrypt <app_name>
+    # Change OK OAuth to allow the domain redirect URL
 
 Note: when setting course offering, make sure it is exact. "cal/cs61a/fa17" is not the same as "cal/cs61a/fa17/"!

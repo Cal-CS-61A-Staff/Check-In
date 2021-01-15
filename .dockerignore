@@ -1,0 +1,8 @@
+*.lock
+.DS_Store
+.dockerignore
+.env
+.idea
+/node_modules
+Dockerfile
+vendor
