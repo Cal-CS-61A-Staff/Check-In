@@ -11,6 +11,11 @@
 |
 */
 
+$app_url = config('app.url');
+if (!empty($app_url)) {
+    URL::forceRootUrl($app_url);
+}
+
 //PUBLIC Routes
 
     //Redirect routes

@@ -1,7 +1,7 @@
 <?php
 
 return [ 
-"class" => "Data8"
+"class" => env('COURSE_NAME', 'CS61A')
 ];
 
 

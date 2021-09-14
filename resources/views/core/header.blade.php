@@ -27,7 +27,7 @@
                 <span style="background-color: #999999" class="icon-bar"></span>
                 <span style="background-color: #999999" class="icon-bar"></span>
             </button>
-            <a href="{{ route("index") }}" class="navbar-brand">{{ trans('global.class') }} <small>LAM 1.1</small></a>
+            <a href="{{ route("index") }}" class="navbar-brand">{{ trans('global.class') }} <small>LAM 1.1.1</small></a>
         </div>
         <div id="navbarCollapse" class="nav collapse navbar-collapse bs-navbar-collapse">
             <ul class="nav navbar-nav">
