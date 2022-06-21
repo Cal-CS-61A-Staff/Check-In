@@ -6,7 +6,7 @@
 	"type": "project",
 	"require": {
 		"laravel/framework": "5.1.*",
-		"guzzlehttp/guzzle": "^5.3",
+		"guzzlehttp/guzzle": "^6.5",
 		"adoy/oauth2": "dev-master",
 		"php": "5.6.*"
 	},
