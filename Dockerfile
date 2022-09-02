@@ -20,7 +20,7 @@ ENV APP_ENV=prod
 WORKDIR /app
 COPY --chown=www-data:www-data . /app
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --1 && \
     composer install --no-dev --no-interaction --no-progress --prefer-dist
 
 COPY docker/apache.conf /etc/apache2/sites-enabled/000-default.conf
